@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
@@ -264,7 +265,13 @@ public class EcoRepositoryImpl implements EcoRepository {
 		String sql = "select cs from Customer cs where cs.email= :email";
 		TypedQuery<Customer> qry = em.createQuery(sql, Customer.class);
 		qry.setParameter("email", email);
-		Customer c = qry.getSingleResult();
+		Customer c=new Customer();
+		try {
+		c = qry.getSingleResult();
+		} catch (NoResultException nre){
+			//Ignore this because as per your logic this is ok!
+		}
+		
 		if (c.getPassword() == null)
 			return false;
 		return true;
