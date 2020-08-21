@@ -33,8 +33,8 @@ class EcoBusApplicationTests {
 	Customer customer=new Customer();
 	Bus bus =new Bus();
 	Driver driver=new Driver();
-	OperationalDays op;
-	Routes ro;
+	OperationalDays op=new OperationalDays();
+	Routes ro=new Routes();
 	
 	@Test
 	public void findBus(){
