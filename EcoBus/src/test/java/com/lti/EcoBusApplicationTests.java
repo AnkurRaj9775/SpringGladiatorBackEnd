@@ -6,7 +6,10 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 
 import com.lti.bridge.CustomerDetails;
 import com.lti.bridge.PassengerDetails;
@@ -19,10 +22,10 @@ import com.lti.model.Driver;
 import com.lti.model.OperationalDays;
 import com.lti.model.Routes;
 
-
-
-
 @SpringBootTest
+//@DataJpaTest
+@AutoConfigureTestDatabase(replace=Replace.NONE)
+@Rollback(false)
 class EcoBusApplicationTests {
 	@Autowired
 	EcoController controller;
