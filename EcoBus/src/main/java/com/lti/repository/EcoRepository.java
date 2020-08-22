@@ -17,6 +17,8 @@ import com.sun.javafx.animation.TickCalculation;
 public interface EcoRepository {
 	//Home Functionalities
 	List<Bus> searchABus(String fromCity,String toCity,String day);//Done
+	List<Routes> searchRoutesByBus(List<Integer> busId,String fromCity,String toCity);
+	public List<Integer> totalSeatsBooked(List<Bus> bus,LocalDate dateOfJourney);
 	int registerUser(Customer customer);//Done
 	boolean loginUser(String email,String password);//Done
 	public Customer findByEmailPassword(String email,String password);//returning object of customer

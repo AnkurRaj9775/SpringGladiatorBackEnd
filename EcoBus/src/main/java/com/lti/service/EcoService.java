@@ -5,11 +5,12 @@ package com.lti.service;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.lti.bridge.CustomerDetails;
+import com.lti.bridge.BusDetails;
 import com.lti.bridge.PassengerDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
-import com.lti.bridge.TicketDetails;
+import com.lti.dto.CustomerDetails;
+import com.lti.dto.TicketDetails;
 import com.lti.model.Bus;
 import com.lti.model.Customer;
 import com.lti.model.Driver;
@@ -21,7 +22,7 @@ import com.lti.model.Ticket;
 
 public interface EcoService {
 	public Bus findBus(int busid);
-	List<Bus> searchABus(String fromCity,String toCity,String day);
+	List<BusDetails> searchABus(String fromCity,String toCity,String day,LocalDate dateOfJourney);
 	Status registerUser(Customer customer);
 	Customer loginUser(String email,String password);
 	boolean cancelTicket(int ticketId,String email);

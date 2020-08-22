@@ -1,5 +1,6 @@
 package com.lti.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +11,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lti.bridge.CustomerDetails;
-import com.lti.bridge.LoginDetails;
+import com.lti.bridge.BusDetails;
 import com.lti.bridge.LoginStatus;
 import com.lti.bridge.PassengerDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
-import com.lti.bridge.TicketDetails;
+import com.lti.dto.CustomerDetails;
+import com.lti.dto.LoginDetails;
+import com.lti.dto.SearchBus;
+import com.lti.dto.TicketDetails;
 import com.lti.exception.EcoServiceException;
 import com.lti.model.Bus;
 import com.lti.model.Customer;
@@ -79,9 +82,9 @@ public class EcoController {
 		return ecoServ.addOperationalDaysWithBus(operationalDays, busId);
 	}
 	
-	
-	public List<Bus> searchABus(String fromCity, String toCity, String day) {
-		return ecoServ.searchABus(fromCity, toCity, day);
+	@PostMapping("/searchBus")
+	public List<BusDetails> searchABus(@RequestBody SearchBus searchBus) {
+		return ecoServ.searchABus(searchBus.getFromCity(),searchBus.getToCity(),searchBus.getDay(),searchBus.getDateOfJourney());
 	}
 	
 	public Bus findBus(int busid){

@@ -1,8 +1,10 @@
 package com.lti.repository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.Query;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -204,6 +206,36 @@ public class EcoRepositoryImpl implements EcoRepository {
 		List<Bus> bus = query.getResultList();
 		return bus;
 	}
+
+	public List<Routes> searchRoutesByBus(List<Integer> busId, String fromCity, String toCity) {
+		List<Routes> routeDetails = new ArrayList<>();
+		for (int i = 0; i < busId.size(); i++) {
+
+			String sql = "select r from Routes r where (r.bus.busId=:busId) AND (r.fromCity=:fromCity) AND (r.toCity=:toCity)";
+			TypedQuery<Routes> query = em.createQuery(sql, Routes.class);
+			query.setParameter("busId", busId.get(i));
+			query.setParameter("fromCity", fromCity);
+			query.setParameter("toCity", toCity);
+			System.out.println(query.getSingleResult());
+			Routes routes = query.getSingleResult();
+			routeDetails.add(routes);
+		}
+		return routeDetails;
+	}
+
+	public List<Integer> totalSeatsBooked(List<Bus> bus, LocalDate dateOfJourney) {
+		List<Integer> seatsAvailable = new ArrayList<>();
+		for (int i = 0; i < bus.size(); i++) {
+
+			Long tempseats = (Long) em.createQuery(
+					"select count(s.seatId) from Seats s where (s.bus.busId= :busId) AND (s.dateOfJourney=:dateOfJourney)")
+					.setParameter("busId", bus.get(i).getBusId()).setParameter("dateOfJourney", dateOfJourney)
+					.getSingleResult();
+
+			seatsAvailable.add((int) (bus.get(i).getTotalSeat() - tempseats));
+		}
+		return seatsAvailable;
+	}
 	// public List<Bus> searchABus(String fromCity, String toCity, String day) {
 	// String sql = "select bs from Bus bs where bs.busId in"
 	// + "(select r.bus from Routes r where r.fromCity=:"
@@ -258,53 +290,53 @@ public class EcoRepositoryImpl implements EcoRepository {
 		Customer c = qry.getSingleResult();
 		System.out.println(c.getCustomerId());
 		return c.getCustomerId();
-		
+
 	}
 
 	public boolean checkRegisteredUser(String email) {
 		String sql = "select cs from Customer cs where cs.email= :email";
 		TypedQuery<Customer> qry = em.createQuery(sql, Customer.class);
 		qry.setParameter("email", email);
-		Customer c=new Customer();
+		Customer c = new Customer();
 		try {
-		c = qry.getSingleResult();
-		} catch (NoResultException nre){
-			//Ignore this because as per your logic this is ok!
+			c = qry.getSingleResult();
+		} catch (NoResultException nre) {
+			// Ignore this because as per your logic this is ok!
 		}
-		
+
 		if (c.getPassword() == null)
 			return false;
 		return true;
 
 	}
+
 	@Transactional
 	public boolean addTicketAndPassengerWithRegisteredCustomers(Ticket ticket, List<Passenger> passenger,
-			List<Seats> seats,Transaction transaction) {
-			ticket.setTransaction(transaction);
-			
-			ticket.setPassenger(passenger);
-			ticket.setSeats(seats);
-			transaction.setTicket(ticket);
-			for (Passenger p : passenger) {
-				System.out.println("p counter");
-				p.setTicket(ticket);
-				}
-			for( Seats s: seats){
-				System.out.println("s counter");
-				s.setTicket(ticket);
-			}
-			
-			
-			em.merge(ticket);
-		
-			return true;
-	
-}
+			List<Seats> seats, Transaction transaction) {
+		ticket.setTransaction(transaction);
+
+		ticket.setPassenger(passenger);
+		ticket.setSeats(seats);
+		transaction.setTicket(ticket);
+		for (Passenger p : passenger) {
+			System.out.println("p counter");
+			p.setTicket(ticket);
+		}
+		for (Seats s : seats) {
+			System.out.println("s counter");
+			s.setTicket(ticket);
+		}
+
+		em.merge(ticket);
+
+		return true;
+
+	}
 
 	@Override
 	public Customer findByEmailPassword(String email, String password) {
-		return  (Customer) em.createQuery("select c from Customer c where c.email=:em and c.password=:pw")
-				.setParameter("em",email ).setParameter("pw", password).getSingleResult();
+		return (Customer) em.createQuery("select c from Customer c where c.email=:em and c.password=:pw")
+				.setParameter("em", email).setParameter("pw", password).getSingleResult();
 	}
 
 // public Bus findBus(int busid){

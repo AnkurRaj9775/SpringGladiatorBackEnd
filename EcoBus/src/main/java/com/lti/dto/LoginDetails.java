@@ -1,4 +1,4 @@
-package com.lti.bridge;
+package com.lti.dto;
 
 public class LoginDetails {
 

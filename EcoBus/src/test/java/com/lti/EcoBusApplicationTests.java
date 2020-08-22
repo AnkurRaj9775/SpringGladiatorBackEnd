@@ -11,11 +11,11 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
-import com.lti.bridge.CustomerDetails;
 import com.lti.bridge.PassengerDetails;
 import com.lti.bridge.SeatDetails;
-import com.lti.bridge.TicketDetails;
 import com.lti.controller.EcoController;
+import com.lti.dto.CustomerDetails;
+import com.lti.dto.TicketDetails;
 import com.lti.model.Bus;
 import com.lti.model.Customer;
 import com.lti.model.Driver;
@@ -125,14 +125,14 @@ class EcoBusApplicationTests {
 //		bus.setBusPlateNumber("DL004");
 //		driver.setContact("9414968274");
 //		driver.setDriverName("Majinder");
-		
+//		
 		bus.setBusName("Blue Whale bus");
 		bus.setBusType("AC");
 		bus.setTotalSeat(20);
 		bus.setBusPlateNumber("DL005");
 		driver.setContact("9414789547");
 		driver.setDriverName("Raman");
-		
+//		
 		
 		
 		System.out.println(controller.addBuswithDriver(bus, driver));

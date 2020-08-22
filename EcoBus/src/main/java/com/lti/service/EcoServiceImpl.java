@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-
-import com.lti.bridge.CustomerDetails;
+import com.lti.bridge.BusDetails;
 import com.lti.bridge.PassengerDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
-import com.lti.bridge.TicketDetails;
+import com.lti.dto.CustomerDetails;
+import com.lti.dto.TicketDetails;
 import com.lti.exception.EcoServiceException;
 import com.lti.model.Bus;
 import com.lti.model.Customer;
@@ -34,7 +34,7 @@ public class EcoServiceImpl implements EcoService {
 
 	Customer cust=new Customer();
 	Status status= new Status();
-
+	Bus bus=new Bus();
 	public Status registerUser(Customer customer) {
 		status = new Status();
 		if (ecoRep.checkRegisteredUser(customer.getEmail())) {
@@ -170,8 +170,37 @@ public class EcoServiceImpl implements EcoService {
 		return ecoRep.addOperationalDaysWithBus(operationalDays, busId);
 	}
 
-	public List<Bus> searchABus(String fromCity, String toCity, String day) {
-		return ecoRep.searchABus(fromCity, toCity, day);
+	public List<BusDetails> searchABus(String fromCity, String toCity, String day,LocalDate dateOfJourney) {
+		List<Bus> busDetails=ecoRep.searchABus(fromCity, toCity, day);
+		List<Integer> busId=new ArrayList<>();
+		
+		for(int i=0;i<busDetails.size();i++) {
+			
+			busId.add(busDetails.get(i).getBusId());
+		}
+		List<Routes> routesDetails=ecoRep.searchRoutesByBus(busId, fromCity, toCity);
+		
+		List<Integer> totalSeat=ecoRep.totalSeatsBooked(busDetails, dateOfJourney);
+		
+		List<BusDetails> finalBusDetails=new ArrayList<>();
+		
+		for(int i=0;i<busDetails.size();i++)
+		{
+			BusDetails b=new BusDetails();
+			b.setResultStatus(true);
+			b.setBusId(busDetails.get(i).getBusId());
+			b.setBusName(busDetails.get(i).getBusName());
+			b.setBusType(busDetails.get(i).getBusType());
+			b.setDepartureTime(routesDetails.get(i).getDepartureTime());
+			b.setArrivalTime(routesDetails.get(i).getArrivalTime());
+			b.setFare(routesDetails.get(i).getFare());
+			b.setTotalSeatsAvailable(totalSeat.get(i));
+			b.setDuration(routesDetails.get(i).getDuration());
+			finalBusDetails.add(b);
+			System.out.println(finalBusDetails);
+		}
+		//return ecoRep.searchABus(fromCity, toCity, day);
+		return finalBusDetails;
 	}
 
 	public Bus findBus(int busid) {
@@ -180,7 +209,7 @@ public class EcoServiceImpl implements EcoService {
 	}
 //==================================================================
 	Ticket ticket=new Ticket();
-	Bus bus=new Bus();
+	
 	Customer customer=new Customer();
 	Transaction transaction=new Transaction();
 	public Status addTicketDetails(CustomerDetails customerDetails, TicketDetails ticketDetails,
