@@ -45,14 +45,15 @@ class EcoBusApplicationTests {
 	@Test
 	public void regiterTest() {
 	
-		customer.setAge(23);
-		customer.setContact("6384615645");
-		customer.setEmail("munish.bhanawat@gmail.com");
-		customer.setGender("M");
-		customer.setName("Munish Bhanawa");
-		customer.setPassword("Munish@123");
-		customer.setWalletBalance(0);
 		
+//		 customer.setAge(23);
+//		 customer.setContact("6384615645");
+//		  customer.setEmail("munish.bhanawat@gmail.com");
+//		  customer.setGender("M");
+//		  customer.setName("Munish Bhanawa");
+//		  customer.setPassword("Munish@123");
+//		  customer.setWalletBalance(0);
+		 
 //		customer.setAge(23);
 //		customer.setContact("9858789652");
 //		customer.setEmail("araj3358@gmail.com");
@@ -68,14 +69,21 @@ class EcoBusApplicationTests {
 //		customer.setName("Navtej Singh");
 //		customer.setPassword("Navtej@123");
 //		customer.setWalletBalance(0);
+//		
+		customer.setAge(23);
+		customer.setContact("8524963152");
+		customer.setEmail("yadav.neha.1225@gmail.com");
+		customer.setGender("F");
+		customer.setName("Neha Yadav");
+		customer.setPassword("Neha@123");
+		customer.setWalletBalance(0);
 		
-//		customer.setAge(23);
-//		customer.setContact("8524963152");
-//		customer.setEmail("yadav.neha.1225@gmail.com");
-//		customer.setGender("F");
-//		customer.setName("Neha Yadav");
-//		customer.setPassword("Neha@123");
-//		customer.setWalletBalance(0);
+		/*
+		 * customer.setAge(23); customer.setContact("9687458965");
+		 * customer.setEmail("varun@gmail.com"); customer.setGender("M");
+		 * customer.setName("varun"); customer.setPassword("varun@123");
+		 * customer.setWalletBalance(0);
+		 */
 		
 
 		System.out.println(controller.registerUser(customer));

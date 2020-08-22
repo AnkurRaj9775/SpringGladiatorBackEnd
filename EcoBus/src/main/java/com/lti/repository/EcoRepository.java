@@ -19,6 +19,7 @@ public interface EcoRepository {
 	List<Bus> searchABus(String fromCity,String toCity,String day);//Done
 	int registerUser(Customer customer);//Done
 	boolean loginUser(String email,String password);//Done
+	public Customer findByEmailPassword(String email,String password);//returning object of customer
 	boolean cancelTicket(int ticketId,String email);
 	Ticket searchTicket(int ticketId,String email);
 	//for rescheduling the bus, write one more function in service class

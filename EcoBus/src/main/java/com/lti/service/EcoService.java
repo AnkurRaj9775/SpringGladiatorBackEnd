@@ -23,7 +23,7 @@ public interface EcoService {
 	public Bus findBus(int busid);
 	List<Bus> searchABus(String fromCity,String toCity,String day);
 	Status registerUser(Customer customer);
-	boolean loginUser(String email,String password);
+	Customer loginUser(String email,String password);
 	boolean cancelTicket(int ticketId,String email);
 	Ticket searchTicket(int ticketId,String email);
 	

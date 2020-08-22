@@ -301,6 +301,12 @@ public class EcoRepositoryImpl implements EcoRepository {
 	
 }
 
+	@Override
+	public Customer findByEmailPassword(String email, String password) {
+		return  (Customer) em.createQuery("select c from Customer c where c.email=:em and c.password=:pw")
+				.setParameter("em",email ).setParameter("pw", password).getSingleResult();
+	}
+
 // public Bus findBus(int busid){
 // String sql = "select bs from Bus bs where bs.busId=:busid";
 // TypedQuery<Bus> query = em.createQuery(sql, Bus.class);

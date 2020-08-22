@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 
@@ -13,6 +14,7 @@ import com.lti.bridge.PassengerDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
 import com.lti.bridge.TicketDetails;
+import com.lti.exception.EcoServiceException;
 import com.lti.model.Bus;
 import com.lti.model.Customer;
 import com.lti.model.Driver;
@@ -48,9 +50,19 @@ public class EcoServiceImpl implements EcoService {
 
 	}
 
-	public boolean loginUser(String email, String password) {
-
-		return ecoRep.loginUser(email, password);
+	public Customer loginUser(String email, String password) {
+		try {
+		 if(!ecoRep.loginUser(email, password))
+		 {
+			 throw new EcoServiceException("Customer is not registered");
+		 }
+		 Customer customer=ecoRep.findByEmailPassword(email, password);
+			return customer;
+		}
+		catch(EmptyResultDataAccessException e)
+		{
+			throw new EcoServiceException("Incorect email/password");
+		}
 	}
 
 	public boolean addABus(Bus bus) {
