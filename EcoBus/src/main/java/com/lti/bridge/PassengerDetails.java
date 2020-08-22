@@ -25,6 +25,10 @@ public class PassengerDetails {
 	public void setName(String name) {
 		this.name = name;
 	}
+	@Override
+	public String toString() {
+		return "PassengerDetails [age=" + age + ", gender=" + gender + ", name=" + name + "]";
+	}
 	
 	
 	

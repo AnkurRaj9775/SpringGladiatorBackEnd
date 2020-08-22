@@ -319,11 +319,12 @@ public class EcoRepositoryImpl implements EcoRepository {
 		ticket.setSeats(seats);
 		transaction.setTicket(ticket);
 		for (Passenger p : passenger) {
-			System.out.println("p counter");
+			
 			p.setTicket(ticket);
+			
 		}
 		for (Seats s : seats) {
-			System.out.println("s counter");
+			
 			s.setTicket(ticket);
 		}
 

@@ -218,21 +218,20 @@ public class EcoServiceImpl implements EcoService {
 		if (!ecoRep.isValidEmail(customerDetails.getEmail())) {
 			cust.setEmail(customerDetails.getEmail());
 			cust.setContact(customerDetails.getContact());
-			System.out.println("Inside If");
+			
 			custId = ecoRep.registerUser(cust);
 		} else{
 			System.out.println("Inside else");
 			custId = ecoRep.getRegisteredCustomerId(customerDetails.getEmail());
 		}
-		System.out.println(custId);
+		
 		List<Seats> seats = new ArrayList<Seats>();
 		List<Passenger> passenger = new ArrayList<Passenger>();
-		Passenger ptemp =new Passenger();
-		Seats stemp = new Seats();
-		System.out.println(ticketDetails.getBusId());
+		
+		
 		bus.setBusId(ticketDetails.getBusId());
 		for (PassengerDetails p : passengerDetails) {
-
+			Passenger ptemp =new Passenger();
 			ptemp.setAge(p.getAge());
 			ptemp.setGender(p.getGender());
 			ptemp.setName(p.getName());
@@ -240,14 +239,14 @@ public class EcoServiceImpl implements EcoService {
 
 		}
 		for (int i = 0; i < seatDetails.size(); i++) {
-
+			Seats stemp = new Seats();
 			stemp.setBus(bus);
 			stemp.setDate(ticketDetails.getDateOfJourney());
 			stemp.setGender(passengerDetails.get(i).getGender());
 			stemp.setSeats(seatDetails.get(i).getSeatNo());
 			seats.add(stemp);
 		}
-		System.out.println(seats.size() +" "+passenger.size());
+	
 		
 		transaction.setAmount(ticketDetails.getTotalCost());
 		transaction.setTransactionDate(ticketDetails.getDateOfBooking());

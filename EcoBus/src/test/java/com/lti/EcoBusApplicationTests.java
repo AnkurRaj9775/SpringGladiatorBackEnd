@@ -289,6 +289,7 @@ class EcoBusApplicationTests {
 		p.setName("Munish");
 		passengerDetails.add(p);
 		
+		
 		p=new PassengerDetails();
 		p.setAge(23);
 		p.setGender("M");
@@ -303,6 +304,8 @@ class EcoBusApplicationTests {
 		s.setSeatNo(6);
 		seatDetails.add(s);
 		
+		System.out.println(passengerDetails.toString());
+		System.out.println(seatDetails.toString());
 		System.out.println(seatDetails.size() +" "+passengerDetails.size());
 		System.out.println(controller.addTicketDetails(customerDetails, ticketDetails, passengerDetails, seatDetails));
 	

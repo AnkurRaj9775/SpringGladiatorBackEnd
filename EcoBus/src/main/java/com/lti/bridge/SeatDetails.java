@@ -11,6 +11,11 @@ public class SeatDetails {
 	public void setSeatNo(int seatNo) {
 		this.seatNo = seatNo;
 	}
+
+	@Override
+	public String toString() {
+		return "SeatDetails [seatNo=" + seatNo + "]";
+	}
 	
 	
 

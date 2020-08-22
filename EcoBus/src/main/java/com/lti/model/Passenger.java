@@ -75,6 +75,13 @@ public class Passenger {
 		this.ticket = ticket;
 	}
 
+	@Override
+	public String toString() {
+		return "Passenger [passengerId=" + passengerId + ", name=" + name + ", age=" + age + ", gender=" + gender + "]";
+	}
+
+
+
 	
 	
 }

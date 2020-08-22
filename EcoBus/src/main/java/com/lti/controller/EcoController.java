@@ -91,7 +91,8 @@ public class EcoController {
 		return ecoServ.findBus(busid);
 	}
 	
-	public Status addTicketDetails(CustomerDetails customerDetails,TicketDetails ticketDetails,List<PassengerDetails> passengerDetails,List<SeatDetails> seatDetails){
+	@PostMapping("/bookTicket")
+	public Status addTicketDetails(@RequestParam CustomerDetails customerDetails,@RequestParam TicketDetails ticketDetails,@RequestParam List<PassengerDetails> passengerDetails,@RequestParam List<SeatDetails> seatDetails){
 		return ecoServ.addTicketDetails(customerDetails, ticketDetails, passengerDetails, seatDetails);
 	}
 	
