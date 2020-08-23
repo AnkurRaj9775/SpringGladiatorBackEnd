@@ -9,6 +9,7 @@ import com.lti.bridge.BusDetails;
 import com.lti.bridge.PassengerDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
+import com.lti.bridge.WalletDetails;
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.TicketDetails;
 import com.lti.model.Bus;
@@ -36,7 +37,7 @@ public interface EcoService {
 	boolean updatePassword(String email,String password);
 	List<Ticket> viewAllBookings(String email);
 	Customer showProfile(String email);
-    double showWalletBalance(String email);
+    WalletDetails showWalletBalance(int customerId);
     boolean updateProfile(Customer customer);
     
     List<Seats> getBookedSeats(int busId);
@@ -57,5 +58,6 @@ public interface EcoService {
     
     Status addTicketDetails(CustomerDetails customerDetails,TicketDetails ticketDetails,List<PassengerDetails> passengerDetails,List<SeatDetails> seatDetails);
     
+   
     //
 }

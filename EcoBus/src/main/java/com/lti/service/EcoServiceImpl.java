@@ -12,6 +12,7 @@ import com.lti.bridge.BusDetails;
 import com.lti.bridge.PassengerDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
+import com.lti.bridge.WalletDetails;
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.TicketDetails;
 import com.lti.exception.EcoServiceException;
@@ -105,9 +106,9 @@ public class EcoServiceImpl implements EcoService {
 		return null;
 	}
 
-	public double showWalletBalance(String email) {
+	public WalletDetails showWalletBalance(int customerId) {
 		// TODO Auto-generated method stub
-		return 0;
+		return null;
 	}
 
 	public boolean updateProfile(Customer customer) {

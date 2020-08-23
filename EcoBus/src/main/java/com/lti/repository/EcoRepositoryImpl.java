@@ -95,7 +95,7 @@ public class EcoRepositoryImpl implements EcoRepository {
 		return null;
 	}
 
-	public double showWalletBalance(String email) {
+	public double showWalletBalance(int customerId) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

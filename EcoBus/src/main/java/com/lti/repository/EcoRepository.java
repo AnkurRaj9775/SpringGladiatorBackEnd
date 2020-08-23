@@ -36,7 +36,7 @@ public interface EcoRepository {
 	boolean updatePassword(String email,String password);//--Read about session handling
 	List<Ticket> viewAllBookings(String email);
 	Customer showProfile(String email);
-    double showWalletBalance(String email);
+    double showWalletBalance(int customerId);
     boolean updateProfile(Customer customer);
     //For ticket details
     List<Seats> getBookedSeats(int busId);

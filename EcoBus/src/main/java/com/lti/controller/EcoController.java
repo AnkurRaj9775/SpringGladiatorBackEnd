@@ -16,10 +16,12 @@ import com.lti.bridge.LoginStatus;
 import com.lti.bridge.PassengerDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
+import com.lti.bridge.WalletDetails;
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.LoginDetails;
 import com.lti.dto.SearchBus;
 import com.lti.dto.TicketDetails;
+import com.lti.dto.WalletAmount;
 import com.lti.exception.EcoServiceException;
 import com.lti.model.Bus;
 import com.lti.model.Customer;
@@ -94,6 +96,12 @@ public class EcoController {
 	@PostMapping("/bookTicket")
 	public Status addTicketDetails(@RequestParam CustomerDetails customerDetails,@RequestParam TicketDetails ticketDetails,@RequestParam List<PassengerDetails> passengerDetails,@RequestParam List<SeatDetails> seatDetails){
 		return ecoServ.addTicketDetails(customerDetails, ticketDetails, passengerDetails, seatDetails);
+	}
+	
+	@PostMapping("/walletBalance")
+	public WalletDetails showWalletBalanace(@RequestBody WalletAmount walletAmount)
+	{
+		return ecoServ.showWalletBalance(walletAmount.getCustomerId());
 	}
 	
 }
