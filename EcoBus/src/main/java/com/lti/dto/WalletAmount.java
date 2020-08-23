@@ -2,6 +2,7 @@ package com.lti.dto;
 
 public class WalletAmount {
 	private int customerId;
+	
 
 	public int getCustomerId() {
 		return customerId;

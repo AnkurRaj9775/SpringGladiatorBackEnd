@@ -12,18 +12,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lti.bridge.BusDetails;
-import com.lti.bridge.CancelTicketDetails;
+import com.lti.bridge.StatusString;
+import com.lti.bridge.WalletDetails;
 import com.lti.bridge.LoginStatus;
 import com.lti.bridge.PassengerDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
-import com.lti.bridge.WalletDetails;
 import com.lti.dto.CancelTicket;
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.LoginDetails;
 import com.lti.dto.SearchBus;
 import com.lti.dto.TicketDetails;
 import com.lti.dto.WalletAmount;
+import com.lti.dto.UpdateWallet;
 import com.lti.exception.EcoServiceException;
 import com.lti.model.Bus;
 import com.lti.model.Customer;
@@ -106,10 +107,18 @@ public class EcoController {
 		return ecoServ.showWalletBalance(walletAmount.getCustomerId());
 	}
 	
+	@PostMapping("/addBalance")
+	public WalletDetails addWalletBalanace(@RequestBody UpdateWallet walletAmount)
+	{
+		return ecoServ.addWalletBalance(walletAmount.getCustId(),walletAmount.getWalletAmount());
+	}
+	
 	@PostMapping("/cancelTicket")
-	public CancelTicketDetails cancelTicket(@RequestBody CancelTicket cancelTicket) {
+	public StatusString cancelTicket(@RequestBody CancelTicket cancelTicket) {
 		
 		return ecoServ.cancelTicket(cancelTicket.getTicketNo(), cancelTicket.getEmail());
 	}
+
+	
 }
 

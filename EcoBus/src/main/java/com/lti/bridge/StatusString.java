@@ -1,6 +1,6 @@
 package com.lti.bridge;
 
-public class CancelTicketDetails {
+public class StatusString {
 
 	private String status;
 

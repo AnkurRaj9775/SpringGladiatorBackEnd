@@ -1,16 +1,16 @@
 package com.lti.bridge;
 
-public class WalletDetails {
+public class WalletDetails extends StatusString {
 
 	
-	private double walletAmount;
+	private double amount;
 
-	public double getWalletAmount() {
-		return walletAmount;
+	public double getAmount() {
+		return amount;
 	}
 
-	public void setWalletAmount(double walletAmount) {
-		this.walletAmount = walletAmount;
+	public void setAmount(double amount) {
+		this.amount = amount;
 	}
 	
 	

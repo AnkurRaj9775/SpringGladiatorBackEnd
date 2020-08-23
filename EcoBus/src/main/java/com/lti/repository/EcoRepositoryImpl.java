@@ -128,6 +128,25 @@ public class EcoRepositoryImpl implements EcoRepository {
 		}
 		return cust.getWalletBalance();
 	}
+	
+	@Transactional
+	public boolean addWalletBalance(int customerId, double amount) {
+		Customer cust = new Customer();
+		int i = 0;
+				String sql = "update Customer cs set cs.walletBalance= cs.walletBalance + :amount  where cs.customerId= :customerId";
+			TypedQuery<Customer> qry = em.createQuery(sql, Customer.class);
+			qry.setParameter("customerId", customerId);			
+			try {
+				i = qry.executeUpdate();				
+			} catch (NoResultException e) {
+				
+			}	
+			if(i>0) {
+				return true;
+			}
+		
+			return false;
+	}
 
 	public boolean updateProfile(Customer customer) {
 		// TODO Auto-generated method stub

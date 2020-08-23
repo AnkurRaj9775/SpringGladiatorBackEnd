@@ -9,13 +9,14 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.lti.bridge.BusDetails;
-import com.lti.bridge.CancelTicketDetails;
+import com.lti.bridge.StatusString;
+import com.lti.bridge.WalletDetails;
 import com.lti.bridge.PassengerDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
-import com.lti.bridge.WalletDetails;
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.TicketDetails;
+import com.lti.dto.UpdateWallet;
 import com.lti.exception.EcoServiceException;
 import com.lti.model.Bus;
 import com.lti.model.Customer;
@@ -70,10 +71,10 @@ public class EcoServiceImpl implements EcoService {
 		return ecoRep.addABus(bus);
 	}
 
-	public CancelTicketDetails cancelTicket(int ticketId, String email) {
+	public StatusString cancelTicket(int ticketId, String email) {
 
 		int id = 0;
-		CancelTicketDetails cancelTicketDetails = new CancelTicketDetails();
+		StatusString cancelTicketDetails = new StatusString();
 		if (!ecoRep.isValidEmail(email)) {
 			cancelTicketDetails.setStatus("Please enter correct email id");
 			return cancelTicketDetails;
@@ -131,10 +132,26 @@ public class EcoServiceImpl implements EcoService {
 	public WalletDetails showWalletBalance(int customerId) {
 
 		WalletDetails walletAmount = new WalletDetails();
-		walletAmount.setWalletAmount(ecoRep.showWalletBalance(customerId));
+		walletAmount.setAmount(ecoRep.showWalletBalance(customerId));
 		return walletAmount;
 
 	}
+	
+	public WalletDetails addWalletBalance(int custId, double amount) {
+		
+		WalletDetails wallet = new WalletDetails();
+		if(ecoRep.addWalletBalance(custId, amount)) {
+			wallet.setStatus("Amount added successfully!");
+			wallet.setAmount(ecoRep.showWalletBalance(custId));
+		}
+		else {
+			wallet.setStatus("Oops! Could not add amount");
+			wallet.setAmount(ecoRep.showWalletBalance(custId));
+		}
+		return wallet;
+	}
+	
+	
 
 	public boolean updateProfile(Customer customer) {
 		// TODO Auto-generated method stub

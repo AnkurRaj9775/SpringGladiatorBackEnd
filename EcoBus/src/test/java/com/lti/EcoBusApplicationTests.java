@@ -46,13 +46,7 @@ class EcoBusApplicationTests {
 	public void regiterTest() {
 	
 		
-//		 customer.setAge(23);
-//		 customer.setContact("6384615645");
-//		  customer.setEmail("munish.bhanawat@gmail.com");
-//		  customer.setGender("M");
-//		  customer.setName("Munish Bhanawa");
-//		  customer.setPassword("Munish@123");
-//		  customer.setWalletBalance(0);
+//	?
 		 
 //		customer.setAge(23);
 //		customer.setContact("9858789652");
@@ -62,21 +56,21 @@ class EcoBusApplicationTests {
 //		customer.setPassword("Ankur@123");
 //		customer.setWalletBalance(0);
 		
-//		customer.setAge(23);
-//		customer.setContact("7859145872");
-//		customer.setEmail("navtej552@gmail.com");
-//		customer.setGender("M");
-//		customer.setName("Navtej Singh");
-//		customer.setPassword("Navtej@123");
-//		customer.setWalletBalance(0);
-//		
 		customer.setAge(23);
-		customer.setContact("8524963152");
-		customer.setEmail("yadav.neha.1225@gmail.com");
-		customer.setGender("F");
-		customer.setName("Neha Yadav");
-		customer.setPassword("Neha@123");
+		customer.setContact("7859145872");
+		customer.setEmail("navtej552@gmail.com");
+		customer.setGender("M");
+		customer.setName("Navtej Singh");
+		customer.setPassword("Navtej@123");
 		customer.setWalletBalance(0);
+//		
+//		customer.setAge(23);
+//		customer.setContact("8524963152");
+//		customer.setEmail("yadav.neha.1225@gmail.com");
+//		customer.setGender("F");
+//		customer.setName("Neha Yadav");
+//		customer.setPassword("Neha@123");
+//		customer.setWalletBalance(0);
 		
 		/*
 		 * customer.setAge(23); customer.setContact("9687458965");
@@ -90,22 +84,22 @@ class EcoBusApplicationTests {
 		
 	}
 	
-	@Test
-	public void loginTest(){
-		System.out.println(controller.loginUser("munish.bhanawat@gmail.com","unish@123"));
-	}
-	
+//	@Test
+//	public void loginTest(){
+//		System.out.println(controller.loginUser("munish.bhanawat@gmail.com","unish@123"));
+//	}
+//	
 	@Test
 	public void addAbus()
 	{
-//		bus.setBusName("Eagle bus");
-//		bus.setBusType("AC");
-//		bus.setTotalSeat(40);
-//		bus.setBusPlateNumber("UK001");
-		bus.setBusName("Jaguar bus");
+		bus.setBusName("Eagle bus");
 		bus.setBusType("AC");
-		bus.setTotalSeat(25);
-		bus.setBusPlateNumber("UK002");
+		bus.setTotalSeat(40);
+		bus.setBusPlateNumber("UK001");
+//		bus.setBusName("Jaguar bus");
+//		bus.setBusType("AC");
+//		bus.setTotalSeat(25);
+//		bus.setBusPlateNumber("UK002");
 		System.out.println(controller.addAbus(bus));
 	}
 	
@@ -260,11 +254,11 @@ class EcoBusApplicationTests {
 	
 	
 	
-	@Test
-	public void searchBus(){
-		System.out.println(controller.searchABus("Delhi", "Saharanpur", "Tuesday","23-08-2020"));
-	}
-	
+//	@Test
+//	public void searchBus(){
+//		System.out.println(controller.searchABus("Delhi", "Saharanpur", "Tuesday","23-08-2020"));
+//	}
+//	
 	TicketDetails ticketDetails =new TicketDetails();
 	CustomerDetails customerDetails= new CustomerDetails();
 	

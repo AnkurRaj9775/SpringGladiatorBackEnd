@@ -6,13 +6,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.lti.bridge.BusDetails;
-import com.lti.bridge.CancelTicketDetails;
+import com.lti.bridge.StatusString;
+import com.lti.bridge.WalletDetails;
 import com.lti.bridge.PassengerDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
-import com.lti.bridge.WalletDetails;
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.TicketDetails;
+import com.lti.dto.UpdateWallet;
 import com.lti.model.Bus;
 import com.lti.model.Customer;
 import com.lti.model.Driver;
@@ -27,7 +28,7 @@ public interface EcoService {
 	List<BusDetails> searchABus(String fromCity,String toCity,String day,LocalDate dateOfJourney);
 	Status registerUser(Customer customer);
 	Customer loginUser(String email,String password);
-	CancelTicketDetails cancelTicket(int ticketId,String email);
+	StatusString cancelTicket(int ticketId,String email);
 	Ticket searchTicket(int ticketId,String email);
 	
 	//Forgot Password Functionalities
@@ -40,8 +41,9 @@ public interface EcoService {
 	Customer showProfile(String email);
     WalletDetails showWalletBalance(int customerId);
     boolean updateProfile(Customer customer);
-    
     List<Seats> getBookedSeats(int busId);
+    WalletDetails addWalletBalance(int customerId, double amount);
+    
     
     //Admin Functionalities 
     double getPreviousProfits(LocalDate fromDate,LocalDate toDate);
