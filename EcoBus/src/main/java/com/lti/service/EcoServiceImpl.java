@@ -71,8 +71,7 @@ public class EcoServiceImpl implements EcoService {
 	}
 
 	public CancelTicketDetails cancelTicket(int ticketId, String email) {
-		
-		
+
 		int id = 0;
 		CancelTicketDetails cancelTicketDetails = new CancelTicketDetails();
 		if (!ecoRep.isValidEmail(email)) {
@@ -130,8 +129,11 @@ public class EcoServiceImpl implements EcoService {
 	}
 
 	public WalletDetails showWalletBalance(int customerId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		WalletDetails walletAmount = new WalletDetails();
+		walletAmount.setWalletAmount(ecoRep.showWalletBalance(customerId));
+		return walletAmount;
+
 	}
 
 	public boolean updateProfile(Customer customer) {

@@ -116,8 +116,17 @@ public class EcoRepositoryImpl implements EcoRepository {
 	}
 
 	public double showWalletBalance(int customerId) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		String sql = "select cs from Customer cs where cs.customerId= :customerId";
+		TypedQuery<Customer> qry = em.createQuery(sql, Customer.class);
+		qry.setParameter("customerId", customerId);
+		Customer cust = new Customer();
+		try {
+			cust = qry.getSingleResult();
+		} catch (NoResultException e) {
+
+		}
+		return cust.getWalletBalance();
 	}
 
 	public boolean updateProfile(Customer customer) {
