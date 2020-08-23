@@ -117,6 +117,12 @@ public class Customer {
 		this.ticket = ticket;
 	}
 
+	@Override
+	public String toString() {
+		return "Customer [customerId=" + customerId + ", name=" + name + ", email=" + email + ", password=" + password
+				+ ", contact=" + contact + ", age=" + age + ", gender=" + gender + "]";
+	}
+
 	
 	
 	

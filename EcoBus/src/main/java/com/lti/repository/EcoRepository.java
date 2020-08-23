@@ -57,6 +57,8 @@ public interface EcoRepository {
     
     boolean addTicketAndPassengerWithRegisteredCustomers(Ticket ticket,List<Passenger> passenger,List<Seats> seats,Transaction transaction);//depends on the session
    // boolean addTicketAndPassengerWithUnregisteredCusomer(Ticket ticket,Passenger passenger, Customer customer);
+	boolean isValidTicket(int ticketId,int customerId);
+	boolean isValidTicketDate(int ticketId);
     
     
 	

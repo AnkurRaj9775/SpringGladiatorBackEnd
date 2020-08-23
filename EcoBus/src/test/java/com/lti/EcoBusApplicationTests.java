@@ -262,7 +262,7 @@ class EcoBusApplicationTests {
 	
 	@Test
 	public void searchBus(){
-		System.out.println(controller.searchABus("Delhi", "Saharanpur", "Tuesday"));
+		System.out.println(controller.searchABus("Delhi", "Saharanpur", "Tuesday","23-08-2020"));
 	}
 	
 	TicketDetails ticketDetails =new TicketDetails();

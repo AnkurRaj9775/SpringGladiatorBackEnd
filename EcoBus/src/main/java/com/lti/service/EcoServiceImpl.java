@@ -9,6 +9,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.lti.bridge.BusDetails;
+import com.lti.bridge.CancelTicketDetails;
 import com.lti.bridge.PassengerDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
@@ -33,9 +34,10 @@ public class EcoServiceImpl implements EcoService {
 	@Autowired
 	EcoRepository ecoRep;
 
-	Customer cust=new Customer();
-	Status status= new Status();
-	Bus bus=new Bus();
+	Customer cust = new Customer();
+	Status status = new Status();
+	Bus bus = new Bus();
+
 	public Status registerUser(Customer customer) {
 		status = new Status();
 		if (ecoRep.checkRegisteredUser(customer.getEmail())) {
@@ -53,15 +55,12 @@ public class EcoServiceImpl implements EcoService {
 
 	public Customer loginUser(String email, String password) {
 		try {
-		 if(!ecoRep.loginUser(email, password))
-		 {
-			 throw new EcoServiceException("Customer is not registered");
-		 }
-		 Customer customer=ecoRep.findByEmailPassword(email, password);
+			if (!ecoRep.loginUser(email, password)) {
+				throw new EcoServiceException("Customer is not registered");
+			}
+			Customer customer = ecoRep.findByEmailPassword(email, password);
 			return customer;
-		}
-		catch(EmptyResultDataAccessException e)
-		{
+		} catch (EmptyResultDataAccessException e) {
 			throw new EcoServiceException("Incorect email/password");
 		}
 	}
@@ -71,9 +70,33 @@ public class EcoServiceImpl implements EcoService {
 		return ecoRep.addABus(bus);
 	}
 
-	public boolean cancelTicket(int ticketId, String email) {
-		// TODO Auto-generated method stub
-		return false;
+	public CancelTicketDetails cancelTicket(int ticketId, String email) {
+		
+		
+		int id = 0;
+		CancelTicketDetails cancelTicketDetails = new CancelTicketDetails();
+		if (!ecoRep.isValidEmail(email)) {
+			cancelTicketDetails.setStatus("Please enter correct email id");
+			return cancelTicketDetails;
+		} else if (ecoRep.checkRegisteredUser(email)) {
+			id = ecoRep.getRegisteredCustomerId(email);
+			if (ecoRep.isValidTicket(ticketId, id) && ecoRep.isValidTicketDate(ticketId)) {
+
+				cancelTicketDetails.setStatus("Please Login to Cancel the Ticket.");
+				return cancelTicketDetails;
+			} else if (!ecoRep.isValidTicketDate(ticketId)) {
+				cancelTicketDetails
+						.setStatus("This ticket can not be cancelled as the date of journey has already passed.");
+				return cancelTicketDetails;
+
+			} else {
+				cancelTicketDetails.setStatus("Cannot Fetch Ticket details at the moment.");
+				return cancelTicketDetails;
+			}
+		}
+		cancelTicketDetails.setStatus("Please Register And Login to Cancel the Ticket.");
+		return cancelTicketDetails;
+
 	}
 
 	public Ticket searchTicket(int ticketId, String email) {
@@ -171,23 +194,22 @@ public class EcoServiceImpl implements EcoService {
 		return ecoRep.addOperationalDaysWithBus(operationalDays, busId);
 	}
 
-	public List<BusDetails> searchABus(String fromCity, String toCity, String day,LocalDate dateOfJourney) {
-		List<Bus> busDetails=ecoRep.searchABus(fromCity, toCity, day);
-		List<Integer> busId=new ArrayList<>();
-		
-		for(int i=0;i<busDetails.size();i++) {
-			
+	public List<BusDetails> searchABus(String fromCity, String toCity, String day, LocalDate dateOfJourney) {
+		List<Bus> busDetails = ecoRep.searchABus(fromCity, toCity, day);
+		List<Integer> busId = new ArrayList<>();
+
+		for (int i = 0; i < busDetails.size(); i++) {
+
 			busId.add(busDetails.get(i).getBusId());
 		}
-		List<Routes> routesDetails=ecoRep.searchRoutesByBus(busId, fromCity, toCity);
-		
-		List<Integer> totalSeat=ecoRep.totalSeatsBooked(busDetails, dateOfJourney);
-		
-		List<BusDetails> finalBusDetails=new ArrayList<>();
-		
-		for(int i=0;i<busDetails.size();i++)
-		{
-			BusDetails b=new BusDetails();
+		List<Routes> routesDetails = ecoRep.searchRoutesByBus(busId, fromCity, toCity);
+
+		List<Integer> totalSeat = ecoRep.totalSeatsBooked(busDetails, dateOfJourney);
+
+		List<BusDetails> finalBusDetails = new ArrayList<>();
+
+		for (int i = 0; i < busDetails.size(); i++) {
+			BusDetails b = new BusDetails();
 			b.setResultStatus(true);
 			b.setBusId(busDetails.get(i).getBusId());
 			b.setBusName(busDetails.get(i).getBusName());
@@ -200,7 +222,7 @@ public class EcoServiceImpl implements EcoService {
 			finalBusDetails.add(b);
 			System.out.println(finalBusDetails);
 		}
-		//return ecoRep.searchABus(fromCity, toCity, day);
+		// return ecoRep.searchABus(fromCity, toCity, day);
 		return finalBusDetails;
 	}
 
@@ -208,31 +230,32 @@ public class EcoServiceImpl implements EcoService {
 		// TODO Auto-generated method stub
 		return ecoRep.findBus(busid);
 	}
+
 //==================================================================
-	Ticket ticket=new Ticket();
-	
-	Customer customer=new Customer();
-	Transaction transaction=new Transaction();
+	Ticket ticket = new Ticket();
+
+	Customer customer = new Customer();
+	Transaction transaction = new Transaction();
+
 	public Status addTicketDetails(CustomerDetails customerDetails, TicketDetails ticketDetails,
 			List<PassengerDetails> passengerDetails, List<SeatDetails> seatDetails) {
 		int custId = 0;
 		if (!ecoRep.isValidEmail(customerDetails.getEmail())) {
 			cust.setEmail(customerDetails.getEmail());
 			cust.setContact(customerDetails.getContact());
-			
+
 			custId = ecoRep.registerUser(cust);
-		} else{
+		} else {
 			System.out.println("Inside else");
 			custId = ecoRep.getRegisteredCustomerId(customerDetails.getEmail());
 		}
-		
+
 		List<Seats> seats = new ArrayList<Seats>();
 		List<Passenger> passenger = new ArrayList<Passenger>();
-		
-		
+
 		bus.setBusId(ticketDetails.getBusId());
 		for (PassengerDetails p : passengerDetails) {
-			Passenger ptemp =new Passenger();
+			Passenger ptemp = new Passenger();
 			ptemp.setAge(p.getAge());
 			ptemp.setGender(p.getGender());
 			ptemp.setName(p.getName());
@@ -247,8 +270,7 @@ public class EcoServiceImpl implements EcoService {
 			stemp.setSeats(seatDetails.get(i).getSeatNo());
 			seats.add(stemp);
 		}
-	
-		
+
 		transaction.setAmount(ticketDetails.getTotalCost());
 		transaction.setTransactionDate(ticketDetails.getDateOfBooking());
 
@@ -263,14 +285,12 @@ public class EcoServiceImpl implements EcoService {
 		ticket.setTotalCost(ticketDetails.getTotalCost());
 		// ticket.setPassenger(passenger);
 
-		if (ecoRep.addTicketAndPassengerWithRegisteredCustomers(ticket, passenger, seats,transaction)) {
+		if (ecoRep.addTicketAndPassengerWithRegisteredCustomers(ticket, passenger, seats, transaction)) {
 			status.setResultStatus(true);
 			return status;
 		}
 		status.setResultStatus(false);
 		return status;
 	}
-
-	
 
 }

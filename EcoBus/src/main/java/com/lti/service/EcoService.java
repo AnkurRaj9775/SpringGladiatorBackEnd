@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.lti.bridge.BusDetails;
+import com.lti.bridge.CancelTicketDetails;
 import com.lti.bridge.PassengerDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
@@ -26,7 +27,7 @@ public interface EcoService {
 	List<BusDetails> searchABus(String fromCity,String toCity,String day,LocalDate dateOfJourney);
 	Status registerUser(Customer customer);
 	Customer loginUser(String email,String password);
-	boolean cancelTicket(int ticketId,String email);
+	CancelTicketDetails cancelTicket(int ticketId,String email);
 	Ticket searchTicket(int ticketId,String email);
 	
 	//Forgot Password Functionalities

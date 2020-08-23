@@ -4,10 +4,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.management.Query;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
@@ -65,15 +65,35 @@ public class EcoRepositoryImpl implements EcoRepository {
 	}
 
 	public boolean isValidEmail(String email) {
+		System.out.println(email);
 		String sql = "select cs from Customer cs where cs.email= :email";
 		TypedQuery<Customer> qry = em.createQuery(sql, Customer.class);
 		qry.setParameter("email", email);
-		List<Customer> customer = qry.getResultList();
+		List<Customer> customer = new ArrayList<>();
+		try {
+			customer = qry.getResultList();
+		} catch (NoResultException e) {
+
+		}
+		System.out.println(customer);
 		if (customer.isEmpty())
 			return false;
 
 		return true;
 	}
+
+	/*
+	 * public boolean isValidEmail(String email) { System.out.println(email);
+	 * 
+	 * String sql = "select cs.email from Customer cs where cs.email= :email"; Query
+	 * qry = em.createQuery(sql); qry.setParameter("email", email); String
+	 * tempemail=null; try { tempemail = (String) qry.getSingleResult(); }
+	 * catch(NoResultException e) {
+	 * 
+	 * } System.out.println(tempemail); if (tempemail==null) return false;
+	 * 
+	 * return true; }
+	 */
 
 	public boolean changePassword(String email, String password) {
 		// TODO Auto-generated method stub
@@ -319,12 +339,12 @@ public class EcoRepositoryImpl implements EcoRepository {
 		ticket.setSeats(seats);
 		transaction.setTicket(ticket);
 		for (Passenger p : passenger) {
-			
+
 			p.setTicket(ticket);
-			
+
 		}
 		for (Seats s : seats) {
-			
+
 			s.setTicket(ticket);
 		}
 
@@ -338,6 +358,47 @@ public class EcoRepositoryImpl implements EcoRepository {
 	public Customer findByEmailPassword(String email, String password) {
 		return (Customer) em.createQuery("select c from Customer c where c.email=:em and c.password=:pw")
 				.setParameter("em", email).setParameter("pw", password).getSingleResult();
+	}
+
+	@Override
+	public boolean isValidTicket(int ticketId, int customerId) {
+
+		String sql = "select t from Ticket t where t.ticketId=:ticketId AND t.customer.customerId =:customerId";
+		TypedQuery<Ticket> qry = em.createQuery(sql, Ticket.class);
+		qry.setParameter("ticketId", ticketId);
+		qry.setParameter("customerId", customerId);
+		Ticket t = new Ticket();
+		try {
+			t = qry.getSingleResult();
+		} catch (NoResultException nre) {
+			// Ignore this because as per your logic this is ok!
+		}
+		System.out.println(t);
+		if (t.getTicketId() == 0)
+			return false;
+
+		return true;
+	}
+
+	@Override
+	public boolean isValidTicketDate(int ticketId) {
+		LocalDate currentDate = LocalDate.now();
+		System.out.println(currentDate);
+		String sql = "select t from Ticket t where t.ticketId=:ticketId AND t.dateOfJourney >:currentDate";
+		TypedQuery<Ticket> qry = em.createQuery(sql, Ticket.class);
+		qry.setParameter("ticketId", ticketId);
+		qry.setParameter("currentDate", currentDate);
+		Ticket t = new Ticket();
+		try {
+			t = qry.getSingleResult();
+		} catch (NoResultException nre) {
+			// Ignore this because as per your logic this is ok!
+		}
+		System.out.println(t);
+		if (t.getTicketId() == 0)
+			return false;
+
+		return true;
 	}
 
 // public Bus findBus(int busid){

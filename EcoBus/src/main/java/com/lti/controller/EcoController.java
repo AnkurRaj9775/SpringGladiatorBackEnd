@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lti.bridge.BusDetails;
+import com.lti.bridge.CancelTicketDetails;
 import com.lti.bridge.LoginStatus;
 import com.lti.bridge.PassengerDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
 import com.lti.bridge.WalletDetails;
+import com.lti.dto.CancelTicket;
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.LoginDetails;
 import com.lti.dto.SearchBus;
@@ -104,5 +106,10 @@ public class EcoController {
 		return ecoServ.showWalletBalance(walletAmount.getCustomerId());
 	}
 	
+	@PostMapping("/cancelTicket")
+	public CancelTicketDetails cancelTicket(@RequestBody CancelTicket cancelTicket) {
+		
+		return ecoServ.cancelTicket(cancelTicket.getTicketNo(), cancelTicket.getEmail());
+	}
 }
 
