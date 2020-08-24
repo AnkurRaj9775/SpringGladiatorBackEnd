@@ -138,7 +138,7 @@ public class EcoServiceImpl implements EcoService {
 	}
 	
 	public WalletDetails addWalletBalance(int custId, double amount) {
-		
+	
 		WalletDetails wallet = new WalletDetails();
 		if(ecoRep.addWalletBalance(custId, amount)) {
 			wallet.setStatus("Amount added successfully!");

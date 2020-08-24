@@ -104,13 +104,15 @@ public class EcoController {
 	@PostMapping("/walletBalance")
 	public WalletDetails showWalletBalanace(@RequestBody WalletAmount walletAmount)
 	{
+		
 		return ecoServ.showWalletBalance(walletAmount.getCustomerId());
 	}
 	
 	@PostMapping("/addBalance")
-	public WalletDetails addWalletBalanace(@RequestBody UpdateWallet walletAmount)
+	public WalletDetails addWalletBalanace(@RequestBody UpdateWallet updateWallet)
 	{
-		return ecoServ.addWalletBalance(walletAmount.getCustId(),walletAmount.getWalletAmount());
+		
+		return ecoServ.addWalletBalance(updateWallet.getCustomerId(),updateWallet.getWalletAmount());
 	}
 	
 	@PostMapping("/cancelTicket")
