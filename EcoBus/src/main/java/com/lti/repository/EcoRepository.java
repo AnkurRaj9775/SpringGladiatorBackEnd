@@ -41,7 +41,8 @@ public interface EcoRepository {
 	public Customer isValidCustomerId(int customerId);
 	
 	//DashBoard Functionalities
-	boolean updatePassword(String email,String password);//--Read about session handling
+	boolean updatePassword(int customerId,String oldPassword,String newPassword);//--Read about session handling
+
 	List<Ticket> viewAllBookings(String email);
 	Customer showProfile(String email);
     double showWalletBalance(int customerId);

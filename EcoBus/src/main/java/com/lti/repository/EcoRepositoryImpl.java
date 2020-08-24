@@ -104,8 +104,20 @@ public class EcoRepositoryImpl implements EcoRepository {
 		return true;
 	}
 
-	public boolean updatePassword(String email, String password) {
-		// TODO Auto-generated method stub
+	public boolean updatePassword(int customerId,String oldPassword,String newPassword) {
+		Customer cust = new Customer();
+		
+		cust=em.find(Customer.class, customerId);
+		String sql="select cs.password from Customer cs where customerId=:customerId";
+		Query qry=em.createQuery(sql);
+		qry.setParameter("customerId", customerId);
+		String password=(String) qry.getSingleResult();
+		if(password==oldPassword && password!=newPassword)
+		{
+			cust.setPassword(newPassword);
+			em.merge(cust);
+			return true;
+		}
 		return false;
 	}
 

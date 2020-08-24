@@ -37,7 +37,7 @@ public interface EcoService {
 	Status changePassword(int customerId,String password);
 	
 	//DashBoard Functionalities
-	boolean updatePassword(String email,String password);
+	Status updatePassword(int customerId,String oldPassword,String newPassword);
 	List<Ticket> viewAllBookings(String email);
 	Customer showProfile(String email);
     WalletDetails showWalletBalance(int customerId);

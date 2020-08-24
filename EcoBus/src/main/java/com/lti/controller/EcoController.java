@@ -21,6 +21,7 @@ import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
 import com.lti.dto.BookTicket;
 import com.lti.dto.CancelTicket;
+import com.lti.dto.ChangePassword;
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.ForgotPassword;
 import com.lti.dto.LoginDetails;
@@ -148,5 +149,10 @@ public class EcoController {
 		return ecoServ.changePassword(resetPassword.getCustomerId(), resetPassword.getPassword());
 	}
 	
+	@PostMapping("/changePassword")
+	public Status changePassword(@RequestBody ChangePassword changePassword)
+	{
+		return ecoServ.updatePassword(changePassword.getCustomerId(), changePassword.getOldPassword(), changePassword.getNewPassword());
+	}
 }
 

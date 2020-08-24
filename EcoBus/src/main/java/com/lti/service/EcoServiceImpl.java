@@ -139,9 +139,16 @@ public class EcoServiceImpl implements EcoService {
 		return status;
 	}
 
-	public boolean updatePassword(String email, String password) {
+	public Status updatePassword(int customerId, String oldPassword,String newPassword) {
 		// TODO Auto-generated method stub
-		return false;
+		if(ecoRep.updatePassword(customerId, oldPassword, newPassword))
+		{
+			status.setResultStatus(true);
+			return status;
+		}
+		status.setResultStatus(false);
+		return status;
+		
 	}
 
 	public List<Ticket> viewAllBookings(String email) {
