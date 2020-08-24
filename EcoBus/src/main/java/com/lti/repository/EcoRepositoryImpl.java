@@ -94,10 +94,14 @@ public class EcoRepositoryImpl implements EcoRepository {
 	 * 
 	 * return true; }
 	 */
-
-	public boolean changePassword(String email, String password) {
-		// TODO Auto-generated method stub
-		return false;
+	@Transactional
+	public boolean changePassword(int customerId, String password) {
+	
+		Customer cust = new Customer();
+		cust=em.find(Customer.class, customerId);
+		cust.setPassword(password);
+		em.merge(cust);
+		return true;
 	}
 
 	public boolean updatePassword(String email, String password) {
@@ -427,6 +431,20 @@ public class EcoRepositoryImpl implements EcoRepository {
 			return false;
 
 		return true;
+	}
+
+	@Override
+	public Customer isValidCustomerId(int customerId) {
+		Customer customer=new Customer();
+		
+		try {
+			 customer=em.find(Customer.class, customerId);
+		} catch (NoResultException nre) {
+			// Ignore this because as per your logic this is ok!
+		}
+		
+		
+		return customer;
 	}
 
 // public Bus findBus(int busid){

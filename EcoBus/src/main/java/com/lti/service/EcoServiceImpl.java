@@ -9,6 +9,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.lti.bridge.BusDetails;
+import com.lti.bridge.LoginStatus;
 import com.lti.bridge.StatusString;
 import com.lti.bridge.WalletDetails;
 import com.lti.bridge.PassengerDetails;
@@ -110,14 +111,32 @@ public class EcoServiceImpl implements EcoService {
 		return null;
 	}
 
-	public boolean isValidEmail(String email) {
-		// TODO Auto-generated method stub
-		return false;
+	public LoginStatus isValidCustomerId(int customerId) {
+		Customer customer=ecoRep.isValidCustomerId(customerId);
+		LoginStatus loginStatus=new LoginStatus();
+		if(customer!=null)
+		{
+			loginStatus.setCustomerId(customer.getCustomerId());
+			loginStatus.setResultStatus(true);
+			return loginStatus;
+		}
+		
+		loginStatus.setResultStatus(false);
+		return loginStatus;
 	}
 
-	public boolean changePassword(String email, String password) {
+	public Status changePassword(int customerId,String password) {
 		// TODO Auto-generated method stub
-		return false;
+		
+		Customer customer=ecoRep.isValidCustomerId(customerId);
+		if(customer!=null)
+		{
+			ecoRep.changePassword(customerId, password);
+			status.setResultStatus(true);
+			return status;
+		}
+		status.setResultStatus(false);
+		return status;
 	}
 
 	public boolean updatePassword(String email, String password) {

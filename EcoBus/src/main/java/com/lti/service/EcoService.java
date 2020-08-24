@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.lti.bridge.BusDetails;
+import com.lti.bridge.LoginStatus;
 import com.lti.bridge.StatusString;
 import com.lti.bridge.WalletDetails;
 import com.lti.bridge.PassengerDetails;
@@ -32,8 +33,8 @@ public interface EcoService {
 	Ticket searchTicket(int ticketId,String email);
 	
 	//Forgot Password Functionalities
-	boolean isValidEmail(String email);
-	boolean changePassword(String email,String password);
+	LoginStatus isValidCustomerId(int customerId);
+	Status changePassword(int customerId,String password);
 	
 	//DashBoard Functionalities
 	boolean updatePassword(String email,String password);

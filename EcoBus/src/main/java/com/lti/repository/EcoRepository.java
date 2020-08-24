@@ -34,10 +34,11 @@ public interface EcoRepository {
 	
 	//Forgot Password Functionalities
 	boolean isValidEmail(String email);
-	boolean changePassword(String email,String password);
+	boolean changePassword(int customerId,String password);
 	int getRegisteredCustomerId(String email);
 	boolean checkRegisteredUser(String email);
 	
+	public Customer isValidCustomerId(int customerId);
 	
 	//DashBoard Functionalities
 	boolean updatePassword(String email,String password);//--Read about session handling

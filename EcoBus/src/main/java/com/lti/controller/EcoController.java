@@ -22,7 +22,9 @@ import com.lti.bridge.Status;
 import com.lti.dto.BookTicket;
 import com.lti.dto.CancelTicket;
 import com.lti.dto.CustomerDetails;
+import com.lti.dto.ForgotPassword;
 import com.lti.dto.LoginDetails;
+import com.lti.dto.ResetPassword;
 import com.lti.dto.SearchBus;
 import com.lti.dto.TicketDetails;
 import com.lti.dto.WalletAmount;
@@ -134,6 +136,17 @@ public class EcoController {
 		return ecoServ.cancelTicket(cancelTicket.getTicketNo(), cancelTicket.getEmail());
 	}
 
+	@PostMapping("/forgotPassword")
+	public LoginStatus forgotPassword(@RequestBody ForgotPassword forgotPassword)
+	{
+		return ecoServ.isValidCustomerId(forgotPassword.getCustomerId());
+	}
+	
+	@PostMapping("/resetPassword")
+	public Status resetPassword(@RequestBody ResetPassword resetPassword)
+	{
+		return ecoServ.changePassword(resetPassword.getCustomerId(), resetPassword.getPassword());
+	}
 	
 }
 
