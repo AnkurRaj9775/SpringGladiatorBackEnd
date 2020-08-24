@@ -21,6 +21,17 @@ public class BusDetails extends Status {
 	private double fare;
 	
 	private int totalSeatsAvailable;
+	
+	private int totalSeats;
+	
+
+	public int getTotalSeats() {
+		return totalSeats;
+	}
+
+	public void setTotalSeats(int totalSeats) {
+		this.totalSeats = totalSeats;
+	}
 
 	public String getBusName() {
 		return busName;

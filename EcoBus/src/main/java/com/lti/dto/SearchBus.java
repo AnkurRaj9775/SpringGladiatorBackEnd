@@ -10,7 +10,7 @@ public class SearchBus {
 	
 	private String day;
 	
-	private LocalDate dateOfJourney;
+	private String dateOfJourney;
 
 	public String getFromCity() {
 		return fromCity;
@@ -36,13 +36,14 @@ public class SearchBus {
 		this.day = day;
 	}
 
-	public LocalDate getDateOfJourney() {
+	public String getDateOfJourney() {
 		return dateOfJourney;
 	}
 
-	public void setDateOfJourney(LocalDate dateOfJourney) {
+	public void setDateOfJourney(String dateOfJourney) {
 		this.dateOfJourney = dateOfJourney;
 	}
-	
+
+
 	
 }

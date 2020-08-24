@@ -67,6 +67,22 @@ public class Ticket {
 	
 	
 	
+	public String getFromCity() {
+		return fromCity;
+	}
+
+	public void setFromCity(String fromCity) {
+		this.fromCity = fromCity;
+	}
+
+	public String getToCity() {
+		return toCity;
+	}
+
+	public void setToCity(String toCity) {
+		this.toCity = toCity;
+	}
+
 	public List<Seats> getSeats() {
 		return seats;
 	}
@@ -152,13 +168,7 @@ public class Ticket {
 		this.transaction = transaction;
 	}
 
-	@Override
-	public String toString() {
-		return "Ticket [ticketId=" + ticketId + ", noOfSeatsBooked=" + noOfSeatsBooked + ", dateOfJourney="
-				+ dateOfJourney + ", dateOfBooking=" + dateOfBooking + ", totalCost=" + totalCost + ", bus=" + bus
-				+ ", customer=" + customer + ", seats=" + seats + ", passenger=" + passenger + ", transaction="
-				+ transaction + "]";
-	}
+
 	
 	
 }

@@ -17,6 +17,7 @@ import com.lti.bridge.Status;
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.TicketDetails;
 import com.lti.dto.UpdateWallet;
+import com.lti.email.Email;
 import com.lti.exception.EcoServiceException;
 import com.lti.model.Bus;
 import com.lti.model.Customer;
@@ -34,7 +35,10 @@ public class EcoServiceImpl implements EcoService {
 
 	@Autowired
 	EcoRepository ecoRep;
-
+	
+	@Autowired
+	Email email;
+	
 	Customer cust = new Customer();
 	Status status = new Status();
 	Bus bus = new Bus();
@@ -47,6 +51,8 @@ public class EcoServiceImpl implements EcoService {
 		}
 		int check = ecoRep.registerUser(customer);
 		if (check > 0) {
+		
+		email.registerEmail(customer.getEmail(),customer.getName());
 			status.setResultStatus(true);
 		} else
 			status.setResultStatus(false);
@@ -80,17 +86,17 @@ public class EcoServiceImpl implements EcoService {
 			return cancelTicketDetails;
 		} else if (ecoRep.checkRegisteredUser(email)) {
 			id = ecoRep.getRegisteredCustomerId(email);
-			if (ecoRep.isValidTicket(ticketId, id) && ecoRep.isValidTicketDate(ticketId)) {
+			if (ecoRep.isValidTicket(ticketId, id)  && ecoRep.isValidTicketDate(ticketId)) {
 
 				cancelTicketDetails.setStatus("Please Login to Cancel the Ticket.");
 				return cancelTicketDetails;
-			} else if (!ecoRep.isValidTicketDate(ticketId)) {
+			} else if (!ecoRep.isValidTicket(ticketId, id)) {
 				cancelTicketDetails
-						.setStatus("This ticket can not be cancelled as the date of journey has already passed.");
+						.setStatus("Cannot Fetch Ticket details at the moment.");
 				return cancelTicketDetails;
 
 			} else {
-				cancelTicketDetails.setStatus("Cannot Fetch Ticket details at the moment.");
+				cancelTicketDetails.setStatus("This ticket can not be cancelled as the date of journey has already passed.");
 				return cancelTicketDetails;
 			}
 		}
@@ -214,6 +220,7 @@ public class EcoServiceImpl implements EcoService {
 	}
 
 	public List<BusDetails> searchABus(String fromCity, String toCity, String day, LocalDate dateOfJourney) {
+		System.out.println(dateOfJourney);
 		List<Bus> busDetails = ecoRep.searchABus(fromCity, toCity, day);
 		List<Integer> busId = new ArrayList<>();
 
@@ -238,6 +245,7 @@ public class EcoServiceImpl implements EcoService {
 			b.setFare(routesDetails.get(i).getFare());
 			b.setTotalSeatsAvailable(totalSeat.get(i));
 			b.setDuration(routesDetails.get(i).getDuration());
+			b.setTotalSeats(busDetails.get(i).getTotalSeat());
 			finalBusDetails.add(b);
 			System.out.println(finalBusDetails);
 		}
@@ -302,6 +310,8 @@ public class EcoServiceImpl implements EcoService {
 		ticket.setDateOfJourney(ticketDetails.getDateOfJourney());
 		ticket.setNoOfSeatsBooked(ticketDetails.getNoOfSeatsBooked());
 		ticket.setTotalCost(ticketDetails.getTotalCost());
+		ticket.setFromCity(ticketDetails.getFromCity());
+		ticket.setToCity(ticketDetails.getToCity());
 		// ticket.setPassenger(passenger);
 
 		if (ecoRep.addTicketAndPassengerWithRegisteredCustomers(ticket, passenger, seats, transaction)) {

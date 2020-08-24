@@ -1,6 +1,7 @@
 package com.lti.controller;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import com.lti.bridge.LoginStatus;
 import com.lti.bridge.PassengerDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
+import com.lti.dto.BookTicket;
 import com.lti.dto.CancelTicket;
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.LoginDetails;
@@ -89,7 +91,18 @@ public class EcoController {
 	
 	@PostMapping("/searchBus")
 	public List<BusDetails> searchABus(@RequestBody SearchBus searchBus) {
-		return ecoServ.searchABus(searchBus.getFromCity(),searchBus.getToCity(),searchBus.getDay(),searchBus.getDateOfJourney());
+//		System.out.println(searchBus.getDay());
+		System.out.println(searchBus.getDateOfJourney()+ ""+ "give date");
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//		String date=searchBus.getDateOfJourney();
+//		//convert String to LocalDate
+//		LocalDate journeyDate = LocalDate.parse(date, formatter);
+//		System.out.println(journeyDate);
+		
+	
+        LocalDate journeyDate = LocalDate.parse(searchBus.getDateOfJourney());
+    
+		return ecoServ.searchABus(searchBus.getFromCity(),searchBus.getToCity(),searchBus.getDay(),journeyDate);
 	}
 	
 	public Bus findBus(int busid){
@@ -97,8 +110,8 @@ public class EcoController {
 	}
 	
 	@PostMapping("/bookTicket")
-	public Status addTicketDetails(@RequestParam CustomerDetails customerDetails,@RequestParam TicketDetails ticketDetails,@RequestParam List<PassengerDetails> passengerDetails,@RequestParam List<SeatDetails> seatDetails){
-		return ecoServ.addTicketDetails(customerDetails, ticketDetails, passengerDetails, seatDetails);
+	public Status addTicketDetails(@RequestBody BookTicket bookTicket){
+		return ecoServ.addTicketDetails(bookTicket.getCustomerDetails(), bookTicket.getTicketDetails(), bookTicket.getPassengerDetails(), bookTicket.getSeatDetails());
 	}
 	
 	@PostMapping("/walletBalance")

@@ -270,6 +270,7 @@ public class EcoRepositoryImpl implements EcoRepository {
 	}
 
 	public List<Integer> totalSeatsBooked(List<Bus> bus, LocalDate dateOfJourney) {
+			System.out.println(dateOfJourney);
 		List<Integer> seatsAvailable = new ArrayList<>();
 		for (int i = 0; i < bus.size(); i++) {
 
@@ -277,8 +278,9 @@ public class EcoRepositoryImpl implements EcoRepository {
 					"select count(s.seatId) from Seats s where (s.bus.busId= :busId) AND (s.dateOfJourney=:dateOfJourney)")
 					.setParameter("busId", bus.get(i).getBusId()).setParameter("dateOfJourney", dateOfJourney)
 					.getSingleResult();
-
+			System.out.println(tempseats);
 			seatsAvailable.add((int) (bus.get(i).getTotalSeat() - tempseats));
+			System.out.println((int) (bus.get(i).getTotalSeat() - tempseats));
 		}
 		return seatsAvailable;
 	}

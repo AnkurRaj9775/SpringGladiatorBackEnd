@@ -14,6 +14,7 @@ import org.springframework.test.annotation.Rollback;
 import com.lti.bridge.PassengerDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.controller.EcoController;
+import com.lti.dto.BookTicket;
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.TicketDetails;
 import com.lti.model.Bus;
@@ -301,9 +302,58 @@ class EcoBusApplicationTests {
 		System.out.println(passengerDetails.toString());
 		System.out.println(seatDetails.toString());
 		System.out.println(seatDetails.size() +" "+passengerDetails.size());
-		System.out.println(controller.addTicketDetails(customerDetails, ticketDetails, passengerDetails, seatDetails));
+//		System.out.println(controller.addTicketDetails(customerDetails, ticketDetails, passengerDetails, seatDetails));
 	
 	
+	}
+	
+	@Test
+	public void bookMyTicket()
+	{
+		BookTicket bookTicket=new BookTicket();
+		customerDetails.setContact("9858789652");
+		customerDetails.setEmail("amit123@gmail.com");
+		
+		bookTicket.setCustomerDetails(customerDetails);
+		
+		ticketDetails.setBusId(131102);
+		ticketDetails.setDateOfBooking(LocalDate.now());
+		ticketDetails.setDateOfJourney(LocalDate.of(2020, 8, 23));
+		ticketDetails.setNoOfSeatsBooked(2);
+		ticketDetails.setTotalCost(1100);
+		ticketDetails.setFromCity("Delhi");
+		ticketDetails.setToCity("Saharanpur");
+		bookTicket.setTicketDetails(ticketDetails);
+		
+		List<PassengerDetails> passengerDetails=new ArrayList<PassengerDetails>();
+		List<SeatDetails> seatDetails=new ArrayList<SeatDetails>();
+		
+		p=new PassengerDetails();
+		p.setAge(23);
+		p.setGender("M");
+		p.setName("Munish");
+		passengerDetails.add(p);
+		
+		
+		p=new PassengerDetails();
+		p.setAge(23);
+		p.setGender("M");
+		p.setName("Navtej");
+		passengerDetails.add(p);
+		
+		bookTicket.setPassengerDetails(passengerDetails);
+		
+		s=new SeatDetails();
+		s.setSeatNo(5);
+		seatDetails.add(s);
+		
+		s=new SeatDetails();
+		s.setSeatNo(6);
+		seatDetails.add(s);
+		
+		bookTicket.setSeatDetails(seatDetails);
+		
+		controller.addTicketDetails(bookTicket);
 	}
 
 }
