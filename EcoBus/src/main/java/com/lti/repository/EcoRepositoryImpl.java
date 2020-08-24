@@ -244,7 +244,7 @@ public class EcoRepositoryImpl implements EcoRepository {
 	public List<Bus> searchABus(String fromCity, String toCity, String day) {
 		String sql = "select bs from Bus bs where bs.busId in"
 				+ "(select r.bus from Routes r Join OperationalDays o ON r.fromCity=:from "
-				+ "and r.toCity=:to and o.operationalDays=:day)";
+				+ "and r.toCity=:to and o.operationalDays=:day )";
 		TypedQuery<Bus> query = em.createQuery(sql, Bus.class);
 		query.setParameter("from", fromCity);
 		query.setParameter("to", toCity);
