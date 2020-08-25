@@ -10,6 +10,7 @@ import com.lti.bridge.LoginStatus;
 import com.lti.bridge.StatusString;
 import com.lti.bridge.WalletDetails;
 import com.lti.bridge.PassengerDetails;
+import com.lti.bridge.SeatCountDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
 import com.lti.dto.CustomerDetails;
@@ -62,6 +63,6 @@ public interface EcoService {
     
     Status addTicketDetails(CustomerDetails customerDetails,TicketDetails ticketDetails,List<PassengerDetails> passengerDetails,List<SeatDetails> seatDetails);
     
-   
+    SeatCountDetails fetchNoOfSeats(int busId,LocalDate dateOfJourney);
     //
 }
