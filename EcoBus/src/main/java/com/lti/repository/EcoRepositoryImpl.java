@@ -260,17 +260,17 @@ public class EcoRepositoryImpl implements EcoRepository {
 
 	}
 
-	public List<Bus> searchABus(String fromCity, String toCity, String day) {
-		String sql = "select bs from Bus bs where bs.busId in"
-				+ "(select r.bus from Routes r Join OperationalDays o ON r.fromCity=:from "
-				+ "and r.toCity=:to and o.operationalDays=:day )";
-		TypedQuery<Bus> query = em.createQuery(sql, Bus.class);
-		query.setParameter("from", fromCity);
-		query.setParameter("to", toCity);
-		query.setParameter("day", day);
-		List<Bus> bus = query.getResultList();
-		return bus;
-	}
+//	public List<Bus> searchABus(String fromCity, String toCity, String day) {
+//		String sql = "select bs from Bus bs where bs.busId in"
+//				+ "(select r.bus from Routes r Join OperationalDays o ON r.fromCity=:from "
+//				+ "and r.toCity=:to and o.operationalDays=:day )";
+//		TypedQuery<Bus> query = em.createQuery(sql, Bus.class);
+//		query.setParameter("from", fromCity);
+//		query.setParameter("to", toCity);
+//		query.setParameter("day", day);
+//		List<Bus> bus = query.getResultList();
+//		return bus;
+//	}
 
 	public List<Routes> searchRoutesByBus(List<Integer> busId, String fromCity, String toCity) {
 		List<Routes> routeDetails = new ArrayList<>();
@@ -303,18 +303,17 @@ public class EcoRepositoryImpl implements EcoRepository {
 		}
 		return seatsAvailable;
 	}
-	// public List<Bus> searchABus(String fromCity, String toCity, String day) {
-	// String sql = "select bs from Bus bs where bs.busId in"
-	// + "(select r.bus from Routes r where r.fromCity=:"
-	// + "from and r.toCity=:to and r.bus in(select o.bus from OperationalDays o
-	// where o.operationalDays=:day))";
-	// TypedQuery<Bus> query = em.createQuery(sql, Bus.class);
-	// query.setParameter("from", fromCity);
-	// query.setParameter("to", toCity);
-	// query.setParameter("day", day);
-	// List<Bus> bus=query.getResultList();
-	// return bus;
-	// }
+	 public List<Bus> searchABus(String fromCity, String toCity, String day) {
+	 String sql = "select bs from Bus bs where bs.busId in"
+	 + "(select r.bus.busId from Routes r where r.fromCity=:"
+	 + "from and r.toCity=:to and r.bus.busId in(select o.bus.busId from OperationalDays as o where o.operationalDays=:day))";
+	 TypedQuery<Bus> query = em.createQuery(sql, Bus.class);
+	 query.setParameter("from", fromCity);
+	 query.setParameter("to", toCity);
+	 query.setParameter("day", day);
+	 List<Bus> bus=query.getResultList();
+	 return bus;
+	 }
 
 	public boolean checkAvailibilityofBus(String day, int busid) {
 		// TODO Auto-generated method stub
