@@ -2,7 +2,7 @@ package com.lti.dto;
 
 public class ChangePassword {
 
-	
+								
 	private int customerId;
 	
 	private String newPassword;

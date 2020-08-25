@@ -3,6 +3,7 @@ package com.lti.repository;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.lti.bridge.StatusString;
 import com.lti.model.Bus;
 import com.lti.model.Customer;
 import com.lti.model.Driver;
@@ -41,7 +42,7 @@ public interface EcoRepository {
 	public Customer isValidCustomerId(int customerId);
 	
 	//DashBoard Functionalities
-	boolean updatePassword(int customerId,String oldPassword,String newPassword);//--Read about session handling
+	boolean updatePassword(int customerId,String newPassword);//--Read about session handling
 
 	List<Ticket> viewAllBookings(String email);
 	Customer showProfile(String email);
@@ -74,6 +75,7 @@ public interface EcoRepository {
    // boolean addTicketAndPassengerWithUnregisteredCusomer(Ticket ticket,Passenger passenger, Customer customer);
 	boolean isValidTicket(int ticketId,int customerId);
 	boolean isValidTicketDate(int ticketId);
+	boolean checkOldPassword(int customerId, String oldPassword);
     
     
 	

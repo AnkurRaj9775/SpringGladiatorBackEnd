@@ -13,6 +13,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.lti.bridge.StatusString;
 import com.lti.model.Bus;
 import com.lti.model.Customer;
 import com.lti.model.Driver;
@@ -104,18 +105,20 @@ public class EcoRepositoryImpl implements EcoRepository {
 		return true;
 	}
 
-	public boolean updatePassword(int customerId,String oldPassword,String newPassword) {
+	@Transactional
+	public boolean updatePassword(int customerId,String newPassword) {
 		Customer cust = new Customer();
 		
 		cust=em.find(Customer.class, customerId);
-		String sql="select cs.password from Customer cs where customerId=:customerId";
-		Query qry=em.createQuery(sql);
-		qry.setParameter("customerId", customerId);
-		String password=(String) qry.getSingleResult();
-		if(password==oldPassword && password!=newPassword)
-		{
-			cust.setPassword(newPassword);
-			em.merge(cust);
+		cust.setPassword(newPassword);
+		
+		try {
+			cust=em.merge(cust);
+		}
+		catch(NoResultException ne) {
+			
+		}
+		if(cust.getCustomerId()>0) {
 			return true;
 		}
 		return false;
@@ -457,6 +460,25 @@ public class EcoRepositoryImpl implements EcoRepository {
 		
 		
 		return customer;
+	}
+
+	@Override
+	@Transactional
+	public boolean checkOldPassword(int customerId, String oldPassword) {
+		Customer customer=new Customer();
+		try {
+			 customer=em.find(Customer.class, customerId);
+		} catch (NoResultException nre) {
+			// Ignore this because as per your logic this is ok!
+		}
+		
+		System.out.println(customer.getPassword());
+		System.out.println(oldPassword);
+		if(customer.getPassword().equals(oldPassword)) {
+			System.out.println("inside if");
+			return true;
+		}
+		return false;
 	}
 
 // public Bus findBus(int busid){

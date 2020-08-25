@@ -150,7 +150,7 @@ public class EcoController {
 	}
 	
 	@PostMapping("/changePassword")
-	public Status changePassword(@RequestBody ChangePassword changePassword)
+	public StatusString changePassword(@RequestBody ChangePassword changePassword)
 	{
 		return ecoServ.updatePassword(changePassword.getCustomerId(), changePassword.getOldPassword(), changePassword.getNewPassword());
 	}

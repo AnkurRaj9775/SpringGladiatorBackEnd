@@ -139,14 +139,22 @@ public class EcoServiceImpl implements EcoService {
 		return status;
 	}
 
-	public Status updatePassword(int customerId, String oldPassword,String newPassword) {
-		// TODO Auto-generated method stub
-		if(ecoRep.updatePassword(customerId, oldPassword, newPassword))
-		{
-			status.setResultStatus(true);
+	public StatusString updatePassword(int customerId, String oldPassword,String newPassword) {
+		StatusString status =new StatusString();
+		if(!ecoRep.checkOldPassword(customerId,oldPassword)) {
+			status.setStatus("Please enter correct old password");
 			return status;
 		}
-		status.setResultStatus(false);
+		if(oldPassword.equals(newPassword)) {
+			status.setStatus("Old and new password cannot be same!!");
+			return status;
+		}
+		if(ecoRep.updatePassword(customerId, newPassword))
+		{
+			status.setStatus("Password Updated Successfully !!");
+			return status;
+		}
+		status.setStatus("Could not update Password");
 		return status;
 		
 	}
