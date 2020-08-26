@@ -416,7 +416,7 @@ public class EcoRepositoryImpl implements EcoRepository {
 		public String mostPrefferedTypesOfBuses() {
 			
 			String prefferedBusType = null;
-			String sql = "select bs.BusType from Bus bs where bs.busId =(select max(t.bus.busId) from ticket t)";
+			String sql = "select bs.BusType from Bus bs where bs.busId =(select max(t.bus.busId) from Ticket t)";
 			//TypedQuery<Bus> qry = em.createQuery(sql, Bus.class);
 			Query qry = em.createQuery(sql);
 			try {
@@ -425,7 +425,6 @@ public class EcoRepositoryImpl implements EcoRepository {
 			catch(NoResultException e){
 				
 			}
-			
 			return prefferedBusType;
 		}
 		
