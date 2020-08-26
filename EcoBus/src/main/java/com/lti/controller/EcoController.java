@@ -9,11 +9,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lti.bridge.BusDetails;
 import com.lti.bridge.StatusString;
+import com.lti.bridge.ViewProfile;
 import com.lti.bridge.WalletDetails;
 import com.lti.bridge.LoginStatus;
 import com.lti.bridge.PassengerDetails;
@@ -26,6 +28,7 @@ import com.lti.dto.ChangePassword;
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.ForgotPassword;
 import com.lti.dto.LoginDetails;
+import com.lti.dto.ProfileCard;
 import com.lti.dto.ResetPassword;
 import com.lti.dto.SearchBus;
 import com.lti.dto.SeatCount;
@@ -117,6 +120,12 @@ public class EcoController {
 	@PostMapping("/bookTicket")
 	public Status addTicketDetails(@RequestBody BookTicket bookTicket){
 		return ecoServ.addTicketDetails(bookTicket.getCustomerDetails(), bookTicket.getTicketDetails(), bookTicket.getPassengerDetails(), bookTicket.getSeatDetails());
+	}
+	
+	@PostMapping("/viewProfile")
+	public ViewProfile showProfile(@RequestBody ProfileCard profileCard)
+	{
+		return ecoServ.showProfile(profileCard.getCustomerId());
 	}
 	
 	@PostMapping("/walletBalance")

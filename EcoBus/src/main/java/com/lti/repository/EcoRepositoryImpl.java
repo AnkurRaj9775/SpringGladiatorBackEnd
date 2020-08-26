@@ -1,4 +1,4 @@
-package com.lti.repository;
+ package com.lti.repository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -124,16 +124,37 @@ public class EcoRepositoryImpl implements EcoRepository {
 		return false;
 	}
 
-	public List<Ticket> viewAllBookings(String email) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Ticket> viewAllBookings(int customerId) {
+		
+		String sql = "select ti from Ticket ti where ti.customer.customerId= :customerId";
+		TypedQuery<Ticket> qry = em.createQuery(sql, Ticket.class);
+		qry.setParameter("customerId", customerId);
+		List<Ticket> ticket=new ArrayList<>();
+		try {
+			ticket=qry.getResultList();
+		}
+		catch(NoResultException nre){
+			
+		}
+		return ticket;
+		
 	}
 
-	public Customer showProfile(String email) {
-		// TODO Auto-generated method stub
-		return null;
+	public Customer showProfile(int customerId) {
+		
+		String sql = "select cs from Customer cs where cs.customerId= :customerId";
+		TypedQuery<Customer> qry = em.createQuery(sql, Customer.class);
+		qry.setParameter("customerId", customerId);
+		Customer cust = new Customer();
+		try {
+			cust=qry.getSingleResult();
+		}
+		catch(NoResultException nre){
+			
+		}
+		return cust;
 	}
-
+	
 	public double showWalletBalance(int customerId) {
 		
 		String sql = "select cs from Customer cs where cs.customerId= :customerId";

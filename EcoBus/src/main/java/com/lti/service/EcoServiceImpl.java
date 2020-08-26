@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import com.lti.bridge.BusDetails;
 import com.lti.bridge.LoginStatus;
 import com.lti.bridge.StatusString;
+import com.lti.bridge.TicketsDetail;
+import com.lti.bridge.ViewProfile;
 import com.lti.bridge.WalletDetails;
 import com.lti.bridge.PassengerDetails;
 import com.lti.bridge.SeatCountDetails;
@@ -160,14 +162,40 @@ public class EcoServiceImpl implements EcoService {
 		
 	}
 
-	public List<Ticket> viewAllBookings(String email) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Ticket> viewAllBookings(int customerId) {
+		
+		Ticket ticket=new Ticket();
+		List<Ticket> ticketList=new ArrayList<>();
+		Bus bus=new Bus();
+		TicketsDetail ticketsDetail=new TicketsDetail();
+		
+		ticketList=ecoRep.viewAllBookings(customerId);
+		ticketsDetail.setBusId(bus.getBusId());
+		ticketsDetail.setBusName(bus.getBusName());
+		ticketsDetail.setTicketId(ticket.getTicketId());
+		ticketsDetail.setNoOfSeatsBooked(ticket.getNoOfSeatsBooked());
+		ticketsDetail.setDateOfJourney(ticket.getDateOfJourney().toString());
+		ticketsDetail.setDateOfBooking(ticket.getDateOfBooking().toString());
+		ticketsDetail.setFromCity(ticket.getFromCity());
+		ticketsDetail.setToCity(ticket.getToCity());
+		ticketsDetail.setTotalCost(ticket.getTotalCost());
+		
+		return ticketList;
+		
 	}
 
-	public Customer showProfile(String email) {
-		// TODO Auto-generated method stub
-		return null;
+	public ViewProfile showProfile(int customerId) {
+		
+		Customer customer=new Customer();
+		ViewProfile viewProfile=new ViewProfile();
+		customer=ecoRep.showProfile(customerId);
+		viewProfile.setName(customer.getName());
+		viewProfile.setAge(customer.getAge());
+		viewProfile.setGender(customer.getGender());
+		viewProfile.setEmail(customer.getEmail());
+		viewProfile.setContact(customer.getContact());
+		
+		return viewProfile;
 	}
 
 	public WalletDetails showWalletBalance(int customerId) {
