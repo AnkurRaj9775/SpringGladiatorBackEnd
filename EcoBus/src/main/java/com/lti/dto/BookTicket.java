@@ -2,9 +2,6 @@ package com.lti.dto;
 
 import java.util.List;
 
-import com.lti.bridge.PassengerDetails;
-import com.lti.bridge.SeatDetails;
-
 public class BookTicket {
 
 	
