@@ -52,19 +52,22 @@ public interface EcoRepository {
     
     
     //For ticket details
-    List<Seats> getBookedSeats(int busId);
-    
+    List<Seats> getBookedSeats(int busId);    
     //Admin Functionalities 
-    double getPreviousProfits(LocalDate fromDate,LocalDate toDate);
+    double getPreviousProfits(LocalDate fromDate,LocalDate toDate);//done for testing
     List<Routes> frequentlyTravelledRoutes();
+    List<Customer> noReservationCustomer();//done forTesting
     boolean deleteBus(int busId);//Today done
     String mostPrefferedTypesOfBuses();
     boolean addABus(Bus bus);//Done
     boolean deleteDriver();//Today done
     public Bus findBus(int busid);
+    List<Transaction> getLastMonthRecord(LocalDate date, LocalDate previousDate);
     boolean addBuswithDriver(Bus bus,Driver driver);//Done
-    
-    
+    List<Passenger> reservationDetail(LocalDate date);
+    List<Passenger> weeklyReservationDetail(LocalDate monday, LocalDate now );
+    List<Passenger> monthlyReservationDetail(LocalDate start, LocalDate now);
+   
     
     //Reservation details of customer(Daily,Weekly&monthly)
     boolean addRoutewithBus(List<Routes> routes,int busId);//Done
@@ -76,6 +79,8 @@ public interface EcoRepository {
 	boolean isValidTicket(int ticketId,int customerId);
 	boolean isValidTicketDate(int ticketId);
 	boolean checkOldPassword(int customerId, String oldPassword);
+	
+	
     
     
 	

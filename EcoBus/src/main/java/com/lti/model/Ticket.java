@@ -49,7 +49,7 @@ public class Ticket {
 	private Bus bus;
 	
 	@ManyToOne
-	@JoinColumn(name="cutomer_id")
+	@JoinColumn(name="customer_id")
 	private Customer customer;
 	
 	@OneToMany(mappedBy="ticket",cascade=CascadeType.ALL)

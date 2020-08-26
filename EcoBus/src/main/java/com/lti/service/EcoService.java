@@ -19,12 +19,15 @@ import com.lti.model.Bus;
 import com.lti.model.Customer;
 import com.lti.model.Driver;
 import com.lti.model.OperationalDays;
+import com.lti.model.Passenger;
 import com.lti.model.Routes;
 import com.lti.model.Seats;
 import com.lti.model.Ticket;
+import com.lti.model.Transaction;
 
 
 public interface EcoService {
+	
 	public Bus findBus(int busid);
 	List<BusDetails> searchABus(String fromCity,String toCity,String day,LocalDate dateOfJourney);
 	Status registerUser(Customer customer);
@@ -47,7 +50,7 @@ public interface EcoService {
     
     
     //Admin Functionalities 
-    double getPreviousProfits(LocalDate fromDate,LocalDate toDate);
+    double getPreviousProfits();
     List<Routes> frequentlyTravelledRoutes();
     boolean deleteBus(int busId);
     String mostPrefferedTypesOfBuses();
@@ -56,10 +59,17 @@ public interface EcoService {
     boolean deleteDriver();
     boolean addADriver();
     boolean addBuswithDriver(Bus bus,Driver driver);
+    List<Customer> noReservationCustomer();
     //Reservation details of customer(Daily,Weekly&monthly)
+    public List<Passenger> reservationDetails();
+    public List<Passenger> weeklyReservationDetails();
+    public List<Passenger> monthlyReservationDetails();
+    
+  
+    
     boolean addRoutewithBus(List<Routes> routes,int busId);
     boolean addOperationalDaysWithBus(List<OperationalDays> operationalDays,int busId);
-    
+    List<Transaction> getPreviousTransaction();
     Status addTicketDetails(CustomerDetails customerDetails,TicketDetails ticketDetails,List<PassengerDetails> passengerDetails,List<SeatDetails> seatDetails);
     
    
