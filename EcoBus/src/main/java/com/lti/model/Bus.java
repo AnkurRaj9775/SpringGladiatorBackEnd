@@ -36,6 +36,9 @@ public class Bus {
 	@Column
 	private String BusPlateNumber;
 	
+	@Column
+	private String BusSatus;
+	
 	
 	public String getBusPlateNumber() {
 		return BusPlateNumber;

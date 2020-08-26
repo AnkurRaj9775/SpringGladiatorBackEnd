@@ -281,7 +281,7 @@ public class EcoRepositoryImpl implements EcoRepository {
 			query.setParameter("busId", busId.get(i));
 			query.setParameter("fromCity", fromCity);
 			query.setParameter("toCity", toCity);
-			System.out.println(query.getSingleResult());
+			
 			Routes routes = query.getSingleResult();
 			routeDetails.add(routes);
 		}
