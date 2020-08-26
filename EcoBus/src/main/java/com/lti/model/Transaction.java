@@ -4,12 +4,15 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Transaction {
@@ -25,8 +28,9 @@ public class Transaction {
 	@Column
 	private LocalDate transactionDate;
 	
-	@OneToOne
+	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="ticket_id")
+	@JsonIgnore
 	private Ticket ticket;
 
 	public int getTransactionId() {
@@ -43,6 +47,12 @@ public class Transaction {
 
 	public void setAmount(double amount) {
 		this.amount = amount;
+	}
+
+	@Override
+	public String toString() {
+		return "Transaction [transactionId=" + transactionId + ", amount=" + amount + ", transactionDate="
+				+ transactionDate + ", ticket=" + ticket + "]";
 	}
 
 	public LocalDate getTransactionDate() {

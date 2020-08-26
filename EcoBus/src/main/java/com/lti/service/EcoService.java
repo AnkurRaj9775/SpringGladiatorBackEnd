@@ -8,6 +8,7 @@ import java.util.List;
 import com.lti.bridge.BusDetails;
 import com.lti.bridge.LoginStatus;
 import com.lti.bridge.StatusString;
+import com.lti.bridge.ViewProfile;
 import com.lti.bridge.WalletDetails;
 import com.lti.bridge.SeatCountDetails;
 import com.lti.bridge.Status;
@@ -20,12 +21,15 @@ import com.lti.model.Bus;
 import com.lti.model.Customer;
 import com.lti.model.Driver;
 import com.lti.model.OperationalDays;
+import com.lti.model.Passenger;
 import com.lti.model.Routes;
 import com.lti.model.Seats;
 import com.lti.model.Ticket;
+import com.lti.model.Transaction;
 
 
 public interface EcoService {
+	
 	public Bus findBus(int busid);
 	List<BusDetails> searchABus(String fromCity,String toCity,String day,LocalDate dateOfJourney);
 	Status registerUser(Customer customer);
@@ -39,8 +43,8 @@ public interface EcoService {
 	
 	//DashBoard Functionalities
 	StatusString updatePassword(int customerId,String oldPassword,String newPassword);
-	List<Ticket> viewAllBookings(String email);
-	Customer showProfile(String email);
+	List<Ticket> viewAllBookings(int customerId);
+	ViewProfile showProfile(int customerId);
     WalletDetails showWalletBalance(int customerId);
     boolean updateProfile(Customer customer);
     List<Seats> getBookedSeats(int busId);
@@ -48,7 +52,7 @@ public interface EcoService {
     
     
     //Admin Functionalities 
-    double getPreviousProfits(LocalDate fromDate,LocalDate toDate);
+    double getPreviousProfits();
     List<Routes> frequentlyTravelledRoutes();
     boolean deleteBus(int busId);
     String mostPrefferedTypesOfBuses();
@@ -57,10 +61,17 @@ public interface EcoService {
     boolean deleteDriver();
     boolean addADriver();
     boolean addBuswithDriver(Bus bus,Driver driver);
+    List<Customer> noReservationCustomer();
     //Reservation details of customer(Daily,Weekly&monthly)
+    public List<Passenger> reservationDetails();
+    public List<Passenger> weeklyReservationDetails();
+    public List<Passenger> monthlyReservationDetails();
+    
+  
+    
     boolean addRoutewithBus(List<Routes> routes,int busId);
     boolean addOperationalDaysWithBus(List<OperationalDays> operationalDays,int busId);
-    
+    List<Transaction> getPreviousTransaction();
     Status addTicketDetails(CustomerDetails customerDetails,TicketDetails ticketDetails,List<PassengerDetails> passengerDetails,List<SeatDetails> seatDetails);
     
     SeatCountDetails fetchNoOfSeats(int busId,LocalDate dateOfJourney);

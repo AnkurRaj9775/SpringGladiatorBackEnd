@@ -1,4 +1,4 @@
-package com.lti.repository;
+ package com.lti.repository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -124,16 +124,37 @@ public class EcoRepositoryImpl implements EcoRepository {
 		return false;
 	}
 
-	public List<Ticket> viewAllBookings(String email) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Ticket> viewAllBookings(int customerId) {
+		
+		String sql = "select ti from Ticket ti where ti.customer.customerId= :customerId";
+		TypedQuery<Ticket> qry = em.createQuery(sql, Ticket.class);
+		qry.setParameter("customerId", customerId);
+		List<Ticket> ticket=new ArrayList<>();
+		try {
+			ticket=qry.getResultList();
+		}
+		catch(NoResultException nre){
+			
+		}
+		return ticket;
+		
 	}
 
-	public Customer showProfile(String email) {
-		// TODO Auto-generated method stub
-		return null;
+	public Customer showProfile(int customerId) {
+		
+		String sql = "select cs from Customer cs where cs.customerId= :customerId";
+		TypedQuery<Customer> qry = em.createQuery(sql, Customer.class);
+		qry.setParameter("customerId", customerId);
+		Customer cust = new Customer();
+		try {
+			cust=qry.getSingleResult();
+		}
+		catch(NoResultException nre){
+			
+		}
+		return cust;
 	}
-
+	
 	public double showWalletBalance(int customerId) {
 		
 		String sql = "select cs from Customer cs where cs.customerId= :customerId";
@@ -165,6 +186,8 @@ public class EcoRepositoryImpl implements EcoRepository {
 			return false;
 	}
 
+	
+	
 	public boolean updateProfile(Customer customer) {
 		// TODO Auto-generated method stub
 		return false;
@@ -175,25 +198,20 @@ public class EcoRepositoryImpl implements EcoRepository {
 		return null;
 	}
 
-	public double getPreviousProfits(LocalDate fromDate, LocalDate toDate) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	
+	
 
 	public List<Routes> frequentlyTravelledRoutes() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	public boolean deleteBus(int busId) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
-	public String mostPrefferedTypesOfBuses() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	@Transactional
 	public boolean addABus(Bus bus) {
@@ -304,8 +322,7 @@ public class EcoRepositoryImpl implements EcoRepository {
 		return seatsAvailable;
 	}
 	 public List<Bus> searchABus(String fromCity, String toCity, String day) {
-	 String sql = "select bs from Bus bs where bs.busId in"
-	 + "(select r.bus.busId from Routes r where r.fromCity=:"
+	 String sql = "select bs from Bus bs where bs.busId in (select r.bus.busId from Routes r where r.fromCity=:"
 	 + "from and r.toCity=:to and r.bus.busId in(select o.bus.busId from OperationalDays as o where o.operationalDays=:day))";
 	 TypedQuery<Bus> query = em.createQuery(sql, Bus.class);
 	 query.setParameter("from", fromCity);
@@ -314,7 +331,114 @@ public class EcoRepositoryImpl implements EcoRepository {
 	 List<Bus> bus=query.getResultList();
 	 return bus;
 	 }
+	 
+	 @Override
+	 public List<Passenger> reservationDetail(LocalDate date) {
+			String sql= "select p from Passenger p where p.ticket.ticketId in(select t.ticketId from ticket t where t.dateOfBooking =:date)";
+			 TypedQuery<Passenger> query = em.createQuery(sql, Passenger.class);
+			 query.setParameter("date", date);
+			 List<Passenger> passenger= query.getResultList();
+			return passenger;
+		}
+	 
+	 
+    @Override
+	public List<Passenger> weeklyReservationDetail(LocalDate monday, LocalDate now) {
+    	String sql= "select p from Passenger p where p.ticket.ticketId in(select t.ticketId from ticket t where t.dateOfBooking between :monday and :now)";
+    	TypedQuery<Passenger> query = em.createQuery(sql, Passenger.class);
+		 query.setParameter("monday", monday);
+		 query.setParameter("now",now);
+		 List<Passenger> passenger= query.getResultList();
+		return passenger;
+	}
+    
+	@Override
+	public List<Passenger> monthlyReservationDetail(LocalDate start, LocalDate now) {
+		
+		String sql= "select p from Passenger p where p.ticket.ticketId in(select t.ticketId from ticket  t where t.dateOfBooking between :start and :now)";
+    	TypedQuery<Passenger> query = em.createQuery(sql, Passenger.class);
+		 query.setParameter("start", start);
+		 query.setParameter("now",now);
+		 List<Passenger> passenger= query.getResultList();
+		return passenger;
+	}
+ 
+		@Override
+		public List<Customer> noReservationCustomer() {
+			
+			String sql =" select c from Customer c where c.customerId not in (select t.customer.customerId from Ticket t)";
+			TypedQuery<Customer> query = em.createQuery(sql,Customer.class);
+			//query.setParameter("customerId", customerId);
+			List<Customer> Customer=query.getResultList();
+			System.out.println(Customer);
+				return Customer;
+		}	
+		//select t from Transaction t where  t.transactionDate between :previousDate and  :currentDate
+		@Override
+		public List<Transaction> getLastMonthRecord(LocalDate previousDate, LocalDate currentDate ) {
+			String sql = "select t from Transaction t where  t.transactionDate between :previousDate and  :currentDate";
+//			TypedQuery<Transaction> qry = em.createQuery(sql, Transaction.class);		
+			Query qry = em.createQuery(sql);
+			qry.setParameter("currentDate",currentDate);
+			qry.setParameter("previousDate", previousDate);
+			
+			List<Transaction> transactions=qry.getResultList();
+			
+			//System.out.println(transactions.size());
+			List<Transaction> transaction= new ArrayList();
+			for(int i= 0; i <transactions.size();i++) {
+				Transaction t= new Transaction();
+				Transaction t1 = (Transaction)transactions.get(i);
+				System.out.println(transactions.get(i));
+				t = em.find(Transaction.class, t1.getTransactionId());
+				transaction.add(t);
+			}
+			System.out.println(transaction.toString());
+			return transaction;
+			
+		}
+		
+		public double getPreviousProfits(LocalDate fromDate, LocalDate toDate) {
+			
+			double profit=0;
+			String sql = "select sum(t.amount) from Transaction t where t.transactionDate between :fromDate and :toDate";
+		    Query qry = em.createQuery(sql);
+			qry.setParameter("fromDate", fromDate);
+			qry.setParameter("toDate", toDate);		
+			try {
+				profit =  (double) qry.getSingleResult();
+			}catch(NoResultException e) {		
+							
+			}					
+			return profit ;
+		}
+		
+		public String mostPrefferedTypesOfBuses() {
+			
+			String prefferedBusType = null;
+			String sql = "select bs.BusType from Bus bs where bs.busId =(select max(t.bus.busId) from ticket t)";
+			//TypedQuery<Bus> qry = em.createQuery(sql, Bus.class);
+			Query qry = em.createQuery(sql);
+			try {
+				prefferedBusType =  (String) qry.getSingleResult();
+			}
+			catch(NoResultException e){
+				
+			}
+			
+			return prefferedBusType;
+		}
+		
+		public int getRegisteredCustomerId(String email) {
+			String sql = "select cs from Customer cs where cs.email= :email";
+			TypedQuery<Customer> qry = em.createQuery(sql, Customer.class);
+			qry.setParameter("email", email);
+			Customer c = qry.getSingleResult();
+			System.out.println(c.getCustomerId());
+			return c.getCustomerId();
 
+		}
+		
 	public boolean checkAvailibilityofBus(String day, int busid) {
 		// TODO Auto-generated method stub
 		return false;
@@ -339,25 +463,13 @@ public class EcoRepositoryImpl implements EcoRepository {
 		return false;
 	}
 
-	// public boolean addTicketAndPassengerWithUnregisteredCusomer(Ticket
-	// ticket, Passenger passenger, Customer customer) {
-	// // TODO Auto-generated method stub
-	// return false;
-	// }
+
 
 	public int getCustomerId(String email) {
 		return 0;
 	}
 
-	public int getRegisteredCustomerId(String email) {
-		String sql = "select cs from Customer cs where cs.email= :email";
-		TypedQuery<Customer> qry = em.createQuery(sql, Customer.class);
-		qry.setParameter("email", email);
-		Customer c = qry.getSingleResult();
-		System.out.println(c.getCustomerId());
-		return c.getCustomerId();
-
-	}
+	
 
 	public boolean checkRegisteredUser(String email) {
 		String sql = "select cs from Customer cs where cs.email= :email";
@@ -446,6 +558,10 @@ public class EcoRepositoryImpl implements EcoRepository {
 
 		return true;
 	}
+	
+
+	
+
 
 	@Override
 	public Customer isValidCustomerId(int customerId) {
@@ -480,6 +596,7 @@ public class EcoRepositoryImpl implements EcoRepository {
 		return false;
 	}
 
+
 	@Override
 	public List<Integer> fetchNoOfSeats(int busId, LocalDate dateOfJourney) {
 		List<Integer> noOfSeats=new ArrayList<>();
@@ -495,6 +612,7 @@ public class EcoRepositoryImpl implements EcoRepository {
 		}
 		return noOfSeats;
 	}
+
 
 // public Bus findBus(int busid){
 // String sql = "select bs from Bus bs where bs.busId=:busid";
