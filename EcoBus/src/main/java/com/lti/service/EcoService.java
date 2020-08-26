@@ -8,8 +8,10 @@ import java.util.List;
 import com.lti.bridge.BusDetails;
 import com.lti.bridge.LoginStatus;
 import com.lti.bridge.StatusString;
+import com.lti.bridge.ViewProfile;
 import com.lti.bridge.WalletDetails;
 import com.lti.bridge.PassengerDetails;
+import com.lti.bridge.SeatCountDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
 import com.lti.dto.CustomerDetails;
@@ -41,8 +43,8 @@ public interface EcoService {
 	
 	//DashBoard Functionalities
 	StatusString updatePassword(int customerId,String oldPassword,String newPassword);
-	List<Ticket> viewAllBookings(String email);
-	Customer showProfile(String email);
+	List<Ticket> viewAllBookings(int customerId);
+	ViewProfile showProfile(int customerId);
     WalletDetails showWalletBalance(int customerId);
     boolean updateProfile(Customer customer);
     List<Seats> getBookedSeats(int busId);
@@ -72,6 +74,6 @@ public interface EcoService {
     List<Transaction> getPreviousTransaction();
     Status addTicketDetails(CustomerDetails customerDetails,TicketDetails ticketDetails,List<PassengerDetails> passengerDetails,List<SeatDetails> seatDetails);
     
-   
+    SeatCountDetails fetchNoOfSeats(int busId,LocalDate dateOfJourney);
     //
 }

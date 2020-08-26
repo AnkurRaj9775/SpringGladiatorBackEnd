@@ -1,4 +1,4 @@
-package com.lti.repository;
+ package com.lti.repository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -124,16 +124,37 @@ public class EcoRepositoryImpl implements EcoRepository {
 		return false;
 	}
 
-	public List<Ticket> viewAllBookings(String email) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Ticket> viewAllBookings(int customerId) {
+		
+		String sql = "select ti from Ticket ti where ti.customer.customerId= :customerId";
+		TypedQuery<Ticket> qry = em.createQuery(sql, Ticket.class);
+		qry.setParameter("customerId", customerId);
+		List<Ticket> ticket=new ArrayList<>();
+		try {
+			ticket=qry.getResultList();
+		}
+		catch(NoResultException nre){
+			
+		}
+		return ticket;
+		
 	}
 
-	public Customer showProfile(String email) {
-		// TODO Auto-generated method stub
-		return null;
+	public Customer showProfile(int customerId) {
+		
+		String sql = "select cs from Customer cs where cs.customerId= :customerId";
+		TypedQuery<Customer> qry = em.createQuery(sql, Customer.class);
+		qry.setParameter("customerId", customerId);
+		Customer cust = new Customer();
+		try {
+			cust=qry.getSingleResult();
+		}
+		catch(NoResultException nre){
+			
+		}
+		return cust;
 	}
-
+	
 	public double showWalletBalance(int customerId) {
 		
 		String sql = "select cs from Customer cs where cs.customerId= :customerId";
@@ -278,7 +299,7 @@ public class EcoRepositoryImpl implements EcoRepository {
 			query.setParameter("busId", busId.get(i));
 			query.setParameter("fromCity", fromCity);
 			query.setParameter("toCity", toCity);
-			System.out.println(query.getSingleResult());
+			
 			Routes routes = query.getSingleResult();
 			routeDetails.add(routes);
 		}
@@ -576,18 +597,22 @@ public class EcoRepositoryImpl implements EcoRepository {
 	}
 
 
-
+	@Override
+	public List<Integer> fetchNoOfSeats(int busId, LocalDate dateOfJourney) {
+		List<Integer> noOfSeats=new ArrayList<>();
+		String sql="select s.seats from Seats s where s.dateOfJourney=:dateOfJourney AND s.bus.busId=:busId";
+		Query qry = em.createQuery(sql);
+		qry.setParameter("dateOfJourney", dateOfJourney);
+		qry.setParameter("busId", busId);
 	
+		try {
+			noOfSeats = qry.getResultList();
+		} catch (NoResultException nre) {
+			// Ignore this because as per your logic this is ok!
+		}
+		return noOfSeats;
+	}
 
-
-
-	
-
-	
-
-	
-
-	
 
 // public Bus findBus(int busid){
 // String sql = "select bs from Bus bs where bs.busId=:busid";

@@ -100,14 +100,14 @@ class EcoBusApplicationTests {
 	@Test
 	public void addAbus()
 	{
-		bus.setBusName("Eagle bus");
-		bus.setBusType("AC");
-		bus.setTotalSeat(40);
-		bus.setBusPlateNumber("UK001");
-//		bus.setBusName("Jaguar bus");
+//		bus.setBusName("Eagle bus");
 //		bus.setBusType("AC");
-//		bus.setTotalSeat(25);
-//		bus.setBusPlateNumber("UK002");
+//		bus.setTotalSeat(40);
+//		bus.setBusPlateNumber("UK001");
+		bus.setBusName("Jaguar bus");
+		bus.setBusType("AC");
+		bus.setTotalSeat(25);
+		bus.setBusPlateNumber("UK002");
 		System.out.println(controller.addAbus(bus));
 	}
 //	
@@ -119,7 +119,7 @@ class EcoBusApplicationTests {
 	{
 //		bus.setBusName("Tiger bus");
 //		bus.setBusType("AC");
-//		bus.setTotalSeat(30);
+//		bus.setTotalSeat(20);
 //		bus.setBusPlateNumber("DL003");
 //		driver.setContact("9414785958");
 //		driver.setDriverName("John");
@@ -146,7 +146,7 @@ class EcoBusApplicationTests {
 	@Test
 	public void addOperationalDaysWithBus()
 	{
-		List<OperationalDays> operationalDays=new ArrayList<OperationalDays>();
+//		List<OperationalDays> operationalDays=new ArrayList<OperationalDays>();
 //		op=new OperationalDays();
 //		op.setOperationalDays("Monday");
 //		operationalDays.add(op);
@@ -158,7 +158,7 @@ class EcoBusApplicationTests {
 //		op=new OperationalDays();
 //		op.setOperationalDays("Saturday");
 //		operationalDays.add(op);
-//		controller.addOperationalDaysWithBus(operationalDays, 131102);
+//		controller.addOperationalDaysWithBus(operationalDays, 131122);
 		
 //		op=new OperationalDays();
 //		op.setOperationalDays("Tuesday");
@@ -173,31 +173,31 @@ class EcoBusApplicationTests {
 //		operationalDays.add(op);
 //		controller.addOperationalDaysWithBus(operationalDays, 131103);
 		
-		
-		op=new OperationalDays();
-		op.setOperationalDays("Monday");
-		operationalDays.add(op);
-		op=new OperationalDays();
-		op.setOperationalDays("Tuesday");
-		operationalDays.add(op);
-		op=new OperationalDays();
-		op.setOperationalDays("Wednesday");
-		operationalDays.add(op);
-		
-		op=new OperationalDays();
-		op.setOperationalDays("Thursday");
-		operationalDays.add(op);
-		op=new OperationalDays();
-		op.setOperationalDays("Friday");
-		operationalDays.add(op);
-		
-		op=new OperationalDays();
-		op.setOperationalDays("Saturday");
-		operationalDays.add(op);
-		op=new OperationalDays();
-		op.setOperationalDays("Sunday");
-		operationalDays.add(op);
-		controller.addOperationalDaysWithBus(operationalDays, 131104);
+//		
+//		op=new OperationalDays();
+//		op.setOperationalDays("Monday");
+//		operationalDays.add(op);
+//		op=new OperationalDays();
+//		op.setOperationalDays("Tuesday");
+//		operationalDays.add(op);
+//		op=new OperationalDays();
+//		op.setOperationalDays("Wednesday");
+//		operationalDays.add(op);
+//		
+//		op=new OperationalDays();
+//		op.setOperationalDays("Thursday");
+//		operationalDays.add(op);
+//		op=new OperationalDays();
+//		op.setOperationalDays("Friday");
+//		operationalDays.add(op);
+//		
+//		op=new OperationalDays();
+//		op.setOperationalDays("Saturday");
+//		operationalDays.add(op);
+//		op=new OperationalDays();
+//		op.setOperationalDays("Sunday");
+//		operationalDays.add(op);
+//		controller.addOperationalDaysWithBus(operationalDays, 131104);
 		
 	}
 	

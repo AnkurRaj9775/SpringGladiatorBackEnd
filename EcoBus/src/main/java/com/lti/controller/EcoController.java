@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lti.bridge.BusDetails;
 import com.lti.bridge.StatusString;
+import com.lti.bridge.ViewProfile;
 import com.lti.bridge.WalletDetails;
 import com.lti.bridge.LoginStatus;
 import com.lti.bridge.PassengerDetails;
+import com.lti.bridge.SeatCountDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
 import com.lti.dto.BookTicket;
@@ -26,8 +28,10 @@ import com.lti.dto.ChangePassword;
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.ForgotPassword;
 import com.lti.dto.LoginDetails;
+import com.lti.dto.ProfileCard;
 import com.lti.dto.ResetPassword;
 import com.lti.dto.SearchBus;
+import com.lti.dto.SeatCount;
 import com.lti.dto.TicketDetails;
 import com.lti.dto.TransactionDetails;
 import com.lti.dto.WalletAmount;
@@ -160,6 +164,12 @@ public class EcoController {
 		return ecoServ.addTicketDetails(bookTicket.getCustomerDetails(), bookTicket.getTicketDetails(), bookTicket.getPassengerDetails(), bookTicket.getSeatDetails());
 	}
 	
+	@PostMapping("/viewProfile")
+	public ViewProfile showProfile(@RequestBody ProfileCard profileCard)
+	{
+		return ecoServ.showProfile(profileCard.getCustomerId());
+	}
+	
 	@PostMapping("/walletBalance")
 	public WalletDetails showWalletBalanace(@RequestBody WalletAmount walletAmount)
 	{
@@ -197,5 +207,19 @@ public class EcoController {
 	{
 		return ecoServ.updatePassword(changePassword.getCustomerId(), changePassword.getOldPassword(), changePassword.getNewPassword());
 	}
+
+//	@PostMapping("/viewTicket")
+//	public StatusString 
+
+	
+	@PostMapping("/getNoOfSeats")
+	public SeatCountDetails fetchNoOfSeats(@RequestBody SeatCount seatCount)
+	{
+		System.out.println(seatCount.getDateOfJourney()+ "give date");
+		LocalDate journeyDate = LocalDate.parse(seatCount.getDateOfJourney());
+		System.out.println(ecoServ.fetchNoOfSeats(seatCount.getBusId(),journeyDate));
+		return ecoServ.fetchNoOfSeats(seatCount.getBusId(),journeyDate);
+	}
+
 }
 
