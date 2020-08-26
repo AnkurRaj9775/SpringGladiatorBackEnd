@@ -76,7 +76,7 @@ public interface EcoRepository {
 	boolean isValidTicket(int ticketId,int customerId);
 	boolean isValidTicketDate(int ticketId);
 	boolean checkOldPassword(int customerId, String oldPassword);
-    
+    List<Integer> fetchNoOfSeats(int busId, LocalDate dateOfJourney) ;
     
 	
 

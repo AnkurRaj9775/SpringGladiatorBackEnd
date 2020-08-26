@@ -480,6 +480,22 @@ public class EcoRepositoryImpl implements EcoRepository {
 		return false;
 	}
 
+	@Override
+	public List<Integer> fetchNoOfSeats(int busId, LocalDate dateOfJourney) {
+		List<Integer> noOfSeats=new ArrayList<>();
+		String sql="select s.seats from Seats s where s.dateOfJourney=:dateOfJourney AND s.bus.busId=:busId";
+		Query qry = em.createQuery(sql);
+		qry.setParameter("dateOfJourney", dateOfJourney);
+		qry.setParameter("busId", busId);
+	
+		try {
+			noOfSeats = qry.getResultList();
+		} catch (NoResultException nre) {
+			// Ignore this because as per your logic this is ok!
+		}
+		return noOfSeats;
+	}
+
 // public Bus findBus(int busid){
 // String sql = "select bs from Bus bs where bs.busId=:busid";
 // TypedQuery<Bus> query = em.createQuery(sql, Bus.class);

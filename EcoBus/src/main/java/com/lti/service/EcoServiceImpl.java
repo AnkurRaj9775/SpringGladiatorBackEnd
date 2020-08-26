@@ -13,6 +13,7 @@ import com.lti.bridge.LoginStatus;
 import com.lti.bridge.StatusString;
 import com.lti.bridge.WalletDetails;
 import com.lti.bridge.PassengerDetails;
+import com.lti.bridge.SeatCountDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
 import com.lti.dto.CustomerDetails;
@@ -354,6 +355,16 @@ public class EcoServiceImpl implements EcoService {
 		}
 		status.setResultStatus(false);
 		return status;
+	}
+
+	@Override
+	public SeatCountDetails fetchNoOfSeats(int busId, LocalDate dateOfJourney) {
+		List<Integer> noOfSeats=new ArrayList<>();
+		noOfSeats=ecoRep.fetchNoOfSeats(busId, dateOfJourney);
+		SeatCountDetails seatCountDetails=new SeatCountDetails();
+		seatCountDetails.setNoOfseats(noOfSeats);
+		System.out.println(noOfSeats.toString());
+		return seatCountDetails;
 	}
 
 }

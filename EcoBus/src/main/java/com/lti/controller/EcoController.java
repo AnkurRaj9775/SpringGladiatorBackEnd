@@ -17,6 +17,7 @@ import com.lti.bridge.StatusString;
 import com.lti.bridge.WalletDetails;
 import com.lti.bridge.LoginStatus;
 import com.lti.bridge.PassengerDetails;
+import com.lti.bridge.SeatCountDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
 import com.lti.dto.BookTicket;
@@ -27,6 +28,7 @@ import com.lti.dto.ForgotPassword;
 import com.lti.dto.LoginDetails;
 import com.lti.dto.ResetPassword;
 import com.lti.dto.SearchBus;
+import com.lti.dto.SeatCount;
 import com.lti.dto.TicketDetails;
 import com.lti.dto.WalletAmount;
 import com.lti.dto.UpdateWallet;
@@ -154,7 +156,19 @@ public class EcoController {
 	{
 		return ecoServ.updatePassword(changePassword.getCustomerId(), changePassword.getOldPassword(), changePassword.getNewPassword());
 	}
+
 //	@PostMapping("/viewTicket")
 //	public StatusString 
+
+	
+	@PostMapping("/getNoOfSeats")
+	public SeatCountDetails fetchNoOfSeats(@RequestBody SeatCount seatCount)
+	{
+		System.out.println(seatCount.getDateOfJourney()+ "give date");
+		LocalDate journeyDate = LocalDate.parse(seatCount.getDateOfJourney());
+		System.out.println(ecoServ.fetchNoOfSeats(seatCount.getBusId(),journeyDate));
+		return ecoServ.fetchNoOfSeats(seatCount.getBusId(),journeyDate);
+	}
+
 }
 
