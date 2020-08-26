@@ -18,6 +18,11 @@ import com.lti.bridge.StatusString;
 import com.lti.bridge.ViewProfile;
 import com.lti.bridge.WalletDetails;
 import com.lti.bridge.LoginStatus;
+
+
+import com.lti.bridge.MostPreferredBusType;
+import com.lti.dto.PassengerDetails;
+
 import com.lti.bridge.SeatCountDetails;
 import com.lti.bridge.Status;
 import com.lti.dto.BookTicket;
@@ -122,9 +127,10 @@ public class EcoController {
 	}
 	
 	@RequestMapping("/mostPrefferedBusType")
-	public String mostPrefferedBusType() {
-		
-		return ecoServ.mostPrefferedTypesOfBuses();
+	public MostPreferredBusType mostPrefferedBusType() {
+		MostPreferredBusType most= new MostPreferredBusType();
+		most.setBusType(ecoServ.mostPrefferedTypesOfBuses());
+		return most;
 	}
 	
 	public boolean addBuswithDriver(Bus bus, Driver driver) {
