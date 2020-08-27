@@ -170,6 +170,7 @@ public class EcoController {
 	
 	@PostMapping("/bookTicket")
 	public Status addTicketDetails(@RequestBody BookTicket bookTicket){
+		//LocalDate journeyDate = LocalDate.parse(bookTicket.getTicketDetails().getDateOfJourney());
 		return ecoServ.addTicketDetails(bookTicket.getCustomerDetails(), bookTicket.getTicketDetails(), bookTicket.getPassengerDetails(), bookTicket.getSeatDetails());
 	}
 	

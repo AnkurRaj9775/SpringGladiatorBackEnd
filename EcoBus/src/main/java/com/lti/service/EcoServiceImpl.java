@@ -385,6 +385,7 @@ public class EcoServiceImpl implements EcoService {
 	public Status addTicketDetails(CustomerDetails customerDetails, TicketDetails ticketDetails,
 			List<PassengerDetails> passengerDetails, List<SeatDetails> seatDetails) {
 		int custId = 0;
+		System.out.println(customerDetails.getEmail());
 		if (!ecoRep.isValidEmail(customerDetails.getEmail())) {
 			cust.setEmail(customerDetails.getEmail());
 			cust.setContact(customerDetails.getContact());
