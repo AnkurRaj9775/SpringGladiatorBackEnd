@@ -37,6 +37,7 @@ import com.lti.dto.MyBookings;
 
 import com.lti.dto.PassengerDetails;
 import com.lti.dto.ProfileCard;
+import com.lti.dto.RemoveBus;
 import com.lti.dto.ResetPassword;
 import com.lti.dto.SearchBus;
 import com.lti.dto.SeatCount;
@@ -253,6 +254,11 @@ public class EcoController {
 		return ecoServ.CancelAllTicketDetailsOfACustomer(cancelTicketUpdation);
 	}
 	
+	@PostMapping("/removeBus")
+	public Status removeBus(@RequestBody RemoveBus removeBus)
+	{
+		return ecoServ.removeBus(removeBus.getBusId());
+	}
 //	@PostMapping("/getTicketList")
 //	public 
 

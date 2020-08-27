@@ -734,6 +734,20 @@ public class EcoRepositoryImpl implements EcoRepository {
 		return status;
 	}
 
+	public boolean removeBus(int busId)
+	{
+		Bus bus=new Bus();
+		
+		bus=em.find(Bus.class, busId);
+		
+		bus.setBusStatus("inactive");
+		try {
+		em.merge(bus);
+		}catch (NoResultException e) {
+			// TODO: handle exception
+		}
+		return true;
+	}
 // public Bus findBus(int busid){
 // String sql = "select bs from Bus bs where bs.busId=:busid";
 // TypedQuery<Bus> query = em.createQuery(sql, Bus.class);

@@ -71,7 +71,7 @@ public interface EcoService {
     public List<Passenger> reservationDetails();
     public List<Passenger> weeklyReservationDetails();
     public List<Passenger> monthlyReservationDetails();
-    
+    public Status removeBus(int busId);
   
     
     boolean addRoutewithBus(List<Routes> routes,int busId);

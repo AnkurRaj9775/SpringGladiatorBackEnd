@@ -420,7 +420,7 @@ class EcoBusApplicationTests {
 //		ticketDetails.setBusId(131104);
 //		ticketDetails.setDateOfBooking(LocalDate.of(2020,3,23));
 //		ticketDetails.setDateOfJourney(LocalDate.of(2020, 7, 23));
-//		ticketDetails.setNoOfSeatsBooked(1);
+//		ticketDetails.setNoOfSeatsBooked(2);
 //		ticketDetails.setTotalCost(1100);
 //		ticketDetails.setFromCity("Delhi");
 //		ticketDetails.setToCity("Meerut");

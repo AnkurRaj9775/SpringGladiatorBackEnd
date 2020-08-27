@@ -526,4 +526,15 @@ public class EcoServiceImpl implements EcoService {
 
 	}
 
+	@Override
+	public Status removeBus(int busId) {
+		if(ecoRep.removeBus(busId))
+		{
+		status.setResultStatus(true);
+		return status;
+		}
+		status.setResultStatus(false);
+		return status;
+	}
+
 }

@@ -71,7 +71,8 @@ public interface EcoRepository {
     List<Passenger> reservationDetail(LocalDate date);
     List<Passenger> weeklyReservationDetail(LocalDate monday, LocalDate now );
     List<Passenger> monthlyReservationDetail(LocalDate start, LocalDate now);
-   
+    
+    public boolean removeBus(int busId);
     
     //Reservation details of customer(Daily,Weekly&monthly)
     boolean addRoutewithBus(List<Routes> routes,int busId);//Done
