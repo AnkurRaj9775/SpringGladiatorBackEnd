@@ -36,6 +36,9 @@ public class Bus {
 	@Column
 	private String BusPlateNumber;
 	
+	@Column
+	private String BusStatus;
+	
 	
 	public String getBusPlateNumber() {
 		return BusPlateNumber;
@@ -117,6 +120,31 @@ public class Bus {
 
 	public void setDriver(Driver driver) {
 		this.driver = driver;
+	}
+
+	
+	public String getBusStatus() {
+		return BusStatus;
+	}
+
+	public void setBusStatus(String busStatus) {
+		BusStatus = busStatus;
+	}
+
+	public List<Ticket> getTicket() {
+		return ticket;
+	}
+
+	public void setTicket(List<Ticket> ticket) {
+		this.ticket = ticket;
+	}
+
+	public List<Seats> getSeats() {
+		return seats;
+	}
+
+	public void setSeats(List<Seats> seats) {
+		this.seats = seats;
 	}
 
 	@Override

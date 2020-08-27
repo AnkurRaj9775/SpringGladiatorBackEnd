@@ -1,6 +1,8 @@
 package com.lti.service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Service;
 import com.lti.bridge.BusDetails;
 import com.lti.bridge.LoginStatus;
 import com.lti.bridge.StatusString;
+import com.lti.bridge.TicketsDetail;
+import com.lti.bridge.ViewProfile;
 import com.lti.bridge.WalletDetails;
 import com.lti.bridge.PassengerDetails;
 import com.lti.bridge.SeatCountDetails;
@@ -31,6 +35,7 @@ import com.lti.model.Seats;
 import com.lti.model.Ticket;
 import com.lti.model.Transaction;
 import com.lti.repository.EcoRepository;
+import static java.time.temporal.TemporalAdjusters.*;
 
 @Service
 public class EcoServiceImpl implements EcoService {
@@ -139,6 +144,12 @@ public class EcoServiceImpl implements EcoService {
 		status.setResultStatus(false);
 		return status;
 	}
+	
+	public double getPreviousProfits() {
+		LocalDate toDate = LocalDate.now();
+	    LocalDate  fromDate= toDate.minusMonths(1);
+		return ecoRep.getPreviousProfits(fromDate, toDate);
+	}
 
 	public StatusString updatePassword(int customerId, String oldPassword,String newPassword) {
 		StatusString status =new StatusString();
@@ -160,14 +171,40 @@ public class EcoServiceImpl implements EcoService {
 		
 	}
 
-	public List<Ticket> viewAllBookings(String email) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Ticket> viewAllBookings(int customerId) {
+		
+		Ticket ticket=new Ticket();
+		List<Ticket> ticketList=new ArrayList<>();
+		Bus bus=new Bus();
+		TicketsDetail ticketsDetail=new TicketsDetail();
+		
+		ticketList=ecoRep.viewAllBookings(customerId);
+		ticketsDetail.setBusId(bus.getBusId());
+		ticketsDetail.setBusName(bus.getBusName());
+		ticketsDetail.setTicketId(ticket.getTicketId());
+		ticketsDetail.setNoOfSeatsBooked(ticket.getNoOfSeatsBooked());
+		ticketsDetail.setDateOfJourney(ticket.getDateOfJourney().toString());
+		ticketsDetail.setDateOfBooking(ticket.getDateOfBooking().toString());
+		ticketsDetail.setFromCity(ticket.getFromCity());
+		ticketsDetail.setToCity(ticket.getToCity());
+		ticketsDetail.setTotalCost(ticket.getTotalCost());
+		
+		return ticketList;
+		
 	}
 
-	public Customer showProfile(String email) {
-		// TODO Auto-generated method stub
-		return null;
+	public ViewProfile showProfile(int customerId) {
+		
+		Customer customer=new Customer();
+		ViewProfile viewProfile=new ViewProfile();
+		customer=ecoRep.showProfile(customerId);
+		viewProfile.setName(customer.getName());
+		viewProfile.setAge(customer.getAge());
+		viewProfile.setGender(customer.getGender());
+		viewProfile.setEmail(customer.getEmail());
+		viewProfile.setContact(customer.getContact());
+		
+		return viewProfile;
 	}
 
 	public WalletDetails showWalletBalance(int customerId) {
@@ -204,10 +241,7 @@ public class EcoServiceImpl implements EcoService {
 		return null;
 	}
 
-	public double getPreviousProfits(LocalDate fromDate, LocalDate toDate) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+
 
 	public List<Routes> frequentlyTravelledRoutes() {
 		// TODO Auto-generated method stub
@@ -219,10 +253,6 @@ public class EcoServiceImpl implements EcoService {
 		return false;
 	}
 
-	public String mostPrefferedTypesOfBuses() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	public boolean deleteABus() {
 		// TODO Auto-generated method stub
@@ -287,6 +317,59 @@ public class EcoServiceImpl implements EcoService {
 		// return ecoRep.searchABus(fromCity, toCity, day);
 		return finalBusDetails;
 	}
+	
+	@Override
+	public List<Customer> noReservationCustomer() {
+		List<Customer> customer = ecoRep.noReservationCustomer();
+		return customer;
+		
+	}
+	
+	@Override
+	public List<Transaction> getPreviousTransaction() {
+		LocalDate date = LocalDate.now();
+		LocalDate previousDate = date.minusMonths(1); 
+		System.out.println(date+"current date");
+		System.out.println(previousDate+"previous month date");
+		List<Transaction> t = ecoRep.getLastMonthRecord(previousDate,date);		
+		return t;
+	}
+	
+	@Override
+	public List<Passenger> reservationDetails(){
+		return ecoRep.reservationDetail(LocalDate.now());
+	}
+	
+	
+	@Override
+	public List<Passenger> weeklyReservationDetails(){
+		
+		 LocalDate monday =LocalDate.now();
+		    while (monday.getDayOfWeek() != DayOfWeek.MONDAY) {
+		      monday = monday.minusDays(1);
+		    }
+		    System.out.println(monday);
+		return ecoRep.weeklyReservationDetail(monday, LocalDate.now());
+	}
+	
+	@Override
+	public List<Passenger> monthlyReservationDetails() {
+		
+		
+		LocalDate now = LocalDate.now();
+		LocalDate start = now.with(firstDayOfMonth());
+		return ecoRep.monthlyReservationDetail(start, LocalDate.now());
+		
+		
+	}
+	
+	@Override
+	public String mostPrefferedTypesOfBuses() {
+		
+		return ecoRep.mostPrefferedTypesOfBuses();
+	}
+
+
 
 	public Bus findBus(int busid) {
 		// TODO Auto-generated method stub
@@ -358,6 +441,7 @@ public class EcoServiceImpl implements EcoService {
 		return status;
 	}
 
+
 	@Override
 	public SeatCountDetails fetchNoOfSeats(int busId, LocalDate dateOfJourney) {
 		List<Integer> noOfSeats=new ArrayList<>();
@@ -367,5 +451,6 @@ public class EcoServiceImpl implements EcoService {
 		System.out.println(noOfSeats.toString());
 		return seatCountDetails;
 	}
+
 
 }
