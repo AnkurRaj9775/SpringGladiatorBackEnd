@@ -14,6 +14,7 @@ import com.lti.bridge.TransactionDetailsForRecord;
 import com.lti.bridge.ViewProfile;
 import com.lti.bridge.WalletDetails;
 import com.lti.bridge.SeatCountDetails;
+import com.lti.bridge.ShowBusDetails;
 import com.lti.bridge.Status;
 import com.lti.dto.CancelTicketUpdation;
 import com.lti.dto.CustomerDetails;
@@ -72,8 +73,8 @@ public interface EcoService {
     public List<Passenger> weeklyReservationDetails();
     public List<Passenger> monthlyReservationDetails();
     public Status removeBus(int busId);
-  
-    
+    public ShowBusDetails showbus(); 
+    public Status activateBus(int busId);
     boolean addRoutewithBus(List<Routes> routes,int busId);
     boolean addOperationalDaysWithBus(List<OperationalDays> operationalDays,int busId);
     List<TransactionDetailsForRecord> getPreviousTransaction();

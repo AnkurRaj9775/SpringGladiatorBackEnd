@@ -16,6 +16,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Bus {
 
@@ -50,19 +52,24 @@ public class Bus {
 
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="driver_id")
+	@JsonIgnore
 	private Driver driver;
 
 	
 	@OneToMany(mappedBy="bus",cascade=CascadeType.ALL)
+	@JsonIgnore
 	private List<Routes> routes;
 	
 	@OneToMany(mappedBy="bus",cascade=CascadeType.ALL)
+	@JsonIgnore
     private List<OperationalDays> operationalDays;
 	
 	@OneToMany(mappedBy="bus",cascade=CascadeType.ALL)
+	@JsonIgnore
 	private List<Ticket> ticket;
 	
 	@OneToMany(mappedBy="bus",cascade=CascadeType.ALL)//orphan removal???
+	@JsonIgnore
 	private List<Seats> seats;
 
 

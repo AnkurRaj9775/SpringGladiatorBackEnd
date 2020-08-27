@@ -24,6 +24,7 @@ import com.lti.bridge.MyBookingDetails;
 import com.lti.bridge.RegisterStatus;
 import com.lti.dto.PassengerDetails;
 import com.lti.bridge.SeatCountDetails;
+import com.lti.bridge.ShowBusDetails;
 import com.lti.bridge.Status;
 import com.lti.dto.BookTicket;
 import com.lti.dto.CancelTicket;
@@ -258,6 +259,18 @@ public class EcoController {
 	public Status removeBus(@RequestBody RemoveBus removeBus)
 	{
 		return ecoServ.removeBus(removeBus.getBusId());
+	}
+	
+	@RequestMapping(path="/showbus")
+	public ShowBusDetails showBus()
+	{
+		return ecoServ.showbus();
+	}
+	
+	@PostMapping("/addBus")
+	public Status activateBus(@RequestBody RemoveBus removeBus)
+	{
+		return ecoServ.activateBus(removeBus.getBusId());
 	}
 //	@PostMapping("/getTicketList")
 //	public 

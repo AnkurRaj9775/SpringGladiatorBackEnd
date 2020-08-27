@@ -748,6 +748,30 @@ public class EcoRepositoryImpl implements EcoRepository {
 		}
 		return true;
 	}
+	public List<Bus> showBus()
+	{
+		List<Bus> bus=new ArrayList<>();
+		
+		String sql="select b from Bus b";
+		Query query=em.createQuery(sql);
+		bus=query.getResultList();
+		return bus;
+	}
+	
+	 public boolean activateBus(int busId) {
+		 
+		 Bus bus=new Bus();
+			
+			bus=em.find(Bus.class, busId);
+			
+			bus.setBusStatus("active");
+			try {
+			em.merge(bus);
+			}catch (NoResultException e) {
+				// TODO: handle exception
+			}
+			return true;
+	 }
 // public Bus findBus(int busid){
 // String sql = "select bs from Bus bs where bs.busId=:busid";
 // TypedQuery<Bus> query = em.createQuery(sql, Bus.class);

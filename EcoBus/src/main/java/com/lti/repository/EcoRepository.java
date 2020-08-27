@@ -74,6 +74,9 @@ public interface EcoRepository {
     
     public boolean removeBus(int busId);
     
+    List<Bus> showBus();
+    
+    public boolean activateBus(int busId);
     //Reservation details of customer(Daily,Weekly&monthly)
     boolean addRoutewithBus(List<Routes> routes,int busId);//Done
     boolean addOperationalDaysWithBus(List<OperationalDays> operationalDays,int busId);//Done

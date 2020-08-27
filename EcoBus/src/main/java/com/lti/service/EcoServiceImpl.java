@@ -25,6 +25,7 @@ import com.lti.bridge.TransactionDetailsForRecord;
 import com.lti.bridge.ViewProfile;
 import com.lti.bridge.WalletDetails;
 import com.lti.bridge.SeatCountDetails;
+import com.lti.bridge.ShowBusDetails;
 import com.lti.bridge.Status;
 import com.lti.dto.CancelTicketUpdation;
 import com.lti.dto.CustomerDetails;
@@ -529,6 +530,25 @@ public class EcoServiceImpl implements EcoService {
 	@Override
 	public Status removeBus(int busId) {
 		if(ecoRep.removeBus(busId))
+		{
+		status.setResultStatus(true);
+		return status;
+		}
+		status.setResultStatus(false);
+		return status;
+	}
+
+	@Override
+	public ShowBusDetails showbus() {
+		ShowBusDetails showBusDetails=new ShowBusDetails();
+		List<Bus> bus=new ArrayList<>();
+		bus=ecoRep.showBus();
+		showBusDetails.setBusdetails(bus);
+		return showBusDetails;
+	}
+	
+	public Status activateBus(int busId) {
+		if(ecoRep.activateBus(busId))
 		{
 		status.setResultStatus(true);
 		return status;
