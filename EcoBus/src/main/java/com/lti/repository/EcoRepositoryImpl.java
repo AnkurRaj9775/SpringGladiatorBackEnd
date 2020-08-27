@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lti.bridge.StatusString;
+import com.lti.model.Admin;
 import com.lti.model.Bus;
 import com.lti.model.Customer;
 import com.lti.model.Driver;
@@ -73,6 +74,19 @@ public class EcoRepositoryImpl implements EcoRepository {
 		return true;
 	}
 
+	
+	public boolean adminLogin(String email,String password) {
+		
+		String sql = "select ad from Admin ad where ad.userName= :email and ad.password = :password";
+		TypedQuery<Admin> qry = em.createQuery(sql, Admin.class);
+		qry.setParameter("email", email);
+		qry.setParameter("password", password);
+		List<Admin> admin = qry.getResultList();
+		if (admin.isEmpty())
+			return false;
+
+		return true;
+	}
 	public boolean cancelTicket(int ticketId, String email) {
 		// TODO Auto-generated method stub
 		return false;
@@ -636,7 +650,15 @@ public class EcoRepositoryImpl implements EcoRepository {
 		return noOfSeats;
 	}
 
-	
+	public List<Ticket> fetchBookingsOfCustomer(int customerId){
+		
+		String sql= "select t from Ticket t where t.customer.customerId=:customerId";
+    	TypedQuery<Ticket> query = em.createQuery(sql, Ticket.class);
+		 query.setParameter("customerId",customerId);
+		 
+		List<Ticket> ticket= query.getResultList();
+		return ticket;
+	}
 
 
 // public Bus findBus(int busid){

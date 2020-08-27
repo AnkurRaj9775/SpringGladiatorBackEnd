@@ -22,6 +22,8 @@ import com.lti.bridge.LoginStatus;
 
 
 import com.lti.bridge.MostPreferredBusType;
+import com.lti.bridge.MyBookingDetails;
+
 import com.lti.bridge.RegisterStatus;
 import com.lti.dto.PassengerDetails;
 
@@ -33,7 +35,7 @@ import com.lti.dto.ChangePassword;
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.ForgotPassword;
 import com.lti.dto.LoginDetails;
-
+import com.lti.dto.MyBookings;
 import com.lti.dto.PassengerDetails;
 
 import com.lti.dto.ProfileCard;
@@ -88,6 +90,13 @@ public class EcoController {
 			return loginStatus;
 		}
 		
+	}
+	
+	@PostMapping(path = "/loginAdminUser")
+	public Status adminLogin(@RequestBody LoginDetails loginDetails)
+	{
+		
+		return ecoServ.adminLogin(loginDetails.getEmail(), loginDetails.getPassword());
 	}
 	
 	@RequestMapping("/previousTransaction")
@@ -231,5 +240,9 @@ public class EcoController {
 		return ecoServ.fetchNoOfSeats(seatCount.getBusId(),journeyDate);
 	}
 
+	@PostMapping("/myBookings")
+	public MyBookingDetails fetchBookingsOfCustomer(@RequestBody MyBookings myBookings) {
+		return ecoServ.fetchBookingsOfCustomer(myBookings.getCustomerId());
+	}
 }
 

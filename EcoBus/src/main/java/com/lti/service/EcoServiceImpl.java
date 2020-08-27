@@ -12,9 +12,10 @@ import org.springframework.stereotype.Service;
 
 import com.lti.bridge.BusDetails;
 import com.lti.bridge.LoginStatus;
+import com.lti.bridge.MyBookingDetails;
 import com.lti.bridge.RegisterStatus;
 import com.lti.bridge.StatusString;
-import com.lti.bridge.TicketsDetail;
+import com.lti.bridge.MyBookings;
 import com.lti.bridge.ViewProfile;
 import com.lti.bridge.WalletDetails;
 import com.lti.bridge.SeatCountDetails;
@@ -93,6 +94,16 @@ public class EcoServiceImpl implements EcoService {
 		}
 	}
 
+	public Status adminLogin(String email,String password) {
+		
+		if(ecoRep.adminLogin(email, password))
+		{
+			status.setResultStatus(true);
+			return status;
+		}
+		status.setResultStatus(false);
+		return status;
+	}
 	public boolean addABus(Bus bus) {
 
 		return ecoRep.addABus(bus);
@@ -187,7 +198,7 @@ public class EcoServiceImpl implements EcoService {
 		Ticket ticket = new Ticket();
 		List<Ticket> ticketList = new ArrayList<>();
 		Bus bus = new Bus();
-		TicketsDetail ticketsDetail = new TicketsDetail();
+		MyBookings ticketsDetail = new MyBookings();
 
 		ticketList = ecoRep.viewAllBookings(customerId);
 		ticketsDetail.setBusId(bus.getBusId());
@@ -451,6 +462,22 @@ public class EcoServiceImpl implements EcoService {
 		seatCountDetails.setNoOfseats(noOfSeats);
 		System.out.println(noOfSeats.toString());
 		return seatCountDetails;
+	}
+
+	@Override
+	public MyBookingDetails fetchBookingsOfCustomer(int customerId) {
+		List<Ticket> myBookings=ecoRep.fetchBookingsOfCustomer(customerId);
+		MyBookingDetails myBookingDetails=new MyBookingDetails();
+		if(myBookings.size()>0)
+		{
+			myBookingDetails.setMybookings(myBookings);
+			myBookingDetails.setResultStatus(true);
+			return myBookingDetails;
+		}
+		
+		myBookingDetails.setResultStatus(false);
+		return myBookingDetails;
+	
 	}
 
 }

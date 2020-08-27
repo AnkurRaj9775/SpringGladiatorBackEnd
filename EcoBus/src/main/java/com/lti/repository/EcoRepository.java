@@ -3,6 +3,7 @@ package com.lti.repository;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.lti.bridge.Status;
 import com.lti.bridge.StatusString;
 import com.lti.model.Bus;
 import com.lti.model.Customer;
@@ -24,6 +25,9 @@ public interface EcoRepository {
 	int registerUser(Customer customer);//Done
 	int registerAgain(Customer customer,int customerId);
 	boolean loginUser(String email,String password);//Done
+	
+	List<Ticket> fetchBookingsOfCustomer(int customerId);
+	boolean adminLogin(String email,String password);
 	public Customer findByEmailPassword(String email,String password);//returning object of customer
 	boolean cancelTicket(int ticketId,String email);
 	Ticket searchTicket(int ticketId,String email);

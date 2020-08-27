@@ -1,6 +1,6 @@
 package com.lti.bridge;
 
-public class TicketsDetail {
+public class MyBookings {
 
     private int busId;
     private String busName;

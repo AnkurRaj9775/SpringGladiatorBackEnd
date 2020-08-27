@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.lti.bridge.BusDetails;
 import com.lti.bridge.LoginStatus;
+import com.lti.bridge.MyBookingDetails;
 import com.lti.bridge.RegisterStatus;
 import com.lti.bridge.StatusString;
 import com.lti.bridge.ViewProfile;
@@ -50,9 +51,10 @@ public interface EcoService {
     boolean updateProfile(Customer customer);
     List<Seats> getBookedSeats(int busId);
     WalletDetails addWalletBalance(int customerId, double amount);
-    
+    MyBookingDetails fetchBookingsOfCustomer(int customerId);
     
     //Admin Functionalities 
+    Status adminLogin(String email,String password);
     double getPreviousProfits();
     List<Routes> frequentlyTravelledRoutes();
     boolean deleteBus(int busId);
