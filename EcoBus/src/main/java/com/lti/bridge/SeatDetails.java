@@ -7,18 +7,12 @@ public class SeatDetails {
 	public SeatDetails()
 	{
 		
-	}
-	
-	
-	
+	}	
 	public SeatDetails(int seatNo) {
 		super();
 		this.seatNo = seatNo;
 	}
-
-
-
-	public int getSeatNo() {
+    public int getSeatNo() {
 		return seatNo;
 	}
 
@@ -29,8 +23,6 @@ public class SeatDetails {
 	@Override
 	public String toString() {
 		return "SeatDetails [seatNo=" + seatNo + "]";
-	}
-	
-	
+	}	
 
 }

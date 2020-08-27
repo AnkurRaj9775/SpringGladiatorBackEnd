@@ -3,6 +3,7 @@ package com.lti.dto;
 import java.time.LocalDate;
 
 public class TicketDetails {
+	
 	private LocalDate dateOfBooking=LocalDate.now();
 	private LocalDate dateOfJourney;
 	private int noOfSeatsBooked;
