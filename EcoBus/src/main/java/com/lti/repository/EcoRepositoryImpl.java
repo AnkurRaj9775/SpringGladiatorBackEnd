@@ -488,7 +488,7 @@ public class EcoRepositoryImpl implements EcoRepository {
 	}
 
 	@Transactional
-	public boolean addTicketAndPassengerWithRegisteredCustomers(Ticket ticket, List<Passenger> passenger,
+	public int addTicketAndPassengerWithRegisteredCustomers(Ticket ticket, List<Passenger> passenger,
 			List<Seats> seats, Transaction transaction) {
 		ticket.setTransaction(transaction);
 
@@ -504,10 +504,13 @@ public class EcoRepositoryImpl implements EcoRepository {
 
 			s.setTicket(ticket);
 		}
-
-		em.merge(ticket);
-
-		return true;
+		Ticket t=new Ticket();
+		try {
+				t=em.merge(ticket);
+		}catch (NoResultException e) {
+			// TODO: handle exception
+		}
+		return t.getTicketId();
 
 	}
 

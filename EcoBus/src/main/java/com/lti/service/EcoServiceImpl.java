@@ -432,10 +432,12 @@ public class EcoServiceImpl implements EcoService {
 		ticket.setFromCity(ticketDetails.getFromCity());
 		ticket.setToCity(ticketDetails.getToCity());
 		// ticket.setPassenger(passenger);
-
-		if (ecoRep.addTicketAndPassengerWithRegisteredCustomers(ticket, passenger, seats, transaction)) {
+		int ticketId = ecoRep.addTicketAndPassengerWithRegisteredCustomers(ticket, passenger, seats, transaction);
+		if (ticketId>0) {
+			email.ticketDetailsEmail(customerDetails, ticketDetails, ticketId);
 			status.setResultStatus(true);
 			return status;
+			
 		}
 		status.setResultStatus(false);
 		return status;
