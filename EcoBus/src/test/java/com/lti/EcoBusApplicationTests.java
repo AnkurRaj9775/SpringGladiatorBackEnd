@@ -463,7 +463,7 @@ class EcoBusApplicationTests {
 		customerDetails.setEmail("kirti.1809@gmail.com");
 		bookTicket.setCustomerDetails(customerDetails);
 		
-		ticketDetails.setBusId(131104);
+		ticketDetails.setBusId(131123);
 		ticketDetails.setDateOfBooking(LocalDate.of(2020,7,29));
 		ticketDetails.setDateOfJourney(LocalDate.of(2020, 7, 23));
 		ticketDetails.setNoOfSeatsBooked(2);

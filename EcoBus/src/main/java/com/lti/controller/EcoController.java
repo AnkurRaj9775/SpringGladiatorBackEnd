@@ -29,6 +29,7 @@ import com.lti.bridge.SeatCountDetails;
 import com.lti.bridge.Status;
 import com.lti.dto.BookTicket;
 import com.lti.dto.CancelTicket;
+import com.lti.dto.CancelTicketUpdation;
 import com.lti.dto.ChangePassword;
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.ForgotPassword;
@@ -231,5 +232,12 @@ public class EcoController {
 		return ecoServ.fetchNoOfSeats(seatCount.getBusId(),journeyDate);
 	}
 
+	@PostMapping("/loggedInCancel")
+	public Status CancelAllTicketDetailsOfACustomer(@RequestBody CancelTicketUpdation cancelTicketUpdation) {
+		return ecoServ.CancelAllTicketDetailsOfACustomer(cancelTicketUpdation);
+	}
+	
+//	@PostMapping("/getTicketList")
+//	public 
 }
 

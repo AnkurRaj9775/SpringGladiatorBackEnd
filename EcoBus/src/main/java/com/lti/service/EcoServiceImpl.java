@@ -19,6 +19,7 @@ import com.lti.bridge.ViewProfile;
 import com.lti.bridge.WalletDetails;
 import com.lti.bridge.SeatCountDetails;
 import com.lti.bridge.Status;
+import com.lti.dto.CancelTicketUpdation;
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.PassengerDetails;
 import com.lti.dto.SeatDetails;
@@ -451,6 +452,12 @@ public class EcoServiceImpl implements EcoService {
 		seatCountDetails.setNoOfseats(noOfSeats);
 		System.out.println(noOfSeats.toString());
 		return seatCountDetails;
+	}
+
+	@Override
+	public Status CancelAllTicketDetailsOfACustomer(CancelTicketUpdation cancelTicketUpdation) {
+		
+		return ecoRep.CancelAllTicketDetailsOfACustomer(cancelTicketUpdation.getTicketNo());
 	}
 
 }

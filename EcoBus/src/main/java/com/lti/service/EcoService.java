@@ -13,6 +13,7 @@ import com.lti.bridge.ViewProfile;
 import com.lti.bridge.WalletDetails;
 import com.lti.bridge.SeatCountDetails;
 import com.lti.bridge.Status;
+import com.lti.dto.CancelTicketUpdation;
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.PassengerDetails;
 import com.lti.dto.SeatDetails;
@@ -77,4 +78,5 @@ public interface EcoService {
     
     SeatCountDetails fetchNoOfSeats(int busId,LocalDate dateOfJourney);
     //
+	public Status CancelAllTicketDetailsOfACustomer(CancelTicketUpdation cancelTicketUpdation);
 }

@@ -3,6 +3,7 @@ package com.lti.repository;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.lti.bridge.Status;
 import com.lti.bridge.StatusString;
 import com.lti.model.Bus;
 import com.lti.model.Customer;
@@ -81,6 +82,7 @@ public interface EcoRepository {
 	boolean checkOldPassword(int customerId, String oldPassword);
 
     List<Integer> fetchNoOfSeats(int busId, LocalDate dateOfJourney) ;
+	Status CancelAllTicketDetailsOfACustomer(int ticketNo);
 
     
 	
