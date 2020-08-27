@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Ticket {
 
@@ -46,19 +48,24 @@ public class Ticket {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="bus_id")
+	@JsonIgnore
 	private Bus bus;
 	
 	@ManyToOne
 	@JoinColumn(name="customer_id")
+	@JsonIgnore
 	private Customer customer;
 	
 	@OneToMany(mappedBy="ticket",cascade=CascadeType.ALL)
+	@JsonIgnore
 	private List<Seats> seats;
 
 	@OneToMany(mappedBy="ticket",cascade=CascadeType.ALL)
+	@JsonIgnore
 	private List<Passenger> passenger;
 	
 	@OneToOne(mappedBy="ticket",cascade=CascadeType.ALL)
+	@JsonIgnore
 	private Transaction transaction;
 
 	

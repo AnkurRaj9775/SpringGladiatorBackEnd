@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.lti.bridge.BusDetails;
 import com.lti.bridge.LoginStatus;
+import com.lti.bridge.MyBookTickets;
 import com.lti.bridge.MyBookingDetails;
 import com.lti.bridge.RegisterStatus;
 import com.lti.bridge.StatusString;
@@ -485,10 +486,32 @@ public class EcoServiceImpl implements EcoService {
 	@Override
 	public MyBookingDetails fetchBookingsOfCustomer(int customerId) {
 		List<Ticket> myBookings=ecoRep.fetchBookingsOfCustomer(customerId);
+		List<MyBookTickets> myBookTickets=new ArrayList<>();
 		MyBookingDetails myBookingDetails=new MyBookingDetails();
 		if(myBookings.size()>0)
 		{
-			myBookingDetails.setMybookings(myBookings);
+			for(int i=0;i<myBookings.size();i++)
+			{
+				
+				MyBookTickets mbt=new MyBookTickets();
+				mbt.setToCity(myBookings.get(i).getToCity());
+				mbt.setFromCity(myBookings.get(i).getFromCity());
+				mbt.setDateOfBooking(myBookings.get(i).getDateOfBooking());
+				mbt.setDateOfJourney(myBookings.get(i).getDateOfJourney());
+				mbt.setNoOfSeatsBooked(myBookings.get(i).getNoOfSeatsBooked());
+				mbt.setTotalCost(myBookings.get(i).getTotalCost());
+				mbt.setTicketId(myBookings.get(i).getTicketId());
+				if(myBookings.get(i).getDateOfJourney().minusDays(2).compareTo(LocalDate.now())>0)
+				{
+					mbt.setCancelButton(true);
+			
+				}
+				else {
+					mbt.setCancelButton(false);
+				}
+				myBookTickets.add(mbt);
+			}
+			myBookingDetails.setMybookings(myBookTickets);
 			myBookingDetails.setResultStatus(true);
 			return myBookingDetails;
 		}

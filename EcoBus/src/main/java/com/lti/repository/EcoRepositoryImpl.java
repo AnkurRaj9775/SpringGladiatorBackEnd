@@ -646,6 +646,7 @@ public class EcoRepositoryImpl implements EcoRepository {
 	@Override
 	@Transactional
 	public Status CancelAllTicketDetailsOfACustomer(int ticketNo) {
+	
 		List<Seats> seats = new ArrayList<>();
 		List<Transaction> transactions = new ArrayList<>();
 		List<Passenger> passengers = new ArrayList<Passenger>();
@@ -709,9 +710,24 @@ public class EcoRepositoryImpl implements EcoRepository {
 		Ticket t=new Ticket();
 		
 		t=em.find(Ticket.class, ticketNo);
+		Customer customer=new Customer();
+		String sql="select t.customer.customerId from Ticket t where t.ticketId=:ticketNo ";
+		Query query=em.createQuery(sql);
+		query.setParameter("ticketNo", ticketNo);
+		int customerId=(int) query.getSingleResult();
+		customer=em.find(Customer.class, customerId);
+		customer.setWalletBalance(t.getTotalCost());
+		try {
+		em.merge(customer);
 		
+		}catch (NoResultException e) {
+			// TODO: handle exception
+		}
+		try {
 		em.remove(t);
-
+		}catch (NoResultException e) {
+			// TODO: handle exception
+		}
 		Status status = new Status();
 		status.setResultStatus(true);
 

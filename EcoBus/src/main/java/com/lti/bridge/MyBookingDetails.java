@@ -7,15 +7,18 @@ import com.lti.model.Ticket;
 
 public class MyBookingDetails extends Status {
 
-	private List<Ticket> mybookings= new ArrayList<>();
+	private List<MyBookTickets> mybookings= new ArrayList<>();
 
-	public List<Ticket> getMybookings() {
+	public List<MyBookTickets> getMybookings() {
 		return mybookings;
 	}
 
-	public void setMybookings(List<Ticket> mybookings) {
+	public void setMybookings(List<MyBookTickets> mybookings) {
 		this.mybookings = mybookings;
 	}
+	
+	
+
 	
 	
 }
