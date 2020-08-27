@@ -11,11 +11,11 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
-import com.lti.bridge.PassengerDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.controller.EcoController;
 import com.lti.dto.BookTicket;
 import com.lti.dto.CustomerDetails;
+import com.lti.dto.PassengerDetails;
 import com.lti.dto.TicketDetails;
 import com.lti.model.Bus;
 import com.lti.model.Customer;

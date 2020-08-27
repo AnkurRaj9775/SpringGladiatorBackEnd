@@ -16,6 +16,15 @@ public class SeatDetails {
 	public String toString() {
 		return "SeatDetails [seatNo=" + seatNo + "]";
 	}
+
+	public SeatDetails(int seatNo) {
+		super();
+		this.seatNo = seatNo;
+	}
+
+	public SeatDetails() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	
 

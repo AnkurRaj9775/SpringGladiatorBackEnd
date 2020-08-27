@@ -14,13 +14,14 @@ import com.lti.bridge.BusDetails;
 import com.lti.bridge.LoginStatus;
 import com.lti.bridge.StatusString;
 import com.lti.bridge.TicketsDetail;
+import com.lti.bridge.TransactionDetailsForRecord;
 import com.lti.bridge.ViewProfile;
 import com.lti.bridge.WalletDetails;
-import com.lti.bridge.PassengerDetails;
 import com.lti.bridge.SeatCountDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
 import com.lti.dto.CustomerDetails;
+import com.lti.dto.PassengerDetails;
 import com.lti.dto.TicketDetails;
 import com.lti.dto.UpdateWallet;
 import com.lti.email.Email;
@@ -326,13 +327,23 @@ public class EcoServiceImpl implements EcoService {
 	}
 	
 	@Override
-	public List<Transaction> getPreviousTransaction() {
+	public List<TransactionDetailsForRecord> getPreviousTransaction() {
 		LocalDate date = LocalDate.now();
-		LocalDate previousDate = date.minusMonths(1); 
+		
+		List<TransactionDetailsForRecord>  transactionRecord = new ArrayList<>();
+	    LocalDate previousDate = date.minusMonths(1); 
 		System.out.println(date+"current date");
 		System.out.println(previousDate+"previous month date");
 		List<Transaction> t = ecoRep.getLastMonthRecord(previousDate,date);		
-		return t;
+		for(int i =0;i<t.size();i++) {
+			TransactionDetailsForRecord  transRecord= new TransactionDetailsForRecord();
+			transRecord.setTicketId(t.get(i).getTicket().getTicketId());
+			transRecord.setAmount(t.get(i).getAmount());
+			transRecord.setTransactionDate(t.get(i).getTransactionDate());
+			transRecord.setTransactionId(t.get(i).getTransactionId());
+			transactionRecord.add(transRecord);
+		}
+		return transactionRecord;
 	}
 	
 	@Override

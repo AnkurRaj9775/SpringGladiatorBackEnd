@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lti.bridge.BusDetails;
 import com.lti.bridge.StatusString;
+import com.lti.bridge.TransactionDetailsForRecord;
 import com.lti.bridge.ViewProfile;
 import com.lti.bridge.WalletDetails;
 import com.lti.bridge.LoginStatus;
 import com.lti.bridge.MostPreferredBusType;
-import com.lti.bridge.PassengerDetails;
 import com.lti.bridge.SeatCountDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
@@ -29,6 +29,7 @@ import com.lti.dto.ChangePassword;
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.ForgotPassword;
 import com.lti.dto.LoginDetails;
+import com.lti.dto.PassengerDetails;
 import com.lti.dto.ProfileCard;
 import com.lti.dto.ResetPassword;
 import com.lti.dto.SearchBus;
@@ -81,12 +82,21 @@ public class EcoController {
 		
 	}
 	
+//	@RequestMapping("/previousTransaction")
+//	public List<Transaction> previousTransaction() {
+//		
+//		return ecoServ.getPreviousTransaction();
+//	}
+	
 	@RequestMapping("/previousTransaction")
-	public List<Transaction> previousTransaction() {
+	public List<TransactionDetailsForRecord> previousTransaction() {
 		
 		return ecoServ.getPreviousTransaction();
 	}
-
+	
+	
+	
+	
 	public boolean addAbus(Bus bus) {
 
 		return ecoServ.addABus(bus);

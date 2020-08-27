@@ -8,13 +8,14 @@ import java.util.List;
 import com.lti.bridge.BusDetails;
 import com.lti.bridge.LoginStatus;
 import com.lti.bridge.StatusString;
+import com.lti.bridge.TransactionDetailsForRecord;
 import com.lti.bridge.ViewProfile;
 import com.lti.bridge.WalletDetails;
-import com.lti.bridge.PassengerDetails;
 import com.lti.bridge.SeatCountDetails;
 import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
 import com.lti.dto.CustomerDetails;
+import com.lti.dto.PassengerDetails;
 import com.lti.dto.TicketDetails;
 import com.lti.dto.UpdateWallet;
 import com.lti.model.Bus;
@@ -71,7 +72,7 @@ public interface EcoService {
     
     boolean addRoutewithBus(List<Routes> routes,int busId);
     boolean addOperationalDaysWithBus(List<OperationalDays> operationalDays,int busId);
-    List<Transaction> getPreviousTransaction();
+    List<TransactionDetailsForRecord> getPreviousTransaction();
     Status addTicketDetails(CustomerDetails customerDetails,TicketDetails ticketDetails,List<PassengerDetails> passengerDetails,List<SeatDetails> seatDetails);
     
     SeatCountDetails fetchNoOfSeats(int busId,LocalDate dateOfJourney);
