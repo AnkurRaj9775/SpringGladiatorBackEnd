@@ -43,6 +43,24 @@ public class EcoRepositoryImpl implements EcoRepository {
 		return cust_id;
 	}
 
+	@Override
+	@Transactional
+	public int registerAgain(Customer customer, int customerId) {
+		Customer c=new Customer();
+		c=em.find(Customer.class, customerId);
+		c.setAge(customer.getAge());
+		c.setContact(customer.getContact());
+		c.setGender(customer.getGender());
+		c.setName(customer.getName());
+		c.setPassword(customer.getPassword());
+		try {
+		c=em.merge(c);
+		}catch (NoResultException e) {
+			// TODO: handle exception
+		}
+		
+		return c.getCustomerId();
+	}
 	public boolean loginUser(String email, String password) {
 		String sql = "select cs from Customer cs where cs.email= :email and cs.password = :password";
 		TypedQuery<Customer> qry = em.createQuery(sql, Customer.class);
@@ -425,7 +443,6 @@ public class EcoRepositoryImpl implements EcoRepository {
 			catch(NoResultException e){
 				
 			}
-			
 			return prefferedBusType;
 		}
 		
@@ -471,7 +488,7 @@ public class EcoRepositoryImpl implements EcoRepository {
 
 	
 
-	public boolean checkRegisteredUser(String email) {
+	public int checkRegisteredUser(String email) {
 		String sql = "select cs from Customer cs where cs.email= :email";
 		TypedQuery<Customer> qry = em.createQuery(sql, Customer.class);
 		qry.setParameter("email", email);
@@ -482,14 +499,17 @@ public class EcoRepositoryImpl implements EcoRepository {
 			// Ignore this because as per your logic this is ok!
 		}
 
-		if (c.getPassword() == null)
-			return false;
-		return true;
-
+		if(c.getEmail()==null){
+			return 0;
+		}
+		else if(c.getPassword()==null) {
+			return c.getCustomerId();
+		}
+		return -1;
 	}
 
 	@Transactional
-	public boolean addTicketAndPassengerWithRegisteredCustomers(Ticket ticket, List<Passenger> passenger,
+	public int addTicketAndPassengerWithRegisteredCustomers(Ticket ticket, List<Passenger> passenger,
 			List<Seats> seats, Transaction transaction) {
 		ticket.setTransaction(transaction);
 
@@ -505,10 +525,13 @@ public class EcoRepositoryImpl implements EcoRepository {
 
 			s.setTicket(ticket);
 		}
-
-		em.merge(ticket);
-
-		return true;
+		Ticket t=new Ticket();
+		try {
+				t=em.merge(ticket);
+		}catch (NoResultException e) {
+			// TODO: handle exception
+		}
+		return t.getTicketId();
 
 	}
 
@@ -612,6 +635,8 @@ public class EcoRepositoryImpl implements EcoRepository {
 		}
 		return noOfSeats;
 	}
+
+	
 
 
 // public Bus findBus(int busid){

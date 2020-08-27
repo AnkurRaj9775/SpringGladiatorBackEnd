@@ -2,7 +2,8 @@ package com.lti.dto;
 
 import java.util.List;
 
-import com.lti.bridge.SeatDetails;
+
+import com.lti.dto.BookingSeatDetails;
 
 public class BookTicket {
 
@@ -13,7 +14,7 @@ public class BookTicket {
 	
 	private List<PassengerDetails> passengerDetails;
 	
-	private List<SeatDetails> seatDetails;
+	private List<BookingSeatDetails> seatDetails;
 
 	public CustomerDetails getCustomerDetails() {
 		return customerDetails;
@@ -39,13 +40,15 @@ public class BookTicket {
 		this.passengerDetails = passengerDetails;
 	}
 
-	public List<SeatDetails> getSeatDetails() {
+	public List<BookingSeatDetails> getSeatDetails() {
 		return seatDetails;
 	}
 
-	public void setSeatDetails(List<SeatDetails> seatDetails) {
+	public void setSeatDetails(List<BookingSeatDetails> seatDetails) {
 		this.seatDetails = seatDetails;
 	}
+
+	
 	
 	
 }

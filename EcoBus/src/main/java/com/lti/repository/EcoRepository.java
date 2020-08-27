@@ -22,6 +22,7 @@ public interface EcoRepository {
 	List<Routes> searchRoutesByBus(List<Integer> busId,String fromCity,String toCity);
 	public List<Integer> totalSeatsBooked(List<Bus> bus,LocalDate dateOfJourney);
 	int registerUser(Customer customer);//Done
+	int registerAgain(Customer customer,int customerId);
 	boolean loginUser(String email,String password);//Done
 	public Customer findByEmailPassword(String email,String password);//returning object of customer
 	boolean cancelTicket(int ticketId,String email);
@@ -37,7 +38,7 @@ public interface EcoRepository {
 	boolean isValidEmail(String email);
 	boolean changePassword(int customerId,String password);
 	int getRegisteredCustomerId(String email);
-	boolean checkRegisteredUser(String email);
+	int checkRegisteredUser(String email);
 	
 	public Customer isValidCustomerId(int customerId);
 	
@@ -73,7 +74,7 @@ public interface EcoRepository {
     boolean addOperationalDaysWithBus(List<OperationalDays> operationalDays,int busId);//Done
     
     
-    boolean addTicketAndPassengerWithRegisteredCustomers(Ticket ticket,List<Passenger> passenger,List<Seats> seats,Transaction transaction);//depends on the session
+    int addTicketAndPassengerWithRegisteredCustomers(Ticket ticket,List<Passenger> passenger,List<Seats> seats,Transaction transaction);//depends on the session
    // boolean addTicketAndPassengerWithUnregisteredCusomer(Ticket ticket,Passenger passenger, Customer customer);
 	boolean isValidTicket(int ticketId,int customerId);
 	boolean isValidTicketDate(int ticketId);

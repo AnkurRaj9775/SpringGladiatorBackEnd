@@ -4,7 +4,15 @@ package com.lti.bridge;
 public class SeatDetails {
 	private int seatNo;
 
-	public int getSeatNo() {
+	public SeatDetails()
+	{
+		
+	}	
+	public SeatDetails(int seatNo) {
+		super();
+		this.seatNo = seatNo;
+	}
+    public int getSeatNo() {
 		return seatNo;
 	}
 
@@ -15,17 +23,6 @@ public class SeatDetails {
 	@Override
 	public String toString() {
 		return "SeatDetails [seatNo=" + seatNo + "]";
-	}
-
-	public SeatDetails(int seatNo) {
-		super();
-		this.seatNo = seatNo;
-	}
-
-	public SeatDetails() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	
+	}	
 
 }

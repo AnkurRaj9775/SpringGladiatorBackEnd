@@ -12,16 +12,19 @@ import org.springframework.stereotype.Service;
 
 import com.lti.bridge.BusDetails;
 import com.lti.bridge.LoginStatus;
+import com.lti.bridge.RegisterStatus;
 import com.lti.bridge.StatusString;
 import com.lti.bridge.TicketsDetail;
 import com.lti.bridge.TransactionDetailsForRecord;
 import com.lti.bridge.ViewProfile;
 import com.lti.bridge.WalletDetails;
 import com.lti.bridge.SeatCountDetails;
-import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.PassengerDetails;
+
+import com.lti.dto.BookingSeatDetails;
+
 import com.lti.dto.TicketDetails;
 import com.lti.dto.UpdateWallet;
 import com.lti.email.Email;
@@ -43,27 +46,40 @@ public class EcoServiceImpl implements EcoService {
 
 	@Autowired
 	EcoRepository ecoRep;
-	
+
 	@Autowired
 	Email email;
-	
+
 	Customer cust = new Customer();
 	Status status = new Status();
 	Bus bus = new Bus();
 
-	public Status registerUser(Customer customer) {
-		status = new Status();
-		if (ecoRep.checkRegisteredUser(customer.getEmail())) {
-			status.setResultStatus(false);
+	public RegisterStatus registerUser(Customer customer) {
+		RegisterStatus status = new RegisterStatus();
+		int customerId = ecoRep.checkRegisteredUser(customer.getEmail());
+		if (customerId < 0) {
+			
+			status.setMessage("This email is already registered with us!");
 			return status;
+		} else if (customerId > 0) {
+			int check1 = ecoRep.registerAgain(customer, customerId);
+			if (check1 > 0) {
+				email.registerEmail(customer.getEmail(), customer.getName(), check1);
+				status.setMessage("Registered  Successfully !!!.Please check Your Mail.");
+			}
+			else {
+				status.setMessage("This email is already registered with us!");
+			}
+
+		} else {
+			int check2 = ecoRep.registerUser(customer);
+			if (check2 > 0) {
+
+				email.registerEmail(customer.getEmail(), customer.getName(), check2);
+				status.setMessage("Registered  Successfully !!!.Please check Your Mail.");
+			} else
+				status.setMessage("This email is already registered with us!");
 		}
-		int check = ecoRep.registerUser(customer);
-		if (check > 0) {
-		
-		email.registerEmail(customer.getEmail(),customer.getName());
-			status.setResultStatus(true);
-		} else
-			status.setResultStatus(false);
 		return status;
 
 	}
@@ -92,19 +108,19 @@ public class EcoServiceImpl implements EcoService {
 		if (!ecoRep.isValidEmail(email)) {
 			cancelTicketDetails.setStatus("Please enter correct email id");
 			return cancelTicketDetails;
-		} else if (ecoRep.checkRegisteredUser(email)) {
+		} else if (ecoRep.checkRegisteredUser(email)>0) {
 			id = ecoRep.getRegisteredCustomerId(email);
-			if (ecoRep.isValidTicket(ticketId, id)  && ecoRep.isValidTicketDate(ticketId)) {
+			if (ecoRep.isValidTicket(ticketId, id) && ecoRep.isValidTicketDate(ticketId)) {
 
 				cancelTicketDetails.setStatus("Please Login to Cancel the Ticket.");
 				return cancelTicketDetails;
 			} else if (!ecoRep.isValidTicket(ticketId, id)) {
-				cancelTicketDetails
-						.setStatus("Cannot Fetch Ticket details at the moment.");
+				cancelTicketDetails.setStatus("Cannot Fetch Ticket details at the moment.");
 				return cancelTicketDetails;
 
 			} else {
-				cancelTicketDetails.setStatus("This ticket can not be cancelled as the date of journey has already passed.");
+				cancelTicketDetails
+						.setStatus("This ticket can not be cancelled as the date of journey has already passed.");
 				return cancelTicketDetails;
 			}
 		}
@@ -119,25 +135,23 @@ public class EcoServiceImpl implements EcoService {
 	}
 
 	public LoginStatus isValidCustomerId(int customerId) {
-		Customer customer=ecoRep.isValidCustomerId(customerId);
-		LoginStatus loginStatus=new LoginStatus();
-		if(customer!=null)
-		{
+		Customer customer = ecoRep.isValidCustomerId(customerId);
+		LoginStatus loginStatus = new LoginStatus();
+		if (customer != null) {
 			loginStatus.setCustomerId(customer.getCustomerId());
 			loginStatus.setResultStatus(true);
 			return loginStatus;
 		}
-		
+
 		loginStatus.setResultStatus(false);
 		return loginStatus;
 	}
 
-	public Status changePassword(int customerId,String password) {
+	public Status changePassword(int customerId, String password) {
 		// TODO Auto-generated method stub
-		
-		Customer customer=ecoRep.isValidCustomerId(customerId);
-		if(customer!=null)
-		{
+
+		Customer customer = ecoRep.isValidCustomerId(customerId);
+		if (customer != null) {
 			ecoRep.changePassword(customerId, password);
 			status.setResultStatus(true);
 			return status;
@@ -145,41 +159,40 @@ public class EcoServiceImpl implements EcoService {
 		status.setResultStatus(false);
 		return status;
 	}
-	
+
 	public double getPreviousProfits() {
 		LocalDate toDate = LocalDate.now();
-	    LocalDate  fromDate= toDate.minusMonths(1);
+		LocalDate fromDate = toDate.minusMonths(1);
 		return ecoRep.getPreviousProfits(fromDate, toDate);
 	}
 
-	public StatusString updatePassword(int customerId, String oldPassword,String newPassword) {
-		StatusString status =new StatusString();
-		if(!ecoRep.checkOldPassword(customerId,oldPassword)) {
+	public StatusString updatePassword(int customerId, String oldPassword, String newPassword) {
+		StatusString status = new StatusString();
+		if (!ecoRep.checkOldPassword(customerId, oldPassword)) {
 			status.setStatus("Please enter correct old password");
 			return status;
 		}
-		if(oldPassword.equals(newPassword)) {
+		if (oldPassword.equals(newPassword)) {
 			status.setStatus("Old and new password cannot be same!!");
 			return status;
 		}
-		if(ecoRep.updatePassword(customerId, newPassword))
-		{
+		if (ecoRep.updatePassword(customerId, newPassword)) {
 			status.setStatus("Password Updated Successfully !!");
 			return status;
 		}
 		status.setStatus("Could not update Password");
 		return status;
-		
+
 	}
 
 	public List<Ticket> viewAllBookings(int customerId) {
-		
-		Ticket ticket=new Ticket();
-		List<Ticket> ticketList=new ArrayList<>();
-		Bus bus=new Bus();
-		TicketsDetail ticketsDetail=new TicketsDetail();
-		
-		ticketList=ecoRep.viewAllBookings(customerId);
+
+		Ticket ticket = new Ticket();
+		List<Ticket> ticketList = new ArrayList<>();
+		Bus bus = new Bus();
+		TicketsDetail ticketsDetail = new TicketsDetail();
+
+		ticketList = ecoRep.viewAllBookings(customerId);
 		ticketsDetail.setBusId(bus.getBusId());
 		ticketsDetail.setBusName(bus.getBusName());
 		ticketsDetail.setTicketId(ticket.getTicketId());
@@ -189,22 +202,22 @@ public class EcoServiceImpl implements EcoService {
 		ticketsDetail.setFromCity(ticket.getFromCity());
 		ticketsDetail.setToCity(ticket.getToCity());
 		ticketsDetail.setTotalCost(ticket.getTotalCost());
-		
+
 		return ticketList;
-		
+
 	}
 
 	public ViewProfile showProfile(int customerId) {
-		
-		Customer customer=new Customer();
-		ViewProfile viewProfile=new ViewProfile();
-		customer=ecoRep.showProfile(customerId);
+
+		Customer customer = new Customer();
+		ViewProfile viewProfile = new ViewProfile();
+		customer = ecoRep.showProfile(customerId);
 		viewProfile.setName(customer.getName());
 		viewProfile.setAge(customer.getAge());
 		viewProfile.setGender(customer.getGender());
 		viewProfile.setEmail(customer.getEmail());
 		viewProfile.setContact(customer.getContact());
-		
+
 		return viewProfile;
 	}
 
@@ -215,22 +228,19 @@ public class EcoServiceImpl implements EcoService {
 		return walletAmount;
 
 	}
-	
+
 	public WalletDetails addWalletBalance(int custId, double amount) {
-	
+
 		WalletDetails wallet = new WalletDetails();
-		if(ecoRep.addWalletBalance(custId, amount)) {
+		if (ecoRep.addWalletBalance(custId, amount)) {
 			wallet.setStatus("Amount added successfully!");
 			wallet.setAmount(ecoRep.showWalletBalance(custId));
-		}
-		else {
+		} else {
 			wallet.setStatus("Oops! Could not add amount");
 			wallet.setAmount(ecoRep.showWalletBalance(custId));
 		}
 		return wallet;
 	}
-	
-	
 
 	public boolean updateProfile(Customer customer) {
 		// TODO Auto-generated method stub
@@ -242,8 +252,6 @@ public class EcoServiceImpl implements EcoService {
 		return null;
 	}
 
-
-
 	public List<Routes> frequentlyTravelledRoutes() {
 		// TODO Auto-generated method stub
 		return null;
@@ -253,7 +261,6 @@ public class EcoServiceImpl implements EcoService {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 
 	public boolean deleteABus() {
 		// TODO Auto-generated method stub
@@ -318,18 +325,18 @@ public class EcoServiceImpl implements EcoService {
 		// return ecoRep.searchABus(fromCity, toCity, day);
 		return finalBusDetails;
 	}
-	
+
 	@Override
 	public List<Customer> noReservationCustomer() {
 		List<Customer> customer = ecoRep.noReservationCustomer();
 		return customer;
-		
+
 	}
-	
+
 	@Override
 	public List<TransactionDetailsForRecord> getPreviousTransaction() {
-		LocalDate date = LocalDate.now();
 		
+		LocalDate date = LocalDate.now();		
 		List<TransactionDetailsForRecord>  transactionRecord = new ArrayList<>();
 	    LocalDate previousDate = date.minusMonths(1); 
 		System.out.println(date+"current date");
@@ -345,42 +352,37 @@ public class EcoServiceImpl implements EcoService {
 		}
 		return transactionRecord;
 	}
-	
+
 	@Override
-	public List<Passenger> reservationDetails(){
+	public List<Passenger> reservationDetails() {
 		return ecoRep.reservationDetail(LocalDate.now());
 	}
-	
-	
+
 	@Override
-	public List<Passenger> weeklyReservationDetails(){
-		
-		 LocalDate monday =LocalDate.now();
-		    while (monday.getDayOfWeek() != DayOfWeek.MONDAY) {
-		      monday = monday.minusDays(1);
-		    }
-		    System.out.println(monday);
+	public List<Passenger> weeklyReservationDetails() {
+
+		LocalDate monday = LocalDate.now();
+		while (monday.getDayOfWeek() != DayOfWeek.MONDAY) {
+			monday = monday.minusDays(1);
+		}
+		System.out.println(monday);
 		return ecoRep.weeklyReservationDetail(monday, LocalDate.now());
 	}
-	
+
 	@Override
 	public List<Passenger> monthlyReservationDetails() {
-		
-		
+
 		LocalDate now = LocalDate.now();
 		LocalDate start = now.with(firstDayOfMonth());
 		return ecoRep.monthlyReservationDetail(start, LocalDate.now());
-		
-		
+
 	}
-	
+
 	@Override
 	public String mostPrefferedTypesOfBuses() {
-		
+
 		return ecoRep.mostPrefferedTypesOfBuses();
 	}
-
-
 
 	public Bus findBus(int busid) {
 		// TODO Auto-generated method stub
@@ -394,8 +396,9 @@ public class EcoServiceImpl implements EcoService {
 	Transaction transaction = new Transaction();
 
 	public Status addTicketDetails(CustomerDetails customerDetails, TicketDetails ticketDetails,
-			List<PassengerDetails> passengerDetails, List<SeatDetails> seatDetails) {
+			List<PassengerDetails> passengerDetails, List<BookingSeatDetails> seatDetails) {
 		int custId = 0;
+		System.out.println(customerDetails.getEmail());
 		if (!ecoRep.isValidEmail(customerDetails.getEmail())) {
 			cust.setEmail(customerDetails.getEmail());
 			cust.setContact(customerDetails.getContact());
@@ -442,25 +445,25 @@ public class EcoServiceImpl implements EcoService {
 		ticket.setFromCity(ticketDetails.getFromCity());
 		ticket.setToCity(ticketDetails.getToCity());
 		// ticket.setPassenger(passenger);
-
-		if (ecoRep.addTicketAndPassengerWithRegisteredCustomers(ticket, passenger, seats, transaction)) {
+		int ticketId = ecoRep.addTicketAndPassengerWithRegisteredCustomers(ticket, passenger, seats, transaction);
+		if (ticketId > 0) {
+			email.ticketDetailsEmail(customerDetails, ticketDetails, ticketId);
 			status.setResultStatus(true);
 			return status;
+
 		}
 		status.setResultStatus(false);
 		return status;
 	}
 
-
 	@Override
 	public SeatCountDetails fetchNoOfSeats(int busId, LocalDate dateOfJourney) {
-		List<Integer> noOfSeats=new ArrayList<>();
-		noOfSeats=ecoRep.fetchNoOfSeats(busId, dateOfJourney);
-		SeatCountDetails seatCountDetails=new SeatCountDetails();
+		List<Integer> noOfSeats = new ArrayList<>();
+		noOfSeats = ecoRep.fetchNoOfSeats(busId, dateOfJourney);
+		SeatCountDetails seatCountDetails = new SeatCountDetails();
 		seatCountDetails.setNoOfseats(noOfSeats);
 		System.out.println(noOfSeats.toString());
 		return seatCountDetails;
 	}
-
 
 }

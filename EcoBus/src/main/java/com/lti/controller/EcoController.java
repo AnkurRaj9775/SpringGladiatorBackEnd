@@ -1,9 +1,9 @@
+
 package com.lti.controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.lti.bridge.BusDetails;
 import com.lti.bridge.StatusString;
 import com.lti.bridge.TransactionDetailsForRecord;
@@ -20,8 +19,9 @@ import com.lti.bridge.ViewProfile;
 import com.lti.bridge.WalletDetails;
 import com.lti.bridge.LoginStatus;
 import com.lti.bridge.MostPreferredBusType;
+import com.lti.bridge.RegisterStatus;
+import com.lti.dto.PassengerDetails;
 import com.lti.bridge.SeatCountDetails;
-import com.lti.bridge.SeatDetails;
 import com.lti.bridge.Status;
 import com.lti.dto.BookTicket;
 import com.lti.dto.CancelTicket;
@@ -34,6 +34,7 @@ import com.lti.dto.ProfileCard;
 import com.lti.dto.ResetPassword;
 import com.lti.dto.SearchBus;
 import com.lti.dto.SeatCount;
+import com.lti.dto.BookingSeatDetails;
 import com.lti.dto.TicketDetails;
 import com.lti.dto.TransactionDetails;
 import com.lti.dto.WalletAmount;
@@ -58,7 +59,7 @@ public class EcoController {
 	private EcoService ecoServ;
 
 	@PostMapping("/register")
-	public Status registerUser(@RequestBody Customer customer) {
+	public RegisterStatus registerUser(@RequestBody Customer customer) {
 
 		return ecoServ.registerUser(customer);
 	}
@@ -173,6 +174,7 @@ public class EcoController {
 	
 	@PostMapping("/bookTicket")
 	public Status addTicketDetails(@RequestBody BookTicket bookTicket){
+		//LocalDate journeyDate = LocalDate.parse(bookTicket.getTicketDetails().getDateOfJourney());
 		return ecoServ.addTicketDetails(bookTicket.getCustomerDetails(), bookTicket.getTicketDetails(), bookTicket.getPassengerDetails(), bookTicket.getSeatDetails());
 	}
 	
@@ -220,9 +222,7 @@ public class EcoController {
 		return ecoServ.updatePassword(changePassword.getCustomerId(), changePassword.getOldPassword(), changePassword.getNewPassword());
 	}
 
-//	@PostMapping("/viewTicket")
-//	public StatusString 
-
+		
 	
 	@PostMapping("/getNoOfSeats")
 	public SeatCountDetails fetchNoOfSeats(@RequestBody SeatCount seatCount)
