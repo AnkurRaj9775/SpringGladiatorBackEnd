@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.lti.bridge.BusDetails;
 import com.lti.bridge.LoginStatus;
+import com.lti.bridge.RegisterStatus;
 import com.lti.bridge.StatusString;
 import com.lti.bridge.TicketsDetail;
 import com.lti.bridge.ViewProfile;
@@ -50,20 +51,21 @@ public class EcoServiceImpl implements EcoService {
 	Status status = new Status();
 	Bus bus = new Bus();
 
-	public Status registerUser(Customer customer) {
-		status = new Status();
+	public RegisterStatus registerUser(Customer customer) {
+		RegisterStatus status = new RegisterStatus();
 		int customerId = ecoRep.checkRegisteredUser(customer.getEmail());
 		if (customerId < 0) {
-			status.setResultStatus(false);
+			
+			status.setMessage("This email is already registered with us!");
 			return status;
 		} else if (customerId > 0) {
 			int check1 = ecoRep.registerAgain(customer, customerId);
 			if (check1 > 0) {
 				email.registerEmail(customer.getEmail(), customer.getName(), check1);
-				status.setResultStatus(true);
+				status.setMessage("Registered  Successfully !!!.Please check Your Mail.");
 			}
 			else {
-				status.setResultStatus(false);
+				status.setMessage("This email is already registered with us!");
 			}
 
 		} else {
@@ -71,9 +73,9 @@ public class EcoServiceImpl implements EcoService {
 			if (check2 > 0) {
 
 				email.registerEmail(customer.getEmail(), customer.getName(), check2);
-				status.setResultStatus(true);
+				status.setMessage("Registered  Successfully !!!.Please check Your Mail.");
 			} else
-				status.setResultStatus(false);
+				status.setMessage("This email is already registered with us!");
 		}
 		return status;
 

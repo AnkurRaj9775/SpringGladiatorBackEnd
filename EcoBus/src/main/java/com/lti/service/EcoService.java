@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.lti.bridge.BusDetails;
 import com.lti.bridge.LoginStatus;
+import com.lti.bridge.RegisterStatus;
 import com.lti.bridge.StatusString;
 import com.lti.bridge.ViewProfile;
 import com.lti.bridge.WalletDetails;
@@ -32,7 +33,7 @@ public interface EcoService {
 	
 	public Bus findBus(int busid);
 	List<BusDetails> searchABus(String fromCity,String toCity,String day,LocalDate dateOfJourney);
-	Status registerUser(Customer customer);
+	RegisterStatus registerUser(Customer customer);
 	Customer loginUser(String email,String password);
 	StatusString cancelTicket(int ticketId,String email);
 	Ticket searchTicket(int ticketId,String email);

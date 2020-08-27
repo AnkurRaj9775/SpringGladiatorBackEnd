@@ -22,6 +22,7 @@ import com.lti.bridge.LoginStatus;
 
 
 import com.lti.bridge.MostPreferredBusType;
+import com.lti.bridge.RegisterStatus;
 import com.lti.dto.PassengerDetails;
 
 import com.lti.bridge.SeatCountDetails;
@@ -65,7 +66,7 @@ public class EcoController {
 	private EcoService ecoServ;
 
 	@PostMapping("/register")
-	public Status registerUser(@RequestBody Customer customer) {
+	public RegisterStatus registerUser(@RequestBody Customer customer) {
 
 		return ecoServ.registerUser(customer);
 	}

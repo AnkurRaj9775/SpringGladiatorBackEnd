@@ -44,6 +44,7 @@ public class EcoRepositoryImpl implements EcoRepository {
 	}
 
 	@Override
+	@Transactional
 	public int registerAgain(Customer customer, int customerId) {
 		Customer c=new Customer();
 		c=em.find(Customer.class, customerId);
