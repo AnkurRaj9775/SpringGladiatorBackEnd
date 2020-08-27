@@ -22,7 +22,7 @@ public class Email {
 	 private JavaMailSender mailSender;
 	 
 	
-	public void registerEmail(String email,String name) {
+	public void registerEmail(String email,String name,int customerId) {
 		
 	
 		
@@ -30,7 +30,7 @@ public class Email {
 		message.setFrom("ecobusserviceddn@gmail.com");
 		message.setTo(email);
 		message.setSubject("Welcome to your new ecoBus Account");
-		message.setText("Hi"+" " + name + ".Thanks for Creating account.Looking Forword to your Great Journeys ahead!!!. ");
+		message.setText("Hi"+" " + name + ".Thanks for Creating account.Your unique customer Id is "+customerId +"Looking Forword to your Great Journeys ahead!!!. ");
 		System.out.println(message.toString()+"" + "testing");
 		mailSender.send(message);
 		System.out.println("Mail sent");
