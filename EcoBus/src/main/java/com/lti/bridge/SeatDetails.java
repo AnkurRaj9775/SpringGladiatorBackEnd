@@ -4,6 +4,20 @@ package com.lti.bridge;
 public class SeatDetails {
 	private int seatNo;
 
+	public SeatDetails()
+	{
+		
+	}
+	
+	
+	
+	public SeatDetails(int seatNo) {
+		super();
+		this.seatNo = seatNo;
+	}
+
+
+
 	public int getSeatNo() {
 		return seatNo;
 	}
