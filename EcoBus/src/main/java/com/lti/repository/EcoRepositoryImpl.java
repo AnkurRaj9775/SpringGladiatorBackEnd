@@ -1,4 +1,4 @@
- package com.lti.repository;
+package com.lti.repository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,6 +13,8 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.lti.bridge.RegisterStatus;
+import com.lti.bridge.Status;
 import com.lti.bridge.StatusString;
 import com.lti.model.Admin;
 import com.lti.model.Bus;
@@ -47,21 +49,22 @@ public class EcoRepositoryImpl implements EcoRepository {
 	@Override
 	@Transactional
 	public int registerAgain(Customer customer, int customerId) {
-		Customer c=new Customer();
-		c=em.find(Customer.class, customerId);
+		Customer c = new Customer();
+		c = em.find(Customer.class, customerId);
 		c.setAge(customer.getAge());
 		c.setContact(customer.getContact());
 		c.setGender(customer.getGender());
 		c.setName(customer.getName());
 		c.setPassword(customer.getPassword());
 		try {
-		c=em.merge(c);
-		}catch (NoResultException e) {
+			c = em.merge(c);
+		} catch (NoResultException e) {
 			// TODO: handle exception
 		}
-		
+
 		return c.getCustomerId();
 	}
+
 	public boolean loginUser(String email, String password) {
 		String sql = "select cs from Customer cs where cs.email= :email and cs.password = :password";
 		TypedQuery<Customer> qry = em.createQuery(sql, Customer.class);
@@ -129,97 +132,91 @@ public class EcoRepositoryImpl implements EcoRepository {
 	 */
 	@Transactional
 	public boolean changePassword(int customerId, String password) {
-	
+
 		Customer cust = new Customer();
-		cust=em.find(Customer.class, customerId);
+		cust = em.find(Customer.class, customerId);
 		cust.setPassword(password);
 		em.merge(cust);
 		return true;
 	}
 
 	@Transactional
-	public boolean updatePassword(int customerId,String newPassword) {
+	public boolean updatePassword(int customerId, String newPassword) {
 		Customer cust = new Customer();
-		
-		cust=em.find(Customer.class, customerId);
+
+		cust = em.find(Customer.class, customerId);
 		cust.setPassword(newPassword);
-		
+
 		try {
-			cust=em.merge(cust);
+			cust = em.merge(cust);
+		} catch (NoResultException ne) {
+
 		}
-		catch(NoResultException ne) {
-			
-		}
-		if(cust.getCustomerId()>0) {
+		if (cust.getCustomerId() > 0) {
 			return true;
 		}
 		return false;
 	}
 
 	public List<Ticket> viewAllBookings(int customerId) {
-		
+
 		String sql = "select ti from Ticket ti where ti.customer.customerId= :customerId";
 		TypedQuery<Ticket> qry = em.createQuery(sql, Ticket.class);
 		qry.setParameter("customerId", customerId);
-		List<Ticket> ticket=new ArrayList<>();
+		List<Ticket> ticket = new ArrayList<>();
 		try {
-			ticket=qry.getResultList();
-		}
-		catch(NoResultException nre){
-			
+			ticket = qry.getResultList();
+		} catch (NoResultException nre) {
+
 		}
 		return ticket;
-		
+
 	}
 
 	public Customer showProfile(int customerId) {
-		
-		String sql = "select cs from Customer cs where cs.customerId= :customerId";
-		TypedQuery<Customer> qry = em.createQuery(sql, Customer.class);
-		qry.setParameter("customerId", customerId);
-		Customer cust = new Customer();
-		try {
-			cust=qry.getSingleResult();
-		}
-		catch(NoResultException nre){
-			
-		}
-		return cust;
-	}
-	
-	public double showWalletBalance(int customerId) {
-		
+
 		String sql = "select cs from Customer cs where cs.customerId= :customerId";
 		TypedQuery<Customer> qry = em.createQuery(sql, Customer.class);
 		qry.setParameter("customerId", customerId);
 		Customer cust = new Customer();
 		try {
 			cust = qry.getSingleResult();
-			
+		} catch (NoResultException nre) {
+
+		}
+		return cust;
+	}
+
+	public double showWalletBalance(int customerId) {
+
+		String sql = "select cs from Customer cs where cs.customerId= :customerId";
+		TypedQuery<Customer> qry = em.createQuery(sql, Customer.class);
+		qry.setParameter("customerId", customerId);
+		Customer cust = new Customer();
+		try {
+			cust = qry.getSingleResult();
+
 		} catch (NoResultException e) {
 
 		}
-		
+
 		return cust.getWalletBalance();
 	}
-	
+
 	@Transactional
 	public boolean addWalletBalance(int customerId, double amount) {
 		Customer cust = new Customer();
-		cust=em.find(Customer.class, customerId);
-		cust.setWalletBalance(cust.getWalletBalance()+amount);
-	
-		Customer customer=em.merge(cust);
-		
-		if(customer.getWalletBalance()>0)
+		cust = em.find(Customer.class, customerId);
+		cust.setWalletBalance(cust.getWalletBalance() + amount);
+
+		Customer customer = em.merge(cust);
+
+		if (customer.getWalletBalance() > 0)
 			return true;
-		
-		
-			return false;
+
+		return false;
 	}
 
-	
-	
 	public boolean updateProfile(Customer customer) {
 		// TODO Auto-generated method stub
 		return false;
@@ -230,20 +227,15 @@ public class EcoRepositoryImpl implements EcoRepository {
 		return null;
 	}
 
-	
-	
-
 	public List<Routes> frequentlyTravelledRoutes() {
-		
+
 		return null;
 	}
 
 	public boolean deleteBus(int busId) {
-		
+
 		return false;
 	}
-
-	
 
 	@Transactional
 	public boolean addABus(Bus bus) {
@@ -331,7 +323,7 @@ public class EcoRepositoryImpl implements EcoRepository {
 			query.setParameter("busId", busId.get(i));
 			query.setParameter("fromCity", fromCity);
 			query.setParameter("toCity", toCity);
-			
+
 			Routes routes = query.getSingleResult();
 			routeDetails.add(routes);
 		}
@@ -339,7 +331,7 @@ public class EcoRepositoryImpl implements EcoRepository {
 	}
 
 	public List<Integer> totalSeatsBooked(List<Bus> bus, LocalDate dateOfJourney) {
-			System.out.println(dateOfJourney);
+		System.out.println(dateOfJourney);
 		List<Integer> seatsAvailable = new ArrayList<>();
 		for (int i = 0; i < bus.size(); i++) {
 
@@ -353,123 +345,124 @@ public class EcoRepositoryImpl implements EcoRepository {
 		}
 		return seatsAvailable;
 	}
-	 public List<Bus> searchABus(String fromCity, String toCity, String day) {
-	 String sql = "select bs from Bus bs where bs.busId in (select r.bus.busId from Routes r where r.fromCity=:"
-	 + "from and r.toCity=:to and r.bus.busId in(select o.bus.busId from OperationalDays as o where o.operationalDays=:day))";
-	 TypedQuery<Bus> query = em.createQuery(sql, Bus.class);
-	 query.setParameter("from", fromCity);
-	 query.setParameter("to", toCity);
-	 query.setParameter("day", day);
-	 List<Bus> bus=query.getResultList();
-	 return bus;
-	 }
-	 
-	 @Override
-	 public List<Passenger> reservationDetail(LocalDate date) {
-			String sql= "select p from Passenger p where p.ticket.ticketId in(select t.ticketId from ticket t where t.dateOfBooking =:date)";
-			 TypedQuery<Passenger> query = em.createQuery(sql, Passenger.class);
-			 query.setParameter("date", date);
-			 List<Passenger> passenger= query.getResultList();
-			return passenger;
-		}
-	 
-	 
-    @Override
-	public List<Passenger> weeklyReservationDetail(LocalDate monday, LocalDate now) {
-    	String sql= "select p from Passenger p where p.ticket.ticketId in(select t.ticketId from ticket t where t.dateOfBooking between :monday and :now)";
-    	TypedQuery<Passenger> query = em.createQuery(sql, Passenger.class);
-		 query.setParameter("monday", monday);
-		 query.setParameter("now",now);
-		 List<Passenger> passenger= query.getResultList();
+
+	public List<Bus> searchABus(String fromCity, String toCity, String day) {
+		String sql = "select bs from Bus bs where bs.busId in (select r.bus.busId from Routes r where r.fromCity=:"
+				+ "from and r.toCity=:to and r.bus.busId in(select o.bus.busId from OperationalDays as o where o.operationalDays=:day))";
+		TypedQuery<Bus> query = em.createQuery(sql, Bus.class);
+		query.setParameter("from", fromCity);
+		query.setParameter("to", toCity);
+		query.setParameter("day", day);
+		List<Bus> bus = query.getResultList();
+		return bus;
+	}
+
+	@Override
+	public List<Passenger> reservationDetail(LocalDate date) {
+		String sql = "select p from Passenger p where p.ticket.ticketId in(select t.ticketId from ticket t where t.dateOfBooking =:date)";
+		TypedQuery<Passenger> query = em.createQuery(sql, Passenger.class);
+		query.setParameter("date", date);
+		List<Passenger> passenger = query.getResultList();
 		return passenger;
 	}
-    
+
+	@Override
+	public List<Passenger> weeklyReservationDetail(LocalDate monday, LocalDate now) {
+		String sql = "select p from Passenger p where p.ticket.ticketId in(select t.ticketId from ticket t where t.dateOfBooking between :monday and :now)";
+		TypedQuery<Passenger> query = em.createQuery(sql, Passenger.class);
+		query.setParameter("monday", monday);
+		query.setParameter("now", now);
+		List<Passenger> passenger = query.getResultList();
+		return passenger;
+	}
+
 	@Override
 	public List<Passenger> monthlyReservationDetail(LocalDate start, LocalDate now) {
-		
-		String sql= "select p from Passenger p where p.ticket.ticketId in(select t.ticketId from ticket  t where t.dateOfBooking between :start and :now)";
-    	TypedQuery<Passenger> query = em.createQuery(sql, Passenger.class);
-		 query.setParameter("start", start);
-		 query.setParameter("now",now);
-		 List<Passenger> passenger= query.getResultList();
+
+		String sql = "select p from Passenger p where p.ticket.ticketId in(select t.ticketId from ticket  t where t.dateOfBooking between :start and :now)";
+		TypedQuery<Passenger> query = em.createQuery(sql, Passenger.class);
+		query.setParameter("start", start);
+		query.setParameter("now", now);
+		List<Passenger> passenger = query.getResultList();
 		return passenger;
 	}
- 
-		@Override
-		public List<Customer> noReservationCustomer() {
-			
-			String sql =" select c from Customer c where c.customerId not in (select t.customer.customerId from Ticket t)";
-			TypedQuery<Customer> query = em.createQuery(sql,Customer.class);
-			//query.setParameter("customerId", customerId);
-			List<Customer> Customer=query.getResultList();
-			System.out.println(Customer);
-				return Customer;
-		}	
-		//select t from Transaction t where  t.transactionDate between :previousDate and  :currentDate
-		@Override
-		public List<Transaction> getLastMonthRecord(LocalDate previousDate, LocalDate currentDate ) {
-			String sql = "select t from Transaction t where  t.transactionDate between :previousDate and  :currentDate";
+
+	@Override
+	public List<Customer> noReservationCustomer() {
+
+		String sql = " select c from Customer c where c.customerId not in (select t.customer.customerId from Ticket t)";
+		TypedQuery<Customer> query = em.createQuery(sql, Customer.class);
+		// query.setParameter("customerId", customerId);
+		List<Customer> Customer = query.getResultList();
+		System.out.println(Customer);
+		return Customer;
+	}
+
+	// select t from Transaction t where t.transactionDate between :previousDate and
+	// :currentDate
+	@Override
+	public List<Transaction> getLastMonthRecord(LocalDate previousDate, LocalDate currentDate) {
+		String sql = "select t from Transaction t where  t.transactionDate between :previousDate and  :currentDate";
 //			TypedQuery<Transaction> qry = em.createQuery(sql, Transaction.class);		
-			Query qry = em.createQuery(sql);
-			qry.setParameter("currentDate",currentDate);
-			qry.setParameter("previousDate", previousDate);
-			
-			List<Transaction> transactions=qry.getResultList();
-			
-			//System.out.println(transactions.size());
-			List<Transaction> transaction= new ArrayList();
-			for(int i= 0; i <transactions.size();i++) {
-				Transaction t= new Transaction();
-				Transaction t1 = (Transaction)transactions.get(i);
-				System.out.println(transactions.get(i));
-				t = em.find(Transaction.class, t1.getTransactionId());
-				transaction.add(t);
-			}
-			System.out.println(transaction.toString());
-			return transaction;
-			
+		Query qry = em.createQuery(sql);
+		qry.setParameter("currentDate", currentDate);
+		qry.setParameter("previousDate", previousDate);
+
+		List<Transaction> transactions = qry.getResultList();
+
+		// System.out.println(transactions.size());
+		List<Transaction> transaction = new ArrayList();
+		for (int i = 0; i < transactions.size(); i++) {
+			Transaction t = new Transaction();
+			Transaction t1 = (Transaction) transactions.get(i);
+			System.out.println(transactions.get(i));
+			t = em.find(Transaction.class, t1.getTransactionId());
+			transaction.add(t);
 		}
-		
-		public double getPreviousProfits(LocalDate fromDate, LocalDate toDate) {
-			
-			double profit=0;
-			String sql = "select sum(t.amount) from Transaction t where t.transactionDate between :fromDate and :toDate";
-		    Query qry = em.createQuery(sql);
-			qry.setParameter("fromDate", fromDate);
-			qry.setParameter("toDate", toDate);		
-			try {
-				profit =  (double) qry.getSingleResult();
-			}catch(NoResultException e) {		
-							
-			}					
-			return profit ;
-		}
-		
-		public String mostPrefferedTypesOfBuses() {
-			
-			String prefferedBusType = null;
-			String sql = "select bs.BusType from Bus bs where bs.busId =(select max(t.bus.busId) from Ticket t)";
-			//TypedQuery<Bus> qry = em.createQuery(sql, Bus.class);
-			Query qry = em.createQuery(sql);
-			try {
-				prefferedBusType =  (String) qry.getSingleResult();
-			}
-			catch(NoResultException e){
-				
-			}
-			return prefferedBusType;
-		}
-		
-		public int getRegisteredCustomerId(String email) {
-			String sql = "select cs from Customer cs where cs.email= :email";
-			TypedQuery<Customer> qry = em.createQuery(sql, Customer.class);
-			qry.setParameter("email", email);
-			Customer c = qry.getSingleResult();
-			System.out.println(c.getCustomerId());
-			return c.getCustomerId();
+		System.out.println(transaction.toString());
+		return transaction;
+
+	}
+
+	public double getPreviousProfits(LocalDate fromDate, LocalDate toDate) {
+
+		double profit = 0;
+		String sql = "select sum(t.amount) from Transaction t where t.transactionDate between :fromDate and :toDate";
+		Query qry = em.createQuery(sql);
+		qry.setParameter("fromDate", fromDate);
+		qry.setParameter("toDate", toDate);
+		try {
+			profit = (double) qry.getSingleResult();
+		} catch (NoResultException e) {
 
 		}
-		
+		return profit;
+	}
+
+	public String mostPrefferedTypesOfBuses() {
+
+		String prefferedBusType = null;
+		String sql = "select bs.BusType from Bus bs where bs.busId =(select max(t.bus.busId) from Ticket t)";
+		// TypedQuery<Bus> qry = em.createQuery(sql, Bus.class);
+		Query qry = em.createQuery(sql);
+		try {
+			prefferedBusType = (String) qry.getSingleResult();
+		} catch (NoResultException e) {
+
+		}
+		return prefferedBusType;
+	}
+
+	public int getRegisteredCustomerId(String email) {
+		String sql = "select cs from Customer cs where cs.email= :email";
+		TypedQuery<Customer> qry = em.createQuery(sql, Customer.class);
+		qry.setParameter("email", email);
+		Customer c = qry.getSingleResult();
+		System.out.println(c.getCustomerId());
+		return c.getCustomerId();
+
+	}
+
 	public boolean checkAvailibilityofBus(String day, int busid) {
 		// TODO Auto-generated method stub
 		return false;
@@ -494,13 +487,9 @@ public class EcoRepositoryImpl implements EcoRepository {
 		return false;
 	}
 
-
-
 	public int getCustomerId(String email) {
 		return 0;
 	}
-
-	
 
 	public int checkRegisteredUser(String email) {
 		String sql = "select cs from Customer cs where cs.email= :email";
@@ -513,18 +502,17 @@ public class EcoRepositoryImpl implements EcoRepository {
 			// Ignore this because as per your logic this is ok!
 		}
 
-		if(c.getEmail()==null){
+		if (c.getEmail() == null) {
 			return 0;
-		}
-		else if(c.getPassword()==null) {
+		} else if (c.getPassword() == null) {
 			return c.getCustomerId();
 		}
 		return -1;
 	}
 
 	@Transactional
-	public int addTicketAndPassengerWithRegisteredCustomers(Ticket ticket, List<Passenger> passenger,
-			List<Seats> seats, Transaction transaction) {
+	public int addTicketAndPassengerWithRegisteredCustomers(Ticket ticket, List<Passenger> passenger, List<Seats> seats,
+			Transaction transaction) {
 		ticket.setTransaction(transaction);
 
 		ticket.setPassenger(passenger);
@@ -539,10 +527,10 @@ public class EcoRepositoryImpl implements EcoRepository {
 
 			s.setTicket(ticket);
 		}
-		Ticket t=new Ticket();
+		Ticket t = new Ticket();
 		try {
-				t=em.merge(ticket);
-		}catch (NoResultException e) {
+			t = em.merge(ticket);
+		} catch (NoResultException e) {
 			// TODO: handle exception
 		}
 		return t.getTicketId();
@@ -595,53 +583,47 @@ public class EcoRepositoryImpl implements EcoRepository {
 
 		return true;
 	}
-	
-
-	
-
 
 	@Override
 	public Customer isValidCustomerId(int customerId) {
-		Customer customer=new Customer();
-		
+		Customer customer = new Customer();
+
 		try {
-			 customer=em.find(Customer.class, customerId);
+			customer = em.find(Customer.class, customerId);
 		} catch (NoResultException nre) {
 			// Ignore this because as per your logic this is ok!
 		}
-		
-		
+
 		return customer;
 	}
 
 	@Override
 	@Transactional
 	public boolean checkOldPassword(int customerId, String oldPassword) {
-		Customer customer=new Customer();
+		Customer customer = new Customer();
 		try {
-			 customer=em.find(Customer.class, customerId);
+			customer = em.find(Customer.class, customerId);
 		} catch (NoResultException nre) {
 			// Ignore this because as per your logic this is ok!
 		}
-		
+
 		System.out.println(customer.getPassword());
 		System.out.println(oldPassword);
-		if(customer.getPassword().equals(oldPassword)) {
+		if (customer.getPassword().equals(oldPassword)) {
 			System.out.println("inside if");
 			return true;
 		}
 		return false;
 	}
 
-
 	@Override
 	public List<Integer> fetchNoOfSeats(int busId, LocalDate dateOfJourney) {
-		List<Integer> noOfSeats=new ArrayList<>();
-		String sql="select s.seats from Seats s where s.dateOfJourney=:dateOfJourney AND s.bus.busId=:busId";
+		List<Integer> noOfSeats = new ArrayList<>();
+		String sql = "select s.seats from Seats s where s.dateOfJourney=:dateOfJourney AND s.bus.busId=:busId";
 		Query qry = em.createQuery(sql);
 		qry.setParameter("dateOfJourney", dateOfJourney);
 		qry.setParameter("busId", busId);
-	
+
 		try {
 			noOfSeats = qry.getResultList();
 		} catch (NoResultException nre) {
@@ -649,6 +631,7 @@ public class EcoRepositoryImpl implements EcoRepository {
 		}
 		return noOfSeats;
 	}
+
 
 	public List<Ticket> fetchBookingsOfCustomer(int customerId){
 		
@@ -660,6 +643,80 @@ public class EcoRepositoryImpl implements EcoRepository {
 		return ticket;
 	}
 
+	@Override
+	@Transactional
+	public Status CancelAllTicketDetailsOfACustomer(int ticketNo) {
+		List<Seats> seats = new ArrayList<>();
+		List<Transaction> transactions = new ArrayList<>();
+		List<Passenger> passengers = new ArrayList<Passenger>();
+
+
+		Seats seat = new Seats();
+		Transaction transaction = new Transaction();
+		Passenger passenger = new Passenger();
+
+		String sqlSeats = "select s from Seats s where s.ticket.ticketId=: ticketNo";
+		Query qrySeats = em.createQuery(sqlSeats);
+		qrySeats.setParameter("ticketNo", ticketNo);
+
+		try {
+			seats = qrySeats.getResultList();
+		} catch (NoResultException nre) {
+			// Ignore this because as per your logic this is ok!
+		}
+
+		String sqlTransaction = "select t from Transaction t where t.ticket.ticketId=: ticketNo";
+		Query qryTransaction = em.createQuery(sqlTransaction);
+		qryTransaction.setParameter("ticketNo", ticketNo);
+
+		try {
+			transactions = qryTransaction.getResultList();
+		} catch (NoResultException nre) {
+			// Ignore this because as per your logic this is ok!
+		}
+
+		String sqlPassenger = "select p from Passenger p where p.ticket.ticketId=: ticketNo";
+		Query qryPassengers = em.createQuery(sqlPassenger);
+		qryPassengers.setParameter("ticketNo", ticketNo);
+
+		try {
+			passengers = qryPassengers.getResultList();
+		} catch (NoResultException nre) {
+			// Ignore this because as per your logic this is ok!
+		}
+
+		for (int i = 0; i < seats.size(); i++) {
+			try {
+				em.remove(seats.get(i));
+			} catch (NoResultException e) {
+				// TODO: handle exception
+			}
+		}
+		for (int i = 0; i < transactions.size(); i++) {
+			try {
+				em.remove(transactions.get(i));
+			} catch (NoResultException e) {
+				// TODO: handle exception
+			}
+		}
+		for (int i = 0; i < passengers.size(); i++) {
+			try {
+				em.remove(passengers.get(i));
+			} catch (NoResultException e) {
+				// TODO: handle exception
+			}
+		}
+		Ticket t=new Ticket();
+		
+		t=em.find(Ticket.class, ticketNo);
+		
+		em.remove(t);
+
+		Status status = new Status();
+		status.setResultStatus(true);
+
+		return status;
+	}
 
 // public Bus findBus(int busid){
 // String sql = "select bs from Bus bs where bs.busId=:busid";

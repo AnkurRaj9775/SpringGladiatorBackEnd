@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.PassengerDetails;
-import com.lti.dto.SeatDetails;
 import com.lti.dto.TicketDetails;
 
 

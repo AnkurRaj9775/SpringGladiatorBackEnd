@@ -4,7 +4,6 @@ package com.lti.controller;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,37 +12,35 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.lti.bridge.BusDetails;
 import com.lti.bridge.StatusString;
+import com.lti.bridge.TransactionDetailsForRecord;
 import com.lti.bridge.ViewProfile;
 import com.lti.bridge.WalletDetails;
 import com.lti.bridge.LoginStatus;
-
-
 import com.lti.bridge.MostPreferredBusType;
 import com.lti.bridge.MyBookingDetails;
 
 import com.lti.bridge.RegisterStatus;
 import com.lti.dto.PassengerDetails;
-
 import com.lti.bridge.SeatCountDetails;
 import com.lti.bridge.Status;
 import com.lti.dto.BookTicket;
 import com.lti.dto.CancelTicket;
+import com.lti.dto.CancelTicketUpdation;
 import com.lti.dto.ChangePassword;
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.ForgotPassword;
 import com.lti.dto.LoginDetails;
+
 import com.lti.dto.MyBookings;
+
 import com.lti.dto.PassengerDetails;
-
 import com.lti.dto.ProfileCard;
-
 import com.lti.dto.ResetPassword;
 import com.lti.dto.SearchBus;
 import com.lti.dto.SeatCount;
-import com.lti.dto.SeatDetails;
+import com.lti.dto.BookingSeatDetails;
 import com.lti.dto.TicketDetails;
 import com.lti.dto.TransactionDetails;
 import com.lti.dto.WalletAmount;
@@ -92,19 +89,24 @@ public class EcoController {
 		
 	}
 	
+
 	@PostMapping(path = "/loginAdminUser")
 	public Status adminLogin(@RequestBody LoginDetails loginDetails)
 	{
 		
 		return ecoServ.adminLogin(loginDetails.getEmail(), loginDetails.getPassword());
 	}
+
 	
 	@RequestMapping("/previousTransaction")
-	public List<Transaction> previousTransaction() {
+	public List<TransactionDetailsForRecord> previousTransaction() {
 		
 		return ecoServ.getPreviousTransaction();
 	}
-
+	
+	
+	
+	
 	public boolean addAbus(Bus bus) {
 
 		return ecoServ.addABus(bus);
@@ -240,9 +242,19 @@ public class EcoController {
 		return ecoServ.fetchNoOfSeats(seatCount.getBusId(),journeyDate);
 	}
 
+
 	@PostMapping("/myBookings")
 	public MyBookingDetails fetchBookingsOfCustomer(@RequestBody MyBookings myBookings) {
 		return ecoServ.fetchBookingsOfCustomer(myBookings.getCustomerId());
 	}
+
+	@PostMapping("/loggedInCancel")
+	public Status CancelAllTicketDetailsOfACustomer(@RequestBody CancelTicketUpdation cancelTicketUpdation) {
+		return ecoServ.CancelAllTicketDetailsOfACustomer(cancelTicketUpdation);
+	}
+	
+//	@PostMapping("/getTicketList")
+//	public 
+
 }
 

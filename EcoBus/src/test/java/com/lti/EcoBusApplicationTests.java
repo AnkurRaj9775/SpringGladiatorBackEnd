@@ -11,11 +11,12 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
+
+import com.lti.dto.BookingSeatDetails;
 import com.lti.controller.EcoController;
 import com.lti.dto.BookTicket;
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.PassengerDetails;
-import com.lti.dto.SeatDetails;
 import com.lti.dto.TicketDetails;
 import com.lti.model.Bus;
 import com.lti.model.Customer;
@@ -274,12 +275,12 @@ class EcoBusApplicationTests {
 	CustomerDetails customerDetails= new CustomerDetails();
 	
 	PassengerDetails p=new PassengerDetails();
-	SeatDetails s=new SeatDetails();
+	BookingSeatDetails s=new BookingSeatDetails();
 	
 	@Test
 	public void addticketwithdetails(){
 		List<PassengerDetails> passengerDetails=new ArrayList<PassengerDetails>();
-		List<SeatDetails> seatDetails=new ArrayList<SeatDetails>();
+		List<BookingSeatDetails> seatDetails=new ArrayList<BookingSeatDetails>();
 		ticketDetails.setBusId(131102);
 		ticketDetails.setDateOfBooking(LocalDate.now());
 		ticketDetails.setDateOfJourney(LocalDate.of(2020, 9, 3));
@@ -301,11 +302,11 @@ class EcoBusApplicationTests {
 		p.setName("Navtej");
 		passengerDetails.add(p);
 		
-		s=new SeatDetails();
+		s=new BookingSeatDetails();
 		s.setSeatNo(5);
 		seatDetails.add(s);
 		
-		s=new SeatDetails();
+		s=new BookingSeatDetails();
 		s.setSeatNo(6);
 		seatDetails.add(s);
 		
@@ -463,7 +464,7 @@ class EcoBusApplicationTests {
 		customerDetails.setEmail("kirti.1809@gmail.com");
 		bookTicket.setCustomerDetails(customerDetails);
 		
-		ticketDetails.setBusId(131104);
+		ticketDetails.setBusId(131123);
 		ticketDetails.setDateOfBooking(LocalDate.of(2020,7,29));
 		ticketDetails.setDateOfJourney(LocalDate.of(2020, 7, 23));
 		ticketDetails.setNoOfSeatsBooked(2);
@@ -473,7 +474,7 @@ class EcoBusApplicationTests {
 		bookTicket.setTicketDetails(ticketDetails);
 		
 		List<PassengerDetails> passengerDetails=new ArrayList<PassengerDetails>();
-		List<SeatDetails> seatDetails=new ArrayList<SeatDetails>();
+		List<BookingSeatDetails> seatDetails=new ArrayList<BookingSeatDetails>();
 		
 		p=new PassengerDetails();
 		p.setAge(23);
@@ -490,11 +491,11 @@ class EcoBusApplicationTests {
 		
 		bookTicket.setPassengerDetails(passengerDetails);
 		
-		s=new SeatDetails();
+		s=new BookingSeatDetails();
 		s.setSeatNo(15);
 		seatDetails.add(s);
 		
-		s=new SeatDetails();
+		s=new BookingSeatDetails();
 		s.setSeatNo(16);
 		seatDetails.add(s);
 		

@@ -15,14 +15,22 @@ import com.lti.bridge.LoginStatus;
 import com.lti.bridge.MyBookingDetails;
 import com.lti.bridge.RegisterStatus;
 import com.lti.bridge.StatusString;
-import com.lti.bridge.MyBookings;
+
+
+
+
+import com.lti.bridge.TransactionDetailsForRecord;
+
 import com.lti.bridge.ViewProfile;
 import com.lti.bridge.WalletDetails;
 import com.lti.bridge.SeatCountDetails;
 import com.lti.bridge.Status;
+import com.lti.dto.CancelTicketUpdation;
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.PassengerDetails;
-import com.lti.dto.SeatDetails;
+
+import com.lti.dto.BookingSeatDetails;
+
 import com.lti.dto.TicketDetails;
 import com.lti.dto.UpdateWallet;
 import com.lti.email.Email;
@@ -192,28 +200,28 @@ public class EcoServiceImpl implements EcoService {
 		return status;
 
 	}
-
-	public List<Ticket> viewAllBookings(int customerId) {
-
-		Ticket ticket = new Ticket();
-		List<Ticket> ticketList = new ArrayList<>();
-		Bus bus = new Bus();
-		MyBookings ticketsDetail = new MyBookings();
-
-		ticketList = ecoRep.viewAllBookings(customerId);
-		ticketsDetail.setBusId(bus.getBusId());
-		ticketsDetail.setBusName(bus.getBusName());
-		ticketsDetail.setTicketId(ticket.getTicketId());
-		ticketsDetail.setNoOfSeatsBooked(ticket.getNoOfSeatsBooked());
-		ticketsDetail.setDateOfJourney(ticket.getDateOfJourney().toString());
-		ticketsDetail.setDateOfBooking(ticket.getDateOfBooking().toString());
-		ticketsDetail.setFromCity(ticket.getFromCity());
-		ticketsDetail.setToCity(ticket.getToCity());
-		ticketsDetail.setTotalCost(ticket.getTotalCost());
-
-		return ticketList;
-
-	}
+//
+//	public List<Ticket> viewAllBookings(int customerId) {
+//
+//		Ticket ticket = new Ticket();
+//		List<Ticket> ticketList = new ArrayList<>();
+//		Bus bus = new Bus();
+//		MyBookings ticketsDetail = new MyBookings();
+//
+//		ticketList = ecoRep.viewAllBookings(customerId);
+//		ticketsDetail.setBusId(bus.getBusId());
+//		ticketsDetail.setBusName(bus.getBusName());
+//		ticketsDetail.setTicketId(ticket.getTicketId());
+//		ticketsDetail.setNoOfSeatsBooked(ticket.getNoOfSeatsBooked());
+//		ticketsDetail.setDateOfJourney(ticket.getDateOfJourney().toString());
+//		ticketsDetail.setDateOfBooking(ticket.getDateOfBooking().toString());
+//		ticketsDetail.setFromCity(ticket.getFromCity());
+//		ticketsDetail.setToCity(ticket.getToCity());
+//		ticketsDetail.setTotalCost(ticket.getTotalCost());
+//
+//		return ticketList;
+//
+//	}
 
 	public ViewProfile showProfile(int customerId) {
 
@@ -342,13 +350,23 @@ public class EcoServiceImpl implements EcoService {
 	}
 
 	@Override
-	public List<Transaction> getPreviousTransaction() {
-		LocalDate date = LocalDate.now();
-		LocalDate previousDate = date.minusMonths(1);
-		System.out.println(date + "current date");
-		System.out.println(previousDate + "previous month date");
-		List<Transaction> t = ecoRep.getLastMonthRecord(previousDate, date);
-		return t;
+	public List<TransactionDetailsForRecord> getPreviousTransaction() {
+		
+		LocalDate date = LocalDate.now();		
+		List<TransactionDetailsForRecord>  transactionRecord = new ArrayList<>();
+	    LocalDate previousDate = date.minusMonths(1); 
+		System.out.println(date+"current date");
+		System.out.println(previousDate+"previous month date");
+		List<Transaction> t = ecoRep.getLastMonthRecord(previousDate,date);		
+		for(int i =0;i<t.size();i++) {
+			TransactionDetailsForRecord  transRecord= new TransactionDetailsForRecord();
+			transRecord.setTicketId(t.get(i).getTicket().getTicketId());
+			transRecord.setAmount(t.get(i).getAmount());
+			transRecord.setTransactionDate(t.get(i).getTransactionDate());
+			transRecord.setTransactionId(t.get(i).getTransactionId());
+			transactionRecord.add(transRecord);
+		}
+		return transactionRecord;
 	}
 
 	@Override
@@ -394,7 +412,7 @@ public class EcoServiceImpl implements EcoService {
 	Transaction transaction = new Transaction();
 
 	public Status addTicketDetails(CustomerDetails customerDetails, TicketDetails ticketDetails,
-			List<PassengerDetails> passengerDetails, List<SeatDetails> seatDetails) {
+			List<PassengerDetails> passengerDetails, List<BookingSeatDetails> seatDetails) {
 		int custId = 0;
 		System.out.println(customerDetails.getEmail());
 		if (!ecoRep.isValidEmail(customerDetails.getEmail())) {
@@ -478,6 +496,11 @@ public class EcoServiceImpl implements EcoService {
 		myBookingDetails.setResultStatus(false);
 		return myBookingDetails;
 	
+	}
+	public Status CancelAllTicketDetailsOfACustomer(CancelTicketUpdation cancelTicketUpdation) {
+		
+		return ecoRep.CancelAllTicketDetailsOfACustomer(cancelTicketUpdation.getTicketNo());
+
 	}
 
 }

@@ -85,6 +85,7 @@ public interface EcoRepository {
 	boolean checkOldPassword(int customerId, String oldPassword);
 
     List<Integer> fetchNoOfSeats(int busId, LocalDate dateOfJourney) ;
+	Status CancelAllTicketDetailsOfACustomer(int ticketNo);
 
     
 	

@@ -10,13 +10,15 @@ import com.lti.bridge.LoginStatus;
 import com.lti.bridge.MyBookingDetails;
 import com.lti.bridge.RegisterStatus;
 import com.lti.bridge.StatusString;
+import com.lti.bridge.TransactionDetailsForRecord;
 import com.lti.bridge.ViewProfile;
 import com.lti.bridge.WalletDetails;
 import com.lti.bridge.SeatCountDetails;
 import com.lti.bridge.Status;
+import com.lti.dto.CancelTicketUpdation;
 import com.lti.dto.CustomerDetails;
 import com.lti.dto.PassengerDetails;
-import com.lti.dto.SeatDetails;
+import com.lti.dto.BookingSeatDetails;
 import com.lti.dto.TicketDetails;
 import com.lti.dto.UpdateWallet;
 import com.lti.model.Bus;
@@ -45,7 +47,7 @@ public interface EcoService {
 	
 	//DashBoard Functionalities
 	StatusString updatePassword(int customerId,String oldPassword,String newPassword);
-	List<Ticket> viewAllBookings(int customerId);
+//	List<Ticket> viewAllBookings(int customerId);
 	ViewProfile showProfile(int customerId);
     WalletDetails showWalletBalance(int customerId);
     boolean updateProfile(Customer customer);
@@ -74,9 +76,10 @@ public interface EcoService {
     
     boolean addRoutewithBus(List<Routes> routes,int busId);
     boolean addOperationalDaysWithBus(List<OperationalDays> operationalDays,int busId);
-    List<Transaction> getPreviousTransaction();
-    Status addTicketDetails(CustomerDetails customerDetails,TicketDetails ticketDetails,List<PassengerDetails> passengerDetails,List<SeatDetails> seatDetails);
+    List<TransactionDetailsForRecord> getPreviousTransaction();
+    Status addTicketDetails(CustomerDetails customerDetails,TicketDetails ticketDetails,List<PassengerDetails> passengerDetails,List<BookingSeatDetails> seatDetails);
     
     SeatCountDetails fetchNoOfSeats(int busId,LocalDate dateOfJourney);
     //
+	public Status CancelAllTicketDetailsOfACustomer(CancelTicketUpdation cancelTicketUpdation);
 }
