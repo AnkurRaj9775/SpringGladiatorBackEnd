@@ -347,7 +347,7 @@ public class EcoRepositoryImpl implements EcoRepository {
 	}
 
 	public List<Bus> searchABus(String fromCity, String toCity, String day) {
-		String sql = "select bs from Bus bs where bs.busId in (select r.bus.busId from Routes r where r.fromCity=:"
+		String sql = "select bs from Bus bs where bs.BusStatus='active' AND bs.busId in (select r.bus.busId from Routes r where r.fromCity=:"
 				+ "from and r.toCity=:to and r.bus.busId in(select o.bus.busId from OperationalDays as o where o.operationalDays=:day))";
 		TypedQuery<Bus> query = em.createQuery(sql, Bus.class);
 		query.setParameter("from", fromCity);
@@ -734,6 +734,7 @@ public class EcoRepositoryImpl implements EcoRepository {
 		return status;
 	}
 
+	@Transactional
 	public boolean removeBus(int busId)
 	{
 		Bus bus=new Bus();
@@ -758,6 +759,7 @@ public class EcoRepositoryImpl implements EcoRepository {
 		return bus;
 	}
 	
+	@Transactional
 	 public boolean activateBus(int busId) {
 		 
 		 Bus bus=new Bus();
